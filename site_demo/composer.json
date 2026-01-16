@@ -59,7 +59,8 @@
       "enabled": false
     },
     "audit": {
-      "abandoned": "ignore"
+      "abandoned": "ignore",
+      "block-insecure": false
     },
     "allow-plugins": {
       "yiisoft/yii2-composer": true
