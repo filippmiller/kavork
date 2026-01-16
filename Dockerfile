@@ -25,8 +25,8 @@ WORKDIR /var/www/html
 # Copy composer files first for caching
 COPY site_demo/composer.json site_demo/composer.lock* ./
 
-# Install PHP dependencies (security audit disabled in composer.json for legacy packages)
-RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
+# Install PHP dependencies (--no-audit bypasses security blocking for legacy packages)
+RUN composer install --no-dev --no-audit --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
 
 # Copy application code
 COPY site_demo/ /var/www/html/
