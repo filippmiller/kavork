@@ -1,0 +1,16 @@
+$(function () {
+  if(location.pathname!='/')return;
+  modals = $('.modal-content');
+  for(j = 0;j < modals.length;j++){
+  if (modals.eq(j).find('#crud-datatable-pjax').length>0) continue;
+  btns = modals.eq(j).find('a.btn').not('.not_main');
+  for(var i=0;i < btns.length;i++){
+    var href=btns[i].href;
+    href+=href.indexOf('?')?"&":"?";
+    href+="isMain=1";
+    btns[i].href=href
+  }
+}
+
+  $('.modal-content form').append('<input name="isMain" value="1" type="hidden">');
+})

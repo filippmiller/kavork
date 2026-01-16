@@ -1,0 +1,15 @@
+{% macro tile(href, color, title, data) %}
+  {% set tag = href?'a '~'href='~href~'':'div' %}
+  <{{ tag }} class="tile {{ color }} {{ _if(data.width==2,'double-width') }} {{ data.class }}" data-click="transform" {{ _if(data.modal,'role=modal-remote') }}>
+  {% if(data.icon) %}
+    <span class="tile-content icon">
+        <span class="{{ data.icon }}"></span>
+      </span>
+  {% elseif (data.raw) %}
+    {{ data.raw|raw }}
+  {% endif %}
+  <span class="brand">
+      <span class="tile-label">{{ t('main',title) }}</span>
+    </span>
+  </{{ tag }}>
+{% endmacro %}

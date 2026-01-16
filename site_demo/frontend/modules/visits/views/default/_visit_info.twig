@@ -1,0 +1,110 @@
+{{ use('\frontend\modules\certificate\models\Certificate') }}
+
+<h6 class="vid_check">{{ t('main','id') }}: <span class="pull-right">{{ model.id }}</span></h6>
+
+{% if(model.visitor_id) %}
+  {%  set visitor = model.visitor %}
+  <h6 class="vid_check">
+    <div>{{ t('main','Visitor') }}{% include from_module('visits','_visit_info_child_flag') %}:</div> <span class="pull-right font-weight-600">{{ visitor.f_name }} {{ visitor.l_name	}}</span>
+  </h6>
+  <h6 class="vid_check">{{ t('main','Email') }}: <span class="pull-right">{{ visitor.email }}</span></h6>
+  <h6 class="vid_check">{{ t('main','Phone') }}: <span class="pull-right">{{ visitor.phone }}</span></h6>
+  <h6 class="vid_check">{{ t('main','Native Language') }}: <span class="pull-right">{{ visitor.lang }}</span></h6>
+  <h6 class="vid_check"><div class="vmest">{{ t('main','Number of visits ( week/ 30day / All )') | raw }}:</div> <span class="pull-right">{{ model.visit_cnt }}</span></h6>
+{% else %}
+  <h6 class="vid_check">
+    <div>{{ t('main','Visitor') }}{% include from_module('visits','_visit_info_child_flag') %}:</div> <span class="pull-right">{{ t('app','Anonymous') }}</span>
+  </h6>
+  {% if model.notice.visitor_email %}
+    <h6 class="vid_check">{{ t('main','Email') }}: <span class="pull-right">{{ model.notice.visitor_email }}</span></h6>
+  {% endif %}
+{% endif %}
+
+{% if model.display_visit_timing %}
+  <h6 class="vid_check">{{ t('main','Input time') }}: <span class="pull-right">{{ local_time(model.add_time) }}</span></h6>
+  <h6 class="vid_check">{{ t('main','Input date') }}: <span class="pull-right">{{ local_date(model.add_time) }}</span></h6>
+  <h6 class="vid_check">{{ t('main','Duration') }}: <span class="pull-right">{{ echo_duration(model.duration) }}</span></h6>
+
+  {% if model.pause %}
+    <h6 class="vid_check">
+      {{ t('main','Pause') }}:
+      {% if model.pause_start %}
+        <span class="pull-right font-weight-600 text-blue">{{ t('main','on pause') }}  {{ echo_duration(model.pause) }}</span>
+      {% endif %}
+    </h6>
+  {% endif %}
+
+  {% if(model.isGroup) %}
+    {% include from_module('visits','_visit_info_group_info') %}
+  {% endif %}
+{% endif %}
+
+{% if model.unite_people|length>0 %}
+  <h6 class="vid_check font-weight-600">{{ t('main','Persons payers') }}: <span class="pull-right">{{ model.unite_people|length }}</span></h6>
+{% endif %}
+
+<h6 class="vid_check">{{ t('main','Administrator') }}: <span class="pull-right">{{ model.user.name }}</span></h6>
+<div class="row output_sum">
+<div class="col-md-12">
+{% if model.certificate_type != constant('\\frontend\\modules\\certificate\\models\\Certificate::TYPE_NONE') %}
+  <h6 class="vid_check color_gold font-weight-600">{{ t('main','Certificate') }}: {{ (model.certificateTypeLabel) | raw }}</span></h6>
+{% endif %}
+
+{% include from_module('visits','_visit_info_notices') %}
+
+
+{% if model.pay_state == constant('\\frontend\\modules\\visits\\models\\VisitorLog::PAY_METHOD_NOT_PAID') %}
+  <h6 class="marked_unpaid">{{ t('main','Marked unpaid !') }}</h6>
+{% else %}
+  {% if model.cost is same as( false ) %}
+    <h4>{{ model.sum | raw}}</h4>
+  {% else %}
+    <h5 class="vid_check font-weight-700">{{ t('main','Amount') }}: <span class="pull-right">{{ _nf(model.sum) }} {{ cafe.currency }}</span></h5>
+
+    {% for vat in model.vat %}
+      <h5 class="vid_check font-weight-700 text-capitalize"><div>{{ vat.name }}: <small class="vat">({{ vat.value }}%)</small> </div> <span class="pull-right">{{ _nf(vat.vat) }} {{ cafe.currency }}</span></h5>
+    {% endfor %}
+
+    <h4 class="vid_check font-weight-700">{{ t('main','During visit') }}:
+        <span class="pull-right"><span class="cost_pers">{{ _nf(model.cost) | raw }}</span>
+        {{ cafe.currency }}</span>
+    </h4>
+  {% endif %}
+
+  {% if model.prePayVisit %}
+    <h4 class="vid_check font-weight-700">{{ t('main','Prepay visit') }}:
+      <span class="pull-right">
+        <span class="cost_pers">{{ _nf(model.prePayVisit) | raw }}</span>
+        {{ cafe.currency }}
+      </span>
+    </h4>
+    <h4 class="vid_check font-weight-700">{{ t('main','Total by visit') }}:
+      <span class="pull-right">
+        <span class="cost_pers">{{ _nf(model.cost-model.prePayVisit)|raw }}</span>
+        {{ cafe.currency }}
+      </span>
+    </h4>
+  {% endif %}
+
+  {% if model.shopSale  and model.shopSale.transactions %}
+    <h4 class="vid_check font-weight-700"><div>{{ t('main','Shopping')}}:<small class="shop"> ({{model.shopSale.quantitySummary}} {{ t('main','items')}})</small></div>
+        <span class="pull-right">{{ _nf(model.shopSale.cost) | raw }} {{ cafe.currency }}</span>
+    </h4>
+    <h4 class="vid_check font-weight-700" >{{ t('main','Total sum') }}:
+	     <span class="pull-right">
+        {% if model.cost==false %}
+          {{ _nf(model.shopSale.cost)|raw }}
+        {% else %}
+          {{ _nf(model.cost + model.shopSale.cost-model.prePayVisit)|raw }}
+        {% endif %}
+         {{ cafe.currency }}
+		</span>
+      </b>
+    </h4>
+  {% endif %}
+  {% if model.tip %}
+    <h4 class="vid_check font-weight-700">{{ t('main','Tips') }}: <span class="pull-right">{{ _nf(model.tip) | raw }} {{ cafe.currency }}</span></h4>
+  {% endif %}
+{% endif %}
+</div>
+</div>

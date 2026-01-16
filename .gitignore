@@ -1,0 +1,67 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.python-version
+/.mypy_cache/
+/.pytest_cache/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+
+# Build
+/dist/
+/build/
+/htmlcov/
+/coverage/
+
+# Environment
+.env
+.env.*
+
+# Composer vendor dir
+site_demo/vendor/
+
+# Node modules
+node_modules/
+
+# Mac/Windows
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Database dumps (keep structure, exclude data)
+*.sql
+
+# Logs
+*.log
+*.log.*
+
+# Local configs
+*-local.php
+start_param.php
+
+# Cache
+.cache/
+site_demo/.vagrant/
+
+# Composer
+composer.phar
+composer.lock
+
+# PHPUnit
+phpunit.phar
+phpunit.xml
+
+# Other
+.htaccess
+.bash_history
+cgi-bin/
+public_html/

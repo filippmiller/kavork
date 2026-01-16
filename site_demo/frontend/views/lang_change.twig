@@ -1,0 +1,17 @@
+{% set lg_list = lg_list() %}
+{% if lg_list | length >1 %}
+  <div class="dropdown language">
+    <button class="btn btn-science-blue dropdown-toggle" type="button" id="dropdownLang" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+      <img src="/img/flag/{{ language() }}.svg" alt="">
+      {{ params('lg_list')[language()] }}
+      <i class="fa fa-angle-down"></i>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownLang">
+
+      {% for code,name in lg_list() %}
+        <li><a {{ make_lang_url(code) | raw }}><img src="/img/flag/{{ code }}.svg" alt=""> {{ name }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}

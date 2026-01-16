@@ -1,0 +1,67 @@
+{% set last_supplier=0 %}
+
+{% if not hide_button %}
+  {{ this.render('../_partials/menu') | raw}}
+  <!--<div class="tab-pane fade active in" id="inventory">-->
+  <div class="kv-panel-before">
+  <div class="row">
+    <div class="col-md-offset-4 col-md-4 mass_but padding-5">
+      <a href="download" target="_blank" class="btn btn-blue-gem">
+        <i class="fa fa-file-pdf-o"></i> {{ t('app','DOWNLOAD PDF DOCUMENT') }}
+      </a>
+    </div>
+  </div>
+  </div>
+
+{% endif %}
+
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <th name="id">{{ t('app','#') }}</th>
+    <th name="id">{{ t('app','ID'~suf_label) }}</th>
+    <th name="name">
+      {{ t('app','Product Title'~suf_label) }}
+    </th>
+    <th name="barcode">
+      {{ t('app','Barcode'~suf_label) }}
+    </th>
+    <th name="in_stock">
+      {{ t('app','in stock'~suf_label) }}
+    </th>
+    <th name="max_stock">
+      {{ t('app','Accounting Critical Minimum'~suf_label) }}
+    </th>
+    <th name="to_bay">
+      {{ t('app','WE NEEDED'~suf_label) }}
+    </th>
+  </tr>
+
+  {% for k,item in list %}
+    {% if not(item.supplier_id is sameas (last_supplier)) %}
+      {% set last_supplier=item.supplier_id %}
+      {% set  supplier=item.supplier %}
+      <tr class="group_title" style="background-color: rgb(0, 106, 193);">
+        <td colspan="7" style="border: 1px solid rgb(0, 106, 193) !important;">{{ _if(supplier,item.supplier.title,t('app','without supplier')) }}</td>
+      </tr>
+    {% endif %}
+    <tr>
+      <td>{{ k+1 }}</td>
+      <td>{{ item.id }}</td>
+      <td name="name" style="width: 808px;">
+        {{ item.title }}
+      </td>
+      <td name="barcode" style="width: 313px;">
+        {{ item.barcode }}
+      </td>
+      <td name="in_stock" style="width: 117px;">
+        {{ item.quantity }}
+      </td>
+      <td name="max_stock" style="width: 140px;">
+        {{ item.accounting_critical_minimum }}
+      </td>
+      <td name="to_bay" style="width: 240px;">
+        {{ item.accounting_critical_minimum-item.quantity }}
+      </td>
+    </tr>
+  {% endfor %}
+</table>

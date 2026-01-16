@@ -1,0 +1,25 @@
+<?php
+  return array (
+  'counter' => '#',
+  'name' => 'nom',
+  'sum' => 'somme',
+  'vat' => 'taxe',
+  'count' => 'montant de',
+  'total' => 'Total',
+  'time' => 'temps',
+  'certificate' => 'certificat',
+  'guest_chi' => 'enfants',
+  'guest_m' => 'adultes',
+  'vat_total' => 'taxe',
+  'cost' => 'coût',
+  'pause' => 'pause',
+  'duration' => 'temps',
+  'finish_time' => 'sortie',
+  'add_time' => 'l\'entrée',
+  'tvq' => 'tvq',
+  'tps' => 'tps',
+  'global_total' => 'Total',
+  'prepay' => 'pré-paiement',
+  'to_pay' => 'paiement',
+);
+?>

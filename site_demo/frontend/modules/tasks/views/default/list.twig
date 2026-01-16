@@ -1,0 +1,46 @@
+{%  if not model %}
+  <div class="block_info">{{ t('app','empty task list') }}</div>
+{% endif %}
+
+<table class="table table-responsive list_task">
+  {% for task in model %}
+    {% set ststus_icon = 'text-white' %} {# Для еще неначатых тасков #}
+    {% set ststus_icon = _if(task.status==0,'fa fa-check text-white cool',ststus_icon) %} {# для тасков которые сейчас идут#}
+    {% set ststus_icon = _if(task.status==1,'fa fa-check text-success',ststus_icon) %} {# для завершенных тасков#}
+    {% set ststus_icon = _if(task.status==2,'fa fa-close text-danger',ststus_icon) %} {# для FAILED тасков#}
+    {% set ststus_icon = _if(task.status==3,'fa fa-clock-o text-danger',ststus_icon) %} {# для просроченных тасков#}
+    <tr style="vertical-align:middle;" class="{{ _if(not task.status,'stay','upper_text') }}">
+      <td>
+        <label {{ _if( not task.status,'href="/tasks/default/finish?id='~task.id~'" role="modal-remote"') | raw }}>
+          <div class="level"><span class="{{ ststus_icon }}"></span></div>
+        </label>
+      </td>
+      <td>
+        <div class="text_task"> {{ task.text }}</div>
+        <div class="bef_time">
+          {{ t('main','before') }} {{ local_time(task.end_time) }}
+
+          <div class="who_closed_task">
+            {% if task.status %}
+
+              {{ t('main','closed') }}: {{ _if(task.name,task.name, t('main','time is up')) }}
+
+            {% endif %}
+
+            {% if not task.status %}
+			  <a class="btn btn-default btn-xs" href="/tasks/default/finish?id={{ task.id }}"
+                 role="modal-remote">
+                {{ t('main','completed') }}
+              </a>
+              <a class="btn btn-default btn-xs" href="/tasks/default/finish?id={{ task.id }}&failed=1"
+                 role="modal-remote">
+                {{ t('main','failed') }}
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </td>
+    </tr>
+
+  {% endfor %}
+</table>

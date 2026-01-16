@@ -1,0 +1,101 @@
+/* reset.css */
+/* Comment out/delete the reset rules where appropriate */
+.elfinder.ui-widget.ui-widget-content {
+  overflow-y: hidden;
+  padding: 0px !important; 
+}
+/* container */
+.elfinder,
+
+/* toolbar */
+.elfinder .elfinder-toolbar,
+.elfinder .elfinder-buttonset,
+.elfinder .elfinder-button,
+.elfinder .elfinder-toolbar-button-separator,
+.elfinder .elfinder-toolbar input,
+
+/* navbar */
+.elfinder .elfinder-navbar,
+.elfinder .elfinder-navbar *,
+
+/* current working directory */
+.elfinder .elfinder-cwd,
+.elfinder .elfinder-cwd table tr td.ui-state-active,
+.elfinder .elfinder-cwd table tr td.ui-state-hover,
+.elfinder .elfinder-cwd table tr td.ui-state-selected,
+.elfinder .elfinder-cwd table thead tr,
+.elfinder .elfinder-cwd table tbody tr,
+.elfinder .elfinder-cwd-file .ui-state-hover,
+.elfinder .elfinder-cwd-file .elfinder-cwd-icon-directory,
+.elfinder .elfinder-cwd-file .elfinder-cwd-filename,
+.elfinder .elfinder-cwd-file .elfinder-cwd-filename.ui-state-hover,
+
+/* general states */
+.elfinder .ui-state-default,
+.elfinder .ui-state-active,
+.elfinder .ui-state-hover,
+.elfinder .ui-selected,
+
+/* ui-widgets (normally for dialogs) */
+.elfinder .ui-widget,
+.elfinder .ui-widget-header,
+.elfinder .ui-widget-content,
+
+/* icons */
+.elfinder-button-icon,
+.elfinder-navbar-icon,
+.elfinder-cwd-icon-directory,
+.elfinder .ui-icon,
+
+/* statusbar */
+.elfinder .elfinder-statusbar,
+.elfinder .elfinder-statusbar *,
+
+/* context menu (outside of elfinder div */
+.elfinder-contextmenu,
+.elfinder-contextmenu-sub,
+.elfinder-contextmenu-item,
+.elfinder-contextmenu-separator,
+.elfinder-contextmenu .ui-state-hover {
+border:0px;
+/*background: none;*/
+}
+/*.elfinder-button-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background: url(../img/toolbar.png) no-repeat;
+}*/
+.elfinder-navbar .ui-resizable-handle {
+    width: 12px;
+    background: url(../img/resize.png) center center no-repeat;
+}
+.elfinder, .elfinder .elfinder-dialog, .elfinder .elfinder-toolbar .elfinder-buttonset .elfinder-button-menu {
+   background: #fff;
+   border: 1px solid #69bcee;
+   box-shadow: 0; 
+   border-radius: 0; 
+}
+.ui-widget-header {
+    background: #ffffff!important;
+	border: 1px solid #ccc;
+}
+
+.elfinder-cwd-icon:before {
+    border-radius: 0px;
+    font-family: inherit;
+}
+/* current directory */
+/* Is in trash */
+.elfinder-cwd-wrapper.elfinder-cwd-wrapper-trash {
+    background-color: #f0f0f0;
+}
+
+/* selected file in "icons" view */
+.elfinder-cwd-view-icons .elfinder-cwd-file .ui-state-hover,
+.elfinder-cwd-view-icons .elfinder-cwd-file .ui-state-active {
+    background: transparent;
+	border-radius:0px;
+}
+
+.ui-front{border: 1px solid #ccc;}

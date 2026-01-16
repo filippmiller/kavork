@@ -1,0 +1,11 @@
+{% include from_module('visits','_visit_info') %}
+
+<script>
+  last_pay={
+    order:{{ model.id }},
+    sum:{{ model.cost*100 }},
+    tip:{{ model.tip*100 }},
+    time:{{ time() }},
+  };
+  send_pay_to_terminal();
+</script>

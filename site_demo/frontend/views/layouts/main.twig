@@ -1,0 +1,27 @@
+{{ use('yii/bootstrap') }}
+{{ use('yii\bootstrap\ActiveForm') }}
+{{ register_asset_bundle('frontend/assets/AppAsset') }}
+{{   void(this.beginPage()) }}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://ogp.me/ns/fb#"
+      xmlns:og="http://ogp.me/ns#"
+      lang="{{ app.language }}">
+
+{% import "macro.twig" as macro %}
+{% include 'base/head.twig' %}
+
+<body class="{{ this.all_params.screen_class }} modernui-dark-bg">
+<div class="custom-background-overlay"></div>
+  {% if(this.all_params.page_wrap) %}
+   {% include "lang_change.twig" %}
+    {% include 'page_wrap/'~this.all_params.page_wrap~'.twig' %}
+  {% else  %}
+    {% include 'page_wrap/cafe.twig' %}
+  {% endif %}
+
+  {{ void(this.endBody()) }}
+  {% include 'base/footer.twig' %}
+</body>
+</html>
+{{   void(this.endPage()) }}

@@ -1,0 +1,31 @@
+{{ use('yii/bootstrap/ActiveForm') }}
+
+{% if(_can('root')) %}
+  {% set languageList = lg_list() %}
+{% else %}
+  {% set languageList = cafe.languageList %}
+{% endif %}
+
+{% set form = active_form_begin({}) %}
+
+
+<div class="row">
+  {% for franchiseeCafeArray in cafeList %}
+    <div class="col-md-4">
+      {% if cafeList | length > 0 %}
+        <h5 class="font-weight-600">{{ franchiseeCafeArray.name }}</h5>
+      {% endif %}
+
+      <div class="form-group field-template-used_in_cafe_ids">
+        {% for k,CafeName in franchiseeCafeArray.items %}
+          <div class="checkbox"><label>
+              <input type="checkbox" name="Template[used_in_cafe_ids][]" value="{{ k }}" {{ _if(k in model.used_in_cafe_ids,"checked") }}>
+              <span class="fa fa-check"></span>
+              {{ CafeName }}
+            </label></div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{{ active_form_end() }}

@@ -1,0 +1,51 @@
+<head>
+  <meta charset="utf-8">
+  <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>kavork  {{ html.encode(this.title) }}</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  <script type="text/javascript">
+    app = {
+      "language": "{{ app.language }}",
+      "time24Hour":{{ _if(params('lang')['time24Hour'],"true","false") }},
+      "unite_disable_button_html": "<i class='fa fa-chain-broken'></i> {{ t('app',"Divide") }}",
+      "i18n": {
+        "close": "{{ t('app',"Close") }}",
+        "no_selection": "{{ t('app','No selection') }}",
+        "you_must_select_items": "{{ t('app','You must select item(s) to use this action') }}",
+        "insert_img": "{{ t('app','Insert image') }}",
+        "file_manager": "{{ t('app','Server File Manager') }}",
+        "loading": "{{ t('app','Loading') }}",
+        "employee": "{{ t('app','employee') }}",
+        "cancel": "{{ t('app','Cancel') }}",
+        "ok": "{{ t('app','OK') }}",
+		"row": "{{ t('app','row') }}",
+		"content": "{{ t('app','content') }}",
+		"confirm": "{{ t('selfservice','Confirm') }}",
+		"your_data": "{{ t('selfservice','You are sure that it is your data ?') }}",
+		"yes": "{{ t('app','Yes') }}",
+		"no": "{{ t('app','No') }}",
+		
+      }
+    };
+    var MonthArray = new Array(
+      "{{ t('main',"January") }}", "{{ t('main',"February") }}", "{{ t('main',"March") }}",
+      "{{ t('main',"April") }}", "{{ t('main',"May") }}", "{{ t('main',"June") }}",
+      "{{ t('main',"July") }}", "{{ t('main',"August") }}", "{{ t('main',"September") }}",
+      "{{ t('main',"October") }}", "{{ t('main',"November") }}", "{{ t('main',"December") }}");
+    //сразу вычисляем разницу между серверным временем и временем на клиенте
+    var difference = new Date({{ date('Y') }},{{ date('m')-1 }},{{ date('d') }},{{ date('G') }},{{ date('i') }}) - new Date(); //по часовому поясу кафе
+    //var difference = new Date("{{ date("r") }}") - new Date(); //по часовому поясу ПК
+  </script>
+
+  {{ html.csrfMetaTags | raw }}
+  {{ void(this.head) }}
+</head>

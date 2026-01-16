@@ -1,0 +1,67 @@
+.container-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+}
+
+.pad {
+  padding: 10px 0;
+}
+
+.login-form {
+  width: 40rem;
+  padding: 20px 20px;
+  margin: 0 10px;
+  background-color: #ffffff;
+  opacity: 0;
+  -webkit-transform: scale(0.8);
+  transform: scale(0.8);
+}
+@media screen and (max-width: 480px) {
+  .login-form {
+    min-width: 34rem;
+  }
+}
+
+@media screen and (max-width: 321px) {
+  .login-form {
+    min-width: 30rem;
+  }
+}
+
+.gritter-red .gritter-item, .gritter-red .gritter-top, .gritter-red .gritter-bottom {
+  background-color: #ED5B4D;
+  color: #fff;
+}
+
+.gritter-red {
+  border: 2px solid #E51400;
+}
+
+.gritter-red .gritter-close {
+  color: #fff;
+}
+
+.gritter-title {
+  padding: 0px;
+}
+
+span.cow {
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.login-form button.btn.btn-neutral-border.form-control {
+    color: #016ac1;
+}

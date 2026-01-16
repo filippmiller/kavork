@@ -1,0 +1,67 @@
+{% set hide_input = {'options' : {'class' : 'form-group form-group-invisible'}} %}
+{% set collapse_in = (visit.certificate_type != 0) ? true : not not collapse_in %}
+
+
+{% if not no_wrap_certificatre %}
+<div class="panel-group" id="visit_certificate_accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" data-toggle="collapse" href="#visit_certificate_accordion_collapseOne"
+         style="cursor:pointer;" data-parent="#visit_certificate_accordion">
+      <span class="dop_panel"><i class="fa fa-plus"></i> <i class="fa fa-certificate"></i></span>
+      {{ t('main', 'Add Certificate type') }}
+    </div>
+
+    <div id="visit_certificate_accordion_collapseOne" class="panel-collapse collapse {% if collapse_in %}in{% endif %}" role="tabpanel" aria-labelledby="false">
+      <div class="panel-body">
+{% endif %}
+
+        {{ form.field(visit, 'certificate_type').dropDownList({
+          0:t('app',"certificate_type None"),
+          1:t('app',"certificate_type Free visit"),
+          2:t('app',"certificate_type Free time"),
+          4:t('app',"certificate_type Discount %"),
+          5:t('app',"certificate_type Discount cash"),
+        })|raw }}
+
+        {{ form.field(visit, 'certificate_number', (visit.certificate_type != 0) ? [] : hide_input).textInput({'maxlength':true}).label(true, {'style':'display:none'})|raw }}
+
+        {{ form.field(visit, 'certificate_time', (visit.certificate_type == 2) ? [] : hide_input).widget('kartik\\widgets\\TimePicker',{'pluginOptions':{
+          'showSeconds':false,
+          'showMeridian':false,
+          'minuteStep' : 1,
+        }})|raw }}
+
+        {{ form.field(visit, 'certificate_discount', (visit.certificate_type == 4) ? [] : hide_input).widget('kartik\\touchspin\\TouchSpin',{'pluginOptions':{
+          min:0,
+          max:100,
+          step:5,
+          maxboostedstep: 10,
+          postfix: '%',
+          buttonup_txt:'<i class="fa fa-plus"></i>',
+          buttondown_txt: '<i class="fa fa-minus"></i>',
+        }})|raw }}
+
+        {{ form.field(visit, 'certificate_cash', (visit.certificate_type == 5) ? [] : hide_input).widget('kartik\\touchspin\\TouchSpin',{'pluginOptions':{
+          min:0,
+          max: cafe('maxCost'),
+          step: 0.05,
+          decimals: 2,
+          boostat: 5,
+          maxboostedstep: 1,
+          postfix: cafe('currency'),
+          buttonup_txt:'<i class="fa fa-plus"></i>',
+          buttondown_txt: '<i class="fa fa-minus"></i>',
+        }})|raw }}
+
+{% if not no_wrap_certificatre %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<script>
+  $("#startvisit-f_name").bind('typeahead:select', userAA)
+    .bind('typeahead:change', userAA);
+  $('.modal-body').find('input,select').not("[type=radio]").on('change',userAA);
+</script>

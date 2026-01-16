@@ -1,0 +1,33 @@
+<table border="0" cellpadding="0" cellspacing="0" style="margin: 0 auto 0 auto;background-color:#eeeeee;min-width:100%;width:100%;">
+<tr><td bgcolor="#eeeeee" height="30" style="font-size:0;line-height:0;border-collapse:collapse">&nbsp;</td></tr>
+<tr>
+<td>
+<table border="0" cellpadding="0" cellspacing="0"  width="{{ width }}" style="margin: 0 auto 0 auto;background-color:#ffffff;padding: 0 15px;">
+<tr><td bgcolor="#ffffff" height="10" style="font-size:0;line-height:0;border-collapse:collapse">&nbsp;</td></tr>
+  <tr>
+    <td align="center" style="border-bottom: 1px solid #ddd;">
+      <div style="font-family: Open Sans,Helvetica,sans-serif;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight:600;
+    text-align: center;
+    border-collapse: collapse;">{{ cafe.name }}</div>
+    <div style="font-family: Open Sans,Helvetica,sans-serif;
+    font-size: 16px;
+    line-height: 28px;
+    text-align: center;
+    border-collapse: collapse;">{{ cafe.address }}</div>
+    </td>
+  </tr>
+  {% for block in blocks %}
+  <tr>
+    <td>
+      {{ block | raw }}
+    </td>
+  </tr>
+  {% endfor %}
+  </td>
+  </tr>
+</table>
+ <tr><td bgcolor="#eeeeee" height="30" style="font-size:0;line-height:0;border-collapse:collapse">&nbsp;</td></tr>
+</table>

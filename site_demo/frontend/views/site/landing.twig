@@ -1,0 +1,779 @@
+{{ register_asset_bundle('frontend/views/site/assets/LandingAsset') }}
+<div class="scrollup">
+  <i class="fa fa-angle-up"></i>
+</div>
+<div id="home" class="container">
+  <nav class="navbar navbar-default" id="mNavbar">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">
+          <div>kavork</div>
+        </a>
+        <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <div class="navbar_mob">
+          <div class="dropdown language">
+            <button class="btn btn-neutral-border dropdown-toggle" type="button" id="dropdownLang"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">	
+            <img src="/img/flag/{{ language() }}.svg" alt="">		
+             {{ params('lg_list')[language()] }}
+              <i class="fa fa-angle-down"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownLang">
+
+              {% for code,name in lg_list() %}
+                <li><a {{ make_lang_url(code) | raw }}><img src="/img/flag/{{ code }}.svg" alt=""> {{ name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="navbar-collapse collapse navbar-right">
+        <ul class="nav navbar-nav">
+          <li class="active"><a class="link" href="#home">{{ t('landing','Home') }}</a></li>
+          <li>
+            <a class="link" href="#about_system">{{ t('landing','About system') }}</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ t('landing','Functional') }} <i
+                  class="fa fa-angle-down"></i></a>
+            <ul class="dropdown-menu mod" data-toggle="mod">
+
+              <div class="solutions-tabs">
+                <ul class="functional">
+                  <li class="">
+                    <a href="#basis" class="mintile bg-science-blue retro" data-click="transform">
+           <span class="tile-content icon">
+           <span class="fa fa-cubes"></span>
+           </span>
+                      <span class="brand">
+           <span class="tile-label">{{ t('landing','Basis') }}</span>
+           </span>
+                    </a>
+                  </li>
+                  <li class="">
+                    <a href="#staff" class="mintile bg-steel retro" data-click="transform">
+           <span class="tile-content icon">
+           <span class="fa fa-users"></span>
+           </span>
+                      <span class="brand">
+           <span class="tile-label">{{ t('landing','Staff') }}</span>
+           </span>
+                    </a>
+                  </li>
+                  <li class="">
+                    <a href="#visitors" class="mintile bg-lima retro" data-click="transform">
+           <span class="tile-content icon">
+           <span class="fa fa-user"></span>
+           </span>
+                      <span class="brand">
+           <span class="tile-label">{{ t('landing','Visitors') }}</span>
+           </span>
+                    </a>
+                  </li>
+                  <li class="">
+                    <a href="#shop" class="mintile bg-amber retro" data-click="transform">
+           <span class="tile-content icon">
+           <span class="fa fa-shopping-cart"></span>
+           </span>
+                      <span class="brand">
+           <span class="tile-label">{{ t('landing','Shop') }}</span>
+           </span>
+                    </a>
+                  </li>
+                  <li class="">
+                    <a href="#letters" class="mintile bg-blue retro" data-click="transform">
+           <span class="tile-content icon">
+           <span class="fa fa-envelope"></span>
+           </span>
+                      <span class="brand">
+           <span class="tile-label">{{ t('landing','Letters') }}</span>
+           </span>
+                    </a>
+                  </li>
+                  <li class="">
+                    <a href="#screens" class="mintile bg-science-blue retro" data-click="transform">
+           <span class="tile-content icon">
+           <span class="icon-metro-screen"></span>
+           </span>
+                      <span class="brand">
+           <span class="tile-label">{{ t('landing','Screens') }}</span>
+           </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <li class="hidden_text"><a href="#" data-toggle="dropdown">
+                  <div class="text-center text-danger">{{ t('landing','Hidden') }} <i class="fa fa-angle-up"></i></div>
+                </a></li>
+              <li class="hidden_close"><a href="#" data-toggle="dropdown">
+                  <div class="text-center text-danger"><i class="icon-metro-cancel"></i></div>
+                </a></li>
+            </ul>
+          </li>
+          <li><a class="link" href="#pricing">{{ t('landing','Pricing') }}</a></li>
+		  <li><a class="link" href="#formcontact">{{ t('landing','Contact') }}</a></li>
+          <li><a href="/login" class="btn_nav">
+              <button class="btn btn-success"><i class="icon-metro-enter"></i> {{ t('landing','Log In') }}</button>
+            </a></li>
+          <li>
+            <div class="navbar_desc">
+              <div class="dropdown language">
+                <button class="btn btn-neutral-border dropdown-toggle" type="button" id="dropdownLang"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 <img src="/img/flag/{{ language() }}.svg" alt="">
+                  {{ params('lg_list')[language()] }}
+                  <i class="fa fa-angle-down"></i>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownLang">
+
+                  {% for code,name in lg_list() %}
+                    <li><a {{ make_lang_url(code) | raw }}><img src="/img/flag/{{ code }}.svg" alt=""> {{ name }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+<section>
+  <div id="intro" class="intro">
+    <div class="container intro_flex">
+      <div class="row flex_center">
+        <div class="col-md-5 text-xs-center">
+          <div class="name_system">
+            <h1 class="font-weight-600 margin-off-bottom font-size-kavork">kavork</h1>
+            <h6 class="margin-off-top">{{ t('landing','franchise management system') }}</h6>
+            <a href="/login" class="btn_nav login_hidden">
+              <button class="btn btn-success margin-bottom-10"><i
+                    class="icon-metro-enter"></i> {{ t('landing','Log In') }}</button>
+            </a>
+          </div>
+        </div>
+        <div class="col-md-7">
+
+
+          <div class="swiper-slide">
+            <img class="img-responsive" src="/img/presentation.jpg" alt="software image">
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div id="about_system" class="about_system">
+    <div class="container">
+      <h5>{{ t('landing','about_system_1') }}</h5>
+      <hr class="hrmin">
+      <h5>{{ t('landing','about_system_2') }}</h5>
+      <h6 class="block_info">{{ t('landing','about_system_description') }}</h6>
+      <h5 class="font-weight-400">
+        <div class="row">
+          <div class="col-md-3 col-sm-12">{{ t('landing','Ideal for:') }}</div>
+          <div class="col-md-4 col-sm-6">
+            <ul class="list-unstyled list-success iconized-alt">
+              <li>{{ t('landing','Coworking centers') }}</li>
+            </ul>
+          </div>
+          <div class="col-md-4 col-sm-6">
+            <ul class="list-unstyled list-success iconized-alt">
+              <li>{{ t('landing','Anticafe') }}</li>
+            </ul>
+          </div>
+        </div>
+      </h5>
+      <hr class="hrmin">
+      <h5>
+        <div class="row">
+          <div class="col-md-3 col-sm-12">{{ t('landing','Suitable for:') }}</div>
+          <div class="col-md-4 col-sm-6">
+            <ul class="list-unstyled list-neutral iconized-alt">
+              <li>{{ t('landing','Rental of premises') }}</li>
+              <li>{{ t('landing','Childrens entertainment centers') }}</li>
+              <li>{{ t('landing','Museums') }}</li>
+            </ul>
+          </div>
+          <div class="col-md-4 col-sm-6">
+            <ul class="list-unstyled list-neutral iconized-alt">
+              <li>{{ t('landing','Exhibitions') }}</li>
+              <li>{{ t('landing','Hourly parking') }}</li>
+              <li>{{ t('landing','Disco') }}</li>
+            </ul>
+          </div>
+        </div>
+      </h5>
+      <hr class="hrmin">
+      <h5>{{ t('landing','about_system_3') }}</h5>
+    </div>
+  </div>
+
+  <section>
+    <div id="base" class="base">
+      <div class="container">
+        <h2>{{ t('landing','Introduction') }}</h2>
+        <hr class="under-heading">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+<img src="/img/responsive.svg" alt="{{ t('landing','Responsive design') }}">
+								</span>
+              <h4>{{ t('landing','Responsive design') }}</h4>
+              <p>{{ t('landing','responsive_design_descriptons') }}</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+<img src="/img/translate.svg" alt="{{ t('landing','Multilingual') }}">
+								</span>
+              <h4>{{ t('landing','Multilingual') }}</h4>
+              <p>{{ t('landing','multilingual_descriptons') }}</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+<img src="/img/region.svg" alt="{{ t('landing','Countries & Regions') }}">									
+								</span>
+              <h4>{{ t('landing','Countries & Regions') }}</h4>
+              <p>{{ t('landing','regions_descriptons') }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+<img src="/img/module.svg" alt="{{ t('landing','Modularity') }}">	
+								</span>
+              <h4>{{ t('landing','Modularity') }}</h4>
+              <p>{{ t('landing','modularity_descriptions') }}</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+<img src="/img/staff.svg" alt="{{ t('landing','Role management') }}">	
+								</span>
+              <h4>{{ t('landing','Role management') }}</h4>
+              <p>{{ t('landing','role_descriptions') }}</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="services-box last text-center">
+								<span class="fa-stack fa-3x">
+<img src="/img/security.svg" alt="{{ t('landing','Security') }}">	
+								</span>
+              <h4>{{ t('landing','Security') }}</h4>
+              <p>{{ t('landing','security_descriptions') }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <!--SOLUTIONS-->
+    <div id="solutions" class="solutions">
+      <div class="container">
+        <h2>{{ t('landing','Functional') }}</h2>
+        <hr class="under-heading">
+        <div class="module-content" id="basis">
+          <h3>{{ t('landing','Basis') }}</h3>
+          <hr class="under-heading-child">
+          <div class="global" id="global">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="software-box clearfix">
+                  <div class="mintile bg-science-blue pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="fa fa-cubes"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Franchise') }}</h4>
+                  <p>{{ t('landing','franchise_descriptions') | raw }}</p>
+                </div>
+                <div class="software-box clearfix">
+                  <div class="mintile bg-science-blue pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="fa fa-cube"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Departments') }}</h4>
+                  <p>{{ t('landing','departments_descriptions') | raw }}</p>
+                </div>
+                <div class="software-box clearfix">
+                  <div class="mintile bg-science-blue pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="fa fa-sliders"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Tariffs') }}</h4>
+                  <p>{{ t('landing','tariffs_descriptions') | raw }}</p>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="software-box clearfix">
+                  <div class="mintile bg-science-blue pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="fa fa-area-chart"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Report') }}</h4>
+                  <p>{{ t('landing','report_descriptions') | raw }}</p>
+                </div>
+                <div class="software-box clearfix">
+                  <div class="mintile bg-science-blue pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="fa fa-sort-amount-desc"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Transactions') }}</h4>
+                  <p>{{ t('landing','transactions_descriptions') | raw }}</p>
+                </div>
+                <div class="software-box clearfix">
+                  <div class="mintile bg-science-blue pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="icon-metro-cog"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Configuration department') }}</h4>
+                  <p>{{ t('landing','config_department_descriptions') | raw }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="module-content" id="staff">
+          <h3>{{ t('landing','Staff') }}</h3>
+          <hr class="under-heading-child">
+          <div class="global" id="global">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="software-box clearfix">
+                  <div class="mintile bg-steel pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="fa fa-users"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Staff') }}</h4>
+                  <p>{{ t('landing','staff_descriptions') | raw }}</p>
+                </div>
+                <div class="software-box clearfix">
+                  <div class="mintile bg-steel pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="fa fa-clock-o"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Staff sessions') }}</h4>
+                  <p>{{ t('landing','staff_sessions_descriptions') | raw }}</p>
+                </div>
+                <!--<div class="software-box clearfix">
+							<div class="mintile bg-steel pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="fa fa-clock-o"></span>
+                                </span>
+                            </div>
+								<h4>{{ t('landing','Staff time') }}</h4>
+								<p>{{ t('landing','staff_time_descriptions') }}</p>
+							</div>-->
+              </div>
+              <div class="col-lg-6">
+                <div class="software-box clearfix">
+                  <div class="mintile bg-steel pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="icon-metro-calendar"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Staff schedule') }}</h4>
+                  <p>{{ t('landing','staff_schedule_descriptions') | raw }}</p>
+                </div>
+                <div class="software-box clearfix">
+                  <div class="mintile bg-steel pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="icon-metro-alarm"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Tasks') }}</h4>
+                  <p>{{ t('landing','tasks_descriptions') | raw }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="module-content" id="visitors">
+          <h3>{{ t('landing','Visitors') }}</h3>
+          <hr class="under-heading-child">
+          <div class="global" id="global">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="software-box clearfix">
+                  <div class="mintile bg-lima pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="icon-metro-drawer-2"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Visitor Database') }}</h4>
+                  <p>{{ t('landing','visitor_database_descriptions') | raw }}</p>
+                </div>
+                <div class="software-box clearfix">
+                  <div class="mintile bg-lima pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="icon-metro-clipboard-2"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Visits') }}</h4>
+                  <p>{{ t('landing','visits_descriptions') | raw }}</p>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="software-box clearfix">
+                  <div class="mintile bg-lima pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="icon-metro-pie"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Polls') }}</h4>
+                  <p>{{ t('landing','polls_descriptions') | raw }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="module-content" id="shop">
+          <h3>{{ t('landing','Shop') }}</h3>
+          <hr class="under-heading-child">
+          <div class="global" id="global">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="software-box clearfix">
+                  <div class="mintile bg-amber pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="icon-metro-box"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Product') }}</h4>
+                  <p>{{ t('landing','product_descriptions') | raw }}</p>
+                </div>
+                <div class="software-box clearfix">
+                  <div class="mintile bg-amber pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="icon-metro-basket"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Shop Sale') }}</h4>
+                  <p>{{ t('landing','shop_sale_descriptions') | raw }}</p>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="software-box clearfix">
+                  <div class="mintile bg-amber pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="icon icon-forklift-with-boxes"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Commodity research') }}</h4>
+                  <p>{{ t('landing','commodity_research_descriptions') | raw }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="module-content" id="letters">
+          <h3>{{ t('landing','Letters & Checks') }}</h3>
+          <hr class="under-heading-child">
+          <div class="global" id="global">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="software-box clearfix">
+                  <div class="mintile bg-blue pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="fa fa-envelope"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Templates letters, checks') }}</h4>
+                  <p>{{ t('landing','letters_descriptions') | raw }}</p>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="software-box clearfix">
+                  <div class="mintile bg-blue pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="fa fa-send"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Bulk emails') }}</h4>
+                  <p>{{ t('landing','bulk_emails_descriptions') | raw }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="module-content" id="screens">
+          <h3>{{ t('landing','Self-Service Screens') }}</h3>
+          <hr class="under-heading-child">
+          <div class="global" id="global">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="software-box clearfix">
+                  <div class="mintile bg-science-blue pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="icon icon-screen-login"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Self-registration screen') }}</h4>
+                  <p>{{ t('landing','registration_screen_descriptions') | raw }}</p>
+                </div>
+                <div class="software-box clearfix">
+                  <div class="mintile bg-science-blue pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="fa fa-bullhorn"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Announcement') }}</h4>
+                  <p>{{ t('landing','announcement_descriptions') | raw }}</p>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="software-box clearfix">
+                  <div class="mintile bg-science-blue pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="icon icon-screen-logout"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Self-payment screen') }}</h4>
+                  <p>{{ t('landing','payment_screen_descriptions') | raw }}</p>
+                </div>
+                <div class="software-box clearfix">
+                  <div class="mintile bg-science-blue pull-left" data-click="transform">
+                                <span class="tile-content icon">
+                                <span class="icon icon-tips"></span>
+                                </span>
+                  </div>
+                  <h4>{{ t('landing','Tips') }}</h4>
+                  <p>{{ t('landing','tips_descriptions') | raw }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end of container -->
+    </div>
+  </section>
+  {# <!--<section>
+  <div id="intro" class="intro">
+  <div class="container intro_flex">
+  <div class="row flex_center">
+  <div class="col-lg-6">
+  text
+  </div>
+  <div class="col-lg-6">-->
+
+  <!-- Image Gallery Swiper -->
+  <!--<div class="my-swiper-container swiper-container-horizontal">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"><a><img class="img-responsive" src="/img/product-details-1_rukastel.jpg" alt="software image"></a></div>
+      <div class="swiper-slide"><img class="img-responsive" src="/img/product-details-2.jpg" alt="software image"></div>
+      <div class="swiper-slide"><img class="img-responsive" src="/img/product-details-3.jpg" alt="software image"></div>
+    </div>-->
+  <!-- Add Pagination -->
+  <!--<div class="swiper-pagination"></div>-->
+  <!--</div>--> <!-- end of image gallery swiper -->
+  <!--	</div>
+</div>
+</div>
+</div>
+</section>--> #}
+	<!-- STATISTICS -->
+	<div class="statistics">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<div class="number-container">
+					<p><span class="counter">{{ t('landing','count_visitor_database')}}</span></p>
+					<p class="big-numbers-heading">{{ t('landing','textcount_visitor_database')}}</p>
+					</div>
+					<div class="number-container">
+				    <p><span class="counter">{{ t('landing','count_visits')}}</span></p>
+					<p class="big-numbers-heading">{{ t('landing','textcount_visits')}}</p>
+					</div>
+					<div class="number-container">
+					<p><span class="counter">{{ t('landing','count_open_franchises')}}</span></p>
+					<p class="big-numbers-heading">{{ t('landing','textcount_open_franchises')}}</p>
+					</div>
+					<div class="number-container">
+					<p><span class="counter">{{ t('landing','count_years_work')}}</span></p>
+					<p class="big-numbers-heading">{{ t('landing','textcount_years_work')}}</p>
+					</div>
+				</div>
+			</div> <!-- end of row -->
+		</div> <!-- end of container -->
+	</div> <!-- end of statistics -->
+  <!--PRICING-->
+  <div id="pricing" class="pricing">
+    <div class="container">
+      <h2>{{ t('landing','Pricing') }}</h2>
+      <hr class="under-heading">
+      <h5>{{ t('landing','pricing_decriptons') | raw }}</h5>
+      <h6 class="block_info">{{ t('landing','pricing_decriptons_info') | raw }}</h6>
+      <div>{{ t('landing','pricing_decriptons_middle') | raw }}</div>
+      <div class="row text-center">
+        <div class="col-sm-6 col-md-3">
+          <div class="pricing-pane">
+            <h3>{{ t('landing','Demo') }}</h3>
+            <hr>
+            <p class="price">$0</p>
+            <div class="month"> {{ t('landing','action demo') }}</div>
+            <hr>
+            <div class="text_tariff">
+              <h5>{{ t('app','DepartmensCount') }} 1</h5>
+            </div>
+            <div class="incl_mod">{{ t('app','includes module groups') }}</div>
+            <div class="text_tariff">
+              {{ t('landing','Basis') }}</br>
+              {{ t('landing','Staff') }}</br>
+              {{ t('landing','Visitors') }}</br>
+              {{ t('landing','Shop') }}</br>
+              {{ t('landing','Letters & Checks') }}</br>
+              {{ t('landing','Self-Service Screens') }}</br>
+            </div>
+            <a class="button-solid" href="/demo" role="modal-new">{{ t('landing','Register') }}</a>
+          </div>
+        </div>
+        {% for tariff in tariffs %}
+          <div class="col-sm-6 col-md-3">
+            <div class="pricing-pane">
+              {% if tariff.label %}
+                <div class="label">
+                  {% if tariff.label==1 %}
+                    <p class="best-value">{{ t('app','Best price') }}</p>
+                  {% endif %}
+                </div>
+              {% endif %}
+              <h3>{{ tariff.lgName }}</h3>
+              <hr>
+              <p class="price">${{ tariff.price }}</p>
+              <div class="month"> {{ t('app','month_price') }}</div>
+              <hr>
+              <div class="text_tariff">
+                <h5>{{ t('app','DepartmensCount') }} {{ tariff.cafe_count }}</h5>
+              </div>
+              <div class="incl_mod">{{ t('app','includes module groups') }}</div>
+              <div class="text_tariff">{{ _br(tariff.lgDescription)|raw }}</div>
+              <a class="button-solid" href="/franchisee/payments/new?id={{ tariff.id }}"
+                 role="modal-new">{{ t('landing','Register') }}</a>
+            </div>
+          </div>
+        {% endfor %}
+      </div> <!-- end of row -->
+    </div> <!-- end of container -->
+  </div>
+<div id="formcontact" class="formcontact">
+<div class="container">
+      <h2>{{ t('landing','ContactUs') }}</h2>
+      <hr class="under-heading">
+      <h6 class="block_info">{{ t('landing','contact_decriptons') | raw }}</h6>
+<div class="color_contact">
+  {% include 'contactForm.twig' %}
+</div>
+</div>
+</div>
+  <div class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 footer-section">
+          <h4 class="font-weight-600">kavork</h4>
+          <p>
+            {{ t('landing','description_footer') | raw }}
+          </p>
+        </div>
+        <div class="col-md-4 footer-section">
+          <h4>{{ t('landing','Contact Details') }}</h4>
+          <p>
+          <div>+1 514-500-9045 294</div>
+          <div>Ste Catherine Ouest, Montreal H2X2A1, Canada</div>
+          <a class="inverse" href="#your-link-here">info@kavork.com</a></p>
+        </div>
+        <div class="col-md-4 footer-section">
+          <h4 class="last">{{ t('landing','Payment services') }}</h4>
+
+          <img src="/img/paypal.svg">
+       {# <!-- <h4 class="last">{{ t('landing','Social Networks') }}</h4> -->
+
+
+          <!-- Social Icons Container -->
+          <!-- <div class="social-icons-container">
+               <span class="fa-stack fa-lg">
+                 <a href="#your-link-here">
+                   <i class="fa fa-circle fa-stack-2x"></i>
+                   <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                 </a>
+               </span>
+               <span class="fa-stack fa-lg">
+                 <a href="#your-link-here">
+                   <i class="fa fa-circle fa-stack-2x"></i>
+                   <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                 </a>
+               </span>
+               <span class="fa-stack fa-lg">
+                 <a href="#your-link-here">
+                   <i class="fa fa-circle fa-stack-2x"></i>
+                   <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                 </a>
+               </span>
+               <span class="fa-stack fa-lg">
+                 <a href="#your-link-here">
+                   <i class="fa fa-circle fa-stack-2x"></i>
+                   <i class="fa fa-instagram fa-stack-1x fa-inverse"></i>
+                 </a>
+               </span>
+               <span class="fa-stack fa-lg">
+                 <a href="#your-link-here">
+                   <i class="fa fa-circle fa-stack-2x"></i>
+                   <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                 </a>
+               </span>
+               <span class="fa-stack fa-lg">
+                 <a href="#your-link-here">
+                   <i class="fa fa-circle fa-stack-2x"></i>
+                   <i class="fa fa-dribbble fa-stack-1x fa-inverse"></i>
+                 </a>
+               </span>
+               <span class="fa-stack fa-lg">
+                 <a href="#your-link-here">
+                   <i class="fa fa-circle fa-stack-2x"></i>
+                   <i class="fa fa-pinterest fa-stack-1x fa-inverse"></i>
+                 </a>
+               </span>
+             </div> --> <!-- end of social icons container --> #}
+
+        </div>
+      </div> <!-- end of row -->
+    </div> <!-- end of container -->
+  </div>
+
+  <div class="copyright">
+    <div class="container text-right">
+      <div class="row">
+        <div class="col-md-12">
+          <!--<div class="row"><div class="col-md-12">-->
+          <hr class="under-heading margin-bottom-10">
+          <!--</div></div>-->
+          <span>{{ t('landing','Copyright') }} &copy; PartsLLC Group</span>
+        </div>
+      </div> <!-- end of row -->
+    </div> <!-- end of container -->
+  </div>
+</section>

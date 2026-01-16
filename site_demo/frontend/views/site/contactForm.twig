@@ -1,0 +1,26 @@
+
+{{ use('yii/widgets/ActiveForm') }}
+
+{% set form = active_form_begin({
+  'options': {
+    'class': 'ajaxForm',
+  }
+}) %}
+<div class="row">
+<div class="col-md-4">{{ form.field(contactForm, 'name') | raw }}</div>
+
+<div class="col-md-4">{{ form.field(contactForm, 'email') | raw }}</div>
+
+<div class="col-md-4">{{ form.field(contactForm, 'phone') | raw }}</div>
+
+<div class="col-md-12">{{ form.field(contactForm, 'body').textArea({'rows' : 4}) | raw }}</div>
+</div>
+<div class="form-group">
+  <div class="text-center">
+    {{ html.submitButton( t('landing','Send'), {'class': 'btn btn-primary',}) | raw }}
+  </div>
+</div>
+
+{{ active_form_end() }}
+
+

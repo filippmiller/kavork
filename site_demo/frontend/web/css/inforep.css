@@ -1,0 +1,183 @@
+.opa {
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+}
+
+.caler {
+  min-width: 190px;
+}
+
+.input-prepend {
+  margin: 10px 0;
+}
+
+.add-on {
+  padding: 6px 6px;
+  line-height: 1;
+  text-align: center;
+  border-radius: 0px;
+}
+
+.table > tbody > tr > td, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+  border-top: 1px solid #ccc;
+}
+
+.table > tbody > tr > th {
+  border-top: 0px solid #ccc;
+  background: #EEEEEE;
+}
+
+.none_pr {
+  overflow: hidden;
+}
+
+.vertikal_text {
+  -webkit-writing-mode: tb-rl;
+      -ms-writing-mode: tb-rl;
+          writing-mode: tb-rl;
+  -o-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-180deg);
+  vertical-align: middle !important;
+  text-align: center;
+  width: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+
+}
+
+.nach_tab {
+  overflow: auto !important;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.nach {
+  overflow: hidden !important;
+  padding-right: 0px;
+  padding-left: 0px;
+  border-right: 1px dotted #ccc;
+}
+
+.nach td {
+  padding: 8px 0px !important;
+}
+
+.key {
+  color: #3d454d;
+  font-size: 28px;
+  padding-bottom: 5px;
+  font-weight: 500;
+  letter-spacing: 0px;
+}
+
+.faric {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #eeeeee;
+}
+
+tr.head {
+  background: #F2F4F5;
+  color: #73777a;
+}
+
+.necrut {
+  overflow: auto;
+  height: 560px;
+}
+
+.fara {
+  margin-top: -10px;
+  poaition: relative;
+}
+
+tr.ups {
+  cursor: pointer
+}
+
+.big {
+  font-size: 22px;
+  color: #cccccc;
+}
+
+tr.ups:hover {
+  background: #2996cc;
+  color: white !important;
+}
+
+.furr {
+  border-bottom: 1px solid #ccc;
+}
+
+.highlighted {
+  background: #2996CC;
+  color: #fff;
+}
+
+.highlighted_hover {
+  background: #7BAD18;
+  color: #fff;
+}
+
+.dur_tbl {
+  position: relative;
+}
+
+.duration_table tr td {
+  cursor: pointer;
+}
+
+.dur_tbl .info_block {
+  position: absolute;
+  width: 150px;
+  padding: 10px;
+  right: -150px;
+  background: #434348;
+  z-index: 1;
+  -webkit-transition: all linear 0.3s;
+  -o-transition: all linear 0.3s;
+  transition: all linear 0.3s;
+  display: none;
+  color: #fff;
+}
+
+.dur_tbl .info_block .person span, .dur_tbl .info_block .dolia span {
+  font-size: 18px;
+}
+
+.paral {
+  font-size: 14px;
+}
+
+.dur_tbl .info_block div span {
+  /*padding: 9px;*/
+  font-weight: bold;
+}
+
+.sel_p {
+  text-align: center;
+  border-bottom: 1px solid #64646C;
+}
+
+.duration_table th {
+  text-align: center;
+}
+
+.duration_table {
+  text-align: center;
+}

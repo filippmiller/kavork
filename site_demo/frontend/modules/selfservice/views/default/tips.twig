@@ -1,0 +1,38 @@
+{{ use('yii\widgets\ActiveForm') }}
+
+<div id="tips">
+  <h5 style="font-weight: 600;margin-bottom:6px;">{{ t('selfservice','% of the amount') }}</h5>
+  <button type="button" class="btn btn-info btn-lg" f_sum="{{ model.cost*5/100 }}"> 5% </button>
+  <button type="button" class="btn btn-info btn-lg" f_sum="{{ model.cost*10/100 }}"> 10% </button>
+  <button type="button" class="btn btn-info btn-lg" f_sum="{{ model.cost*15/100 }}"> 15% </button>
+  <button type="button" class="btn btn-info btn-lg" f_sum="{{ model.cost*20/100 }}"> 20% </button>
+  <button type="button" class="btn btn-info btn-lg" f_sum="{{ model.cost*25/100 }}"> 25% </button>
+
+  {% set tips_var = cafe('tips_var') %}
+  {% if  tips_var %}
+    <div class="estimations"></div>
+    <h5 style="margin-top: 30px;font-weight: 600; margin-bottom:6px;">{{ t('selfservice','Fixed amount') }}</h5>
+    {% for v in tips_var %}
+      <button type="button" class="btn btn-success btn-lg" f_sum="{{ v }}"> {{ _nf(v) }} {{ cafe.currency }} </button>
+    {% endfor %}
+  {% endif %}
+</div>
+
+<script>
+  $('#tips').on('click','button',function(){
+    $('#visitorlog-tip').val($(this).attr('f_sum'));
+    $('.modal-footer [type=submit]').click();
+  });
+</script>
+
+<h5 style="margin-top: 30px;font-weight: 600;margin-bottom:6px;">{{ t('selfservice','Arbitrary amount') }} , {{ cafe.currency }} </h5>
+
+{% set form = active_form_begin({
+  'id': 'visit-tips',
+  'options' : {'role' : 'form'},
+  'enableAjaxValidation' : false,
+}) %}
+
+{{ form.field(model, 'tip').textInput({'maxlength':true}).label(false)|raw }}
+
+{{ active_form_end() }}

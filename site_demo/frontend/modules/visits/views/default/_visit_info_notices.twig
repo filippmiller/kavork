@@ -1,0 +1,14 @@
+{% if model.notice.child_discount %}
+	<h6 class="vid_check color_gold font-weight-600">{{ (model.notice.child_discount) | raw }}</h6>
+{% endif %}
+
+{% if model.notice.discounts %}
+	{% for discount in model.notice.discounts %}
+	<h6 class="vid_check color_gold font-weight-600"><div>{{ t('main', 'Discounts') }}:
+	
+             
+			({% if(discount.periodic) %}{{ t('main','Every') }} {% endif %}{{ discount.number }} {{ t('main', 'visit') }}) </div>		
+			<div>{{ discount.value }}% </div>
+	</h6>
+	{% endfor %}
+{% endif %}

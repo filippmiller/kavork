@@ -1,0 +1,627 @@
+{{ use('yii/bootstrap/ActiveForm') }}
+{{ use('yii/widgets/Pjax') }}
+
+{% if(_can('root')) %}
+{% set languageList = lg_list() %}
+{% else %}
+{% set languageList = cafe.languageList %}
+{% endif %}
+
+{% set form = active_form_begin({}) %}
+
+{{ form.field(model, 'content').textarea({
+class:"w_editor hidden"
+}).label(false) | raw }}
+
+<div class="row">
+  <div class="col-lg-8 col-md-7 wrap-editor-content">
+    <div class="col-md-12 editor-full" style="background-color:{{ model.background }};">
+    <ul class="editor-content" style="width:{{ model.width }}px;"></ul>
+  </div>
+</div>
+<div class="col-lg-4 col-md-5 editor-panel">
+  <div class="row">
+
+
+        <div class="col-md-12" id="crud-datatable-pjax">
+  {{ pjax_begin({'id':"pjaxButton"}) }}
+  
+	       <!-- {{ html.button(t('app','Save'), {
+      'class': 'btn btn-sm btn-success btn-save',
+      }) | raw }}-->
+	
+	<button type="button" class="btn btn-sm btn-success btn-save"><i class="fa fa-save"></i> {{t('app','Save')}}</button>
+
+      {% if not model.isNewrecord %}
+      <!--{{ html.button(
+      t('app', 'Test mail'),{
+      'class': 'btn btn-sm btn-science-blue modal_open ',
+      "href":"send-on-email/"~model.id~'?db=1',
+      'role':"modal-remote",
+      "data":{
+      "link":"send-on-email/"~model.id~'?db=1',
+      "type":"send"
+      }
+      }) | raw
+      }}-->
+	  <button type="button" class="btn btn-sm btn-science-blue modal_open " href="send-on-email/{{model.id}}?db=1" role="modal-remote" data-link="send-on-email/{{model.id}}?db=1" data-type="send"><i class="fa fa-envelope-o"></i> {{t('app', 'Test mail')}}</button>
+
+        <!--{{ html.button(
+          t('app', 'Start newsletter'),{
+            'class': 'btn btn-sm bg-blue fg-white modal_open ',
+            "href":"start-newsletter/"~model.id~'?db=1',
+            'role':"modal-remote",
+            "data":{
+              "link":"send-on-email/"~model.id~'?db=1',
+              "type":"send"
+            }
+          }) | raw
+        }}-->
+		
+		<button type="button" class="btn btn-sm bg-blue fg-white modal_open " href="start-newsletter/{{model.id}}?db=1" role="modal-remote" data-link="send-on-email/{{model.id}}?db=1" data-type="send"><i class="fa fa-send-o"></i> {{t('app', 'Start newsletter')}}</button>
+		
+		
+      {% endif %}
+	  
+	 
+
+      {{  pjax_end() }}
+	  
+	    <hr class="hrmin">
+	  
+    </div> 
+
+    <div class="col-sm-6">
+      {{ form.field(model, 'title').input('') | raw }}
+    </div>
+	
+	 <div class="col-sm-6"><div id="content-subject" class="editor-content-subject">
+    <label class="isLanguage"><span>{{ t('editor','Тема письма') }}</span></label>
+    </div><br></div>
+
+    <div class="col-md-12 font-weight-600" style="margin-bottom:6px;">{{ t('editor','Language') }}</div>
+    <div class="col-md-12">
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        {% for code,language in languageList %}
+        <label class="btn btn-sm btn-dark-border{{ _if(code|lower==user.lg|lower,' active') }}">
+          <input type="radio" name="language" value="{{ code }}" autocomplete="off" {{ _if(code|lower==user.lg|lower,' checked') }}> {{ language }}
+        </label>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+<br>
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#editor-components">{{ t('editor','Components') }}</a></li>
+    <li><a data-toggle="tab" href="#editor-vars">{{ t('editor','Vars') }}</a></li>
+    <li><a data-toggle="tab" href="#editor-row">{{ t('editor','Row') }}</a></li>
+    {% if not model.params.is_print %}
+    <li><a data-toggle="tab" href="#editor-body">{{ t('editor','Body') }}</a></li>
+    {% endif %}
+    <li class="hidden"><a data-toggle="tab" href="#editor-option">{{ t('editor','Options') }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="editor-components" class="tab-pane fade in active">
+      <ul class="editor_components">
+        <li data-tag="button">{{ svg('/editor/button')|raw }}<span>{{ t('editor','button') }}</span></li>
+        <li data-tag="driver">{{ svg('/editor/driver')|raw }}<span>{{ t('editor','driver') }}</span></li>
+        <li data-tag="logo">{{ svg('/editor/logo')|raw }}<span>{{ t('editor','logo') }}</span></li>
+        <li data-tag="text">{{ svg('/editor/text')|raw }}<span>{{ t('editor','text') }}</span></li>
+        {#
+        <li data-tag="table" data-sub-tag="score">{{ svg('/editor/score')|raw }}<span>{{ t('editor','score') }}</span></li>
+        <li data-tag="table" data-sub-tag="visits">{{ svg('/editor/visits')|raw }}<span>{{ t('editor','Visits') }}</span></li>
+        <li data-tag="table" data-sub-tag="cart">{{ svg('/editor/cart')|raw }}<span>{{ t('editor','cart') }}</span></li>
+        <li data-tag="table" data-sub-tag="total">{{ svg('/editor/sum')|raw }}<span>{{ t('editor','table_total') }}</span></li>
+        #}
+      </ul>
+    </div>
+    <div id="editor-row" class="tab-pane fade">
+      <ul class="editor_components">
+        <li class="row blockbuilder-row-tool" data-tag="row">
+          <div class="blockbuilder-column col-6"><div class="blockbuilder-column-content"></div></div>
+          <div class="blockbuilder-column col-6"><div class="blockbuilder-column-content"></div></div>
+        </li>
+        <li class="row blockbuilder-row-tool" data-tag="row">
+          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+        </li>
+        <li class="row blockbuilder-row-tool" data-tag="row">
+          <div class="blockbuilder-column col-3"><div class="blockbuilder-column-content"></div></div>
+          <div class="blockbuilder-column col-3"><div class="blockbuilder-column-content"></div></div>
+          <div class="blockbuilder-column col-3"><div class="blockbuilder-column-content"></div></div>
+          <div class="blockbuilder-column col-3"><div class="blockbuilder-column-content"></div></div>
+        </li>
+        <li class="row blockbuilder-row-tool" data-tag="row">
+          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+          <div class="blockbuilder-column col-8"><div class="blockbuilder-column-content"></div></div>
+        </li>
+        <li class="row blockbuilder-row-tool" data-tag="row">
+          <div class="blockbuilder-column col-8"><div class="blockbuilder-column-content"></div></div>
+          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+        </li>
+        <li class="row blockbuilder-row-tool" data-tag="row">
+          <div class="blockbuilder-column col-2"><div class="blockbuilder-column-content"></div></div>
+          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+          <div class="blockbuilder-column col-2"><div class="blockbuilder-column-content"></div></div>
+          <div class="blockbuilder-column col-4"><div class="blockbuilder-column-content"></div></div>
+        </li>
+      </ul>
+    </div>
+    <div id="editor-option" class="tab-pane fade">
+
+    </div>
+    {% if not model.params.is_print %}
+    <div id="editor-body" class="tab-pane fade">
+      {{ form.field(model, 'width').dropDownList({
+      300:"300px",
+      400:"400px",
+      500:"500px",
+      600:"600px",
+	  700:"700px"
+      },{
+      "class":"form-control width"
+      }) | raw }}
+
+       {{ form.field(model, 'background').widget('kartik\\color\\ColorInput',{
+		   'showDefaultPalette' : true,	
+            'options' : {
+              'placeholder' : t('app','Select color ...'),
+              'class':'color',
+            },		
+		'pluginOptions' : {
+		'showAlpha' : false,
+		}
+          }) | raw }}
+    </div>
+	
+    {% endif %}
+    <div id="editor-vars" class="tab-pane fade">
+      {{ t('editor','List of available variables. To output, drag to a text box or type in any convenient location.') }}
+      <div id="tokensList">
+        {% for group in model.params.vars %}
+        <h5>{{ t('editor',group.name) }}</h5>
+        <ul class="list-unstyled">
+          {% for key,title in group.items %}
+          <li>
+            <span class="cke_token" draggable="true">{ {{ group.prefix }}{{ key }} }</span> - {{ t('editor',title) }}
+          </li>
+          {% endfor %}
+        </ul>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{{ active_form_end() }}
+
+
+
+<script>
+  cafe_logo="{{ cafe.logo }}";
+  var align_list={
+    'left':  "{{ t('editor','Left') }}",
+    'center':"{{ t('editor','Center') }}",
+    'right': "{{ t('editor','Right') }}"
+  };
+  var options_list = {
+    "button": [
+      {
+        "name": "{{ t('editor','Global') }}",
+        "items": [
+          {
+            'name': "text",
+            'title': "{{ t('editor','Text') }}",
+            'type': "text",
+            'element': ".button",
+            'param': "innerHTML",
+            'default': "Button text",
+            'isLanguage': true
+          },
+          {
+            'name': "font",
+            'title': "{{ t('editor','font') }}",
+            'type': "font",
+            'element': ".button",
+            'param': "style.font-family",
+            'default': "Arial"
+          },
+          {
+            'name': "href",
+            'title': "{{ t('editor','href') }}",
+            'type': "text",
+            'element': ".button",
+            'param': "href",
+            'default': "",
+            'isLanguage': true
+          },
+          {
+            'name': "color",
+            'title': "{{ t('editor','Color') }}",
+            'type': "color",
+            'element': ".button",
+            'param': "style.color",
+            'default': "#FFFFFF"
+          },
+          {
+            'name': "button_background",
+            'title': "{{ t('editor','Button background') }}",
+            'type': "color",
+            'element': ".button",
+            'param': "style.background",
+            'default': "#006ac1"
+          },
+          {
+            'name': "font_size",
+            'title': "{{ t('editor','Font size') }}",
+            'type': "number",
+            'element': ".button",
+            'param': "style.font-size",
+            'default': "14",
+            'sufix': 'px'
+          },
+          {
+            'name': "background",
+            'title': "{{ t('editor','Background') }}",
+            'type': "color",
+            'element': "this",
+            'param': "style.background",
+            'default': "#ffffff"
+          }
+        ]
+      },
+      {
+        'name': "{{ t('editor','Padding') }}",
+        "items": [
+          {
+            'name': "padding_v",
+            'title': "{{ t('editor','Vertical') }}",
+            'type': "number",
+            'element': ".button",
+            'param': "style.padding-top|style.padding-bottom",
+            'default': "10",
+            'sufix': 'px'
+          },
+          {
+            'name': "padding_h",
+            'title': "{{ t('editor','Horizontal') }}",
+            'type': "number",
+            'element': ".button",
+            'param': "style.padding-left|style.padding-right",
+            'default': "20",
+            'sufix': 'px'
+          },
+        ]
+      },
+      {
+        'name': "{{ t('editor','Margin') }}",
+        "items": [
+          {
+            'name': "margin_v",
+            'title': "{{ t('editor','Vertical') }}",
+            'type': "number",
+            'element': ".button",
+            'param': "style.margin-top|style.margin-bottom",
+            'default': "10",
+            'sufix': 'px'
+          },
+          {
+            'name': "margin_h",
+            'title': "{{ t('editor','Horizontal') }}",
+            'type': "number",
+            'element': ".button",
+            'param': "style.margin-left|style.margin-right",
+            'default': "0",
+            'sufix': 'px'
+          },
+        ]
+      },
+      {
+        'name': "{{ t('editor','Border') }}",
+        "items": [
+          {
+            'name': "border_r",
+            'title': "{{ t('editor','Radius') }}",
+            'type': "number",
+            'element': ".button",
+            'param': "style.border-radius",
+            'default': "4",
+            'sufix': 'px'
+          },
+        ]
+      }
+    ],
+    "driver": [
+      {
+        "name": "{{ t('editor','Global') }}",
+        "items": [
+          {
+            'name': "color",
+            'title': "{{ t('editor','Color') }}",
+            'type': "color",
+            'element': "hr",
+            'param': "style.border-color",
+            'default': "#c0c0c0"
+          },
+          {
+            'name': "width",
+            'title': "{{ t('editor','Width') }}",
+            'type': "number",
+            'element': "hr",
+            'param': "style.border-width",
+            'default': "1",
+            'sufix': 'px'
+          },
+          {
+            'name': "background",
+            'title': "{{ t('editor','Background') }}",
+            'type': "color",
+            'element': "this",
+            'param': "style.background",
+            'default': "#ffffff"
+          }
+        ]
+      },
+      {
+        'name': "{{ t('editor','Padding') }}",
+        "items": [
+          {
+            'name': "padding_v",
+            'title': "{{ t('editor','Vertical') }}",
+            'type': "number",
+            'element': "hr",
+            'param': "style.margin-top|style.margin-bottom",
+            'default': "10",
+            'sufix': 'px'
+          },
+          {
+            'name': "padding_h",
+            'title': "{{ t('editor','Horizontal') }}",
+            'type': "number",
+            'element': "hr",
+            'param': "style.margin-left|style.margin-right",
+            'default': "20",
+            'sufix': 'px'
+          },
+        ]
+      }
+    ],
+    "text": [
+      {
+        "name": "{{ t('editor','Global') }}",
+        "items": [
+          {
+            'name': "html",
+            'type': "ckeditor",
+            'default': "sample text",
+            'element': ".text_wrap textarea",
+            'isLanguage': true
+          },
+          {
+            'name': "background",
+            'title': "{{ t('editor','Background') }}",
+            'type': "color",
+            'element': ".text_wrap",
+            'param': "style.background",
+            'default': "#ffffff"
+          }
+        ]
+      },
+      {
+        'name': "{{ t('editor','Padding') }}",
+        "items": [
+          {
+            'name': "padding_v",
+            'title': "{{ t('editor','Vertical') }}",
+            'type': "number",
+            'element': ".text_wrap .cke_editable",
+            'param': "style.padding-top|style.padding-bottom",
+            'default': "0",
+            'sufix': 'px'
+          },
+          {
+            'name': "padding_h",
+            'title': "{{ t('editor','Horizontal') }}",
+            'type': "number",
+            'element': ".text_wrap .cke_editable",
+            'param': "style.padding-left|style.padding-right",
+            'default': "0",
+            'sufix': 'px'
+          },
+        ]
+      }
+    ],
+    "logo": [
+      {
+        "name": "{{ t('editor','Global') }}",
+        "items": [
+          {
+            'name': "align",
+            'title': "{{ t('editor','Align') }}",
+            'type': "align",
+            'element': "div",
+            'param': "style.text-align",
+            'default': "center"
+          },
+          {
+            'name': "height",
+            'title': "{{ t('editor','Height') }}",
+            'type': "number",
+            'element': "img",
+            'param': "style.height",
+            'default': "46",
+            'sufix': 'px'
+          },
+          {
+            'name': "background",
+            'title': "{{ t('editor','Background') }}",
+            'type': "color",
+            'element': "this",
+            'param': "style.background",
+            'default': "#ffffff"
+          }
+        ]
+      },
+      {
+        'name': "{{ t('editor','Padding') }}",
+        "items": [
+          {
+            'name': "padding_v",
+            'title': "{{ t('editor','Vertical') }}",
+            'type': "number",
+            'element': "img",
+            'param': "style.margin-top|style.margin-bottom",
+            'default': "20",
+            'sufix': 'px'
+          },
+          {
+            'name': "padding_h",
+            'title': "{{ t('editor','Horizontal') }}",
+            'type': "number",
+            'class': "",
+            'element': "img",
+            'param': "style.margin-left|style.margin-right",
+            'default': "20",
+            'sufix': 'px'
+          },
+        ]
+      }
+    ],
+    "table": [
+      {
+        "name": "{{ t('editor','Global') }}",
+        "items": [
+          {
+            'name': "align",
+            'title': "{{ t('editor','Align') }}",
+            'type': "align",
+            'element': "div",
+            'param': "style.text-align",
+            'default': "center"
+          },
+          {
+            'name': "direction",
+            'title': "{{ t('editor','Direction') }}",
+            'type': "select",
+            'element': ".sort_list",
+            'prefix':'sort_list-',
+            'param': "class",
+            'list':{
+              "vertical":"{{ t('editor','Vertical') }}",
+              "horizontal":"{{ t('editor','Horizontal') }}",
+            }
+          },
+          {
+            'name': "background",
+            'title': "{{ t('editor','Background') }}",
+            'type': "color",
+            'element': "this",
+            'param': "style.background",
+            'default': "#ffffff"
+          }
+        ]
+      },
+      {
+        'name': "{{ t('editor','Visual') }}",
+        "items": [
+          {
+            'name': "render",
+            'title': "{{ t('editor','Render') }}",
+            'type': "select",
+            'list': {
+              "all": "{{ t('editor','All') }}",
+              "table": "{{ t('editor','table') }}",
+              "total": "{{ t('editor','total') }}"
+            },
+            'default': "all",
+          },
+          {
+            'name': "label",
+            'title': "{{ t('editor','Labels') }}",
+            'type': "select",
+            'list': {
+              "display": "{{ t('editor','Display') }}",
+              "hide": "{{ t('editor','Hide') }}"
+            },
+            'default': "display",
+          }
+        ]
+      },
+      {
+        'name': "{{ t('editor','Padding') }}",
+        "items": [
+          {
+            'name': "padding_v",
+            'title': "{{ t('editor','Vertical') }}",
+            'type': "number",
+            'element': "ul",
+            'param': "style.margin-top|style.margin-bottom",
+            'default': "20",
+            'sufix': 'px'
+          },
+          {
+            'name': "padding_h",
+            'title': "{{ t('editor','Horizontal') }}",
+            'type': "number",
+            'class': "",
+            'element': "ul",
+            'param': "style.margin-left|style.margin-right",
+            'default': "40",
+            'sufix': 'px'
+          },
+        ]
+      }
+    ],
+    "row": [
+      {
+        "name": "{{ t('editor','Global') }}",
+        "items": [
+          {
+            'name': "align",
+            'title': "{{ t('editor','Align') }}",
+            'type': "align",
+            'element': "this",
+            'param': "style.text-align",
+            'default': "center"
+          },
+          {
+            'name': "background",
+            'title': "{{ t('editor','Background') }}",
+            'type': "color",
+            'element': "this",
+            'param': "style.background",
+            'default': "#ffffff"
+          }
+        ]
+      },
+      {
+        'name': "{{ t('editor','Padding') }}",
+        "items": [
+          {
+            'name': "padding_v",
+            'title': "{{ t('editor','Vertical') }}",
+            'type': "number",
+            'element': "this",
+            'param': "style.padding-top|style.padding-bottom",
+            'default': "20",
+            'sufix': 'px'
+          },
+          {
+            'name': "padding_h",
+            'title': "{{ t('editor','Horizontal') }}",
+            'type': "number",
+            'class': "",
+            'element': "this",
+            'param': "style.padding-left|style.padding-right",
+            'default': "10",
+            'sufix': 'px'
+          },
+        ]
+      }
+    ],
+  };
+
+  var table_list = { };
+
+</script>

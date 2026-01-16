@@ -1,0 +1,26 @@
+{{ use('yii/bootstrap') }}
+{{ register_asset_bundle('frontend/assets/AppAsset') }}
+{{   void(this.beginPage()) }}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://ogp.me/ns/fb#"
+      xmlns:og="http://ogp.me/ns#"
+      lang="{{ app.language }}">
+
+
+{% include 'base/head.twig' %}
+
+<body class="start-screen modernui-dark-bg">
+{% if not this.all_params.hide_lang_change_def %}
+  {% include "lang_change.twig" %}
+{% endif %}
+<div class="custom-background-overlay"></div>
+<div class="container-flex">
+  {{ content|raw }}
+</div>
+
+{{   void(this.endBody()) }}
+{% include 'base/footer.twig' %}
+</body>
+</html>
+{{   void(this.endPage()) }}

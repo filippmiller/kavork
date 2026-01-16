@@ -1,0 +1,11 @@
+{{ use('yii\bootstrap\ActiveForm') }}
+
+{% set form = active_form_begin() %}
+  {{ form.field(model, 'id').hiddenInput().label(false, {'style':'display:none'})|raw }}
+
+{% set no_wrap_certificatre = true %}
+<div class="panel-group" id="accordion0">
+	{% include from_module('certificate','control') %}
+</div>
+
+{{ active_form_end() }}

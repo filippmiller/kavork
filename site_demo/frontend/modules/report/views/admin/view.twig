@@ -1,0 +1,63 @@
+{% if total.count==1 %}
+  <h6 class="vid_check">{{ t('report','Transaction type') }}: <span class="pull-right">{{ t('report',model.sale_id?"Shop":"Visits") }}</span></h6>
+{% endif %}
+<h6 class="vid_check">{{ t('report','Date') }}: <span class="pull-right">{{ local_datetime(model.created_at) }}</span></h6>
+
+{% if(model.visitor_id) %}
+  {% set visitor = model.payman %}
+  <h6 class="vid_check">{{ t('main','Visitor') }}: <span class="pull-right">{{ visitor.f_name }} {{ visitor.l_name }}</span></h6>
+  <h6 class="vid_check">{{ t('main','Email') }}: <span class="pull-right">{{ visitor.email }}</span></h6>
+  <h6 class="vid_check">{{ t('main','Phone') }}: <span class="pull-right">{{ visitor.phone }}</span></h6>
+  <h6 class="vid_check">{{ t('main','Native Language') }}: <span class="pull-right">{{ visitor.lang }}</span></h6>
+{% else %}
+  <h6 class="vid_check">{{ t('main','Visitor') }}: <span class="pull-right">{{ t('app','Anonymous') }}</span></h6>
+{% endif %}
+
+
+<div class="output_sum">
+<h5 class="vid_check font-weight-700">{{ t('main','Count') }}: <span class="pull-right">{{ total.count }}</span></h5>
+<h5 class="vid_check font-weight-700">{{ t('main','Amount') }}: <span class="pull-right">{{ _nf(total.sum) | raw }} {{ t('app', cafe.currency) }}</span></h5>
+<h5 class="vid_check font-weight-700">{{ t('main','Tax') }}: <span class="pull-right">{{ _nf(total.cost-total.sum) | raw }} {{ t('app', cafe.currency) }}</span></h5>
+<h4 class="vid_check font-weight-700">{{ t('main','Total') }}: <span class="pull-right">{{ _nf(total.cost) | raw }} {{ t('app', cafe.currency) }}</span></h4>
+</div>
+{% if total.count>1 %}
+<br>
+<div class="table-responsive">
+  <table class="table table-condensed">
+    <tr>
+      <th>{{ t('main','id') }}</th>
+      <th>{{ t('main','Visitor') }}</th>
+      <th>{{ t('report','Type') }}</th>
+      <th>{{ t('report',"Shop order/visit id") }}</th>
+      <th>{{ t('main','Amount') }}</th>
+      <th>{{ t('main','Tax') }}</th>
+      <th>{{ t('main','Total') }}</th>
+      <th></th>
+    </tr>
+    {% for item in items %}
+      <tr>
+        <td>{{ item.id }}</td>
+        <td>
+          {% if(item.visitor_id) %}
+            {% set visitor = item.visitor %}
+            {{ visitor.f_name }} {{ visitor.l_name }} ({{ visitor.id }})
+          {% else %}
+            {{ t('app','Anonymous') }}
+          {% endif %}
+        </td>
+        <td>{{ t('report',item.sale_id?"Shop":"Visits") }}</td>
+        <td>{{ item.sale_id?item.sale_id:item.visit_id }}</td>
+        <td>{{ _nf(item.sum) | raw }} {{ t('app', cafe.currency) }}</td>
+        <td>{{ _nf(item.cost-item.sum) | raw }} {{ t('app', cafe.currency) }}</td>
+        <td>{{ _nf(item.cost) | raw }} {{ t('app', cafe.currency) }}</td>
+        <td>
+          {% set link = item.sale_id?"/shop/report/view?id="~item.sale_id:"/visits/default/view?id="~item.visit_id %}
+          <a class="btn btn-xs btn-info" role="modal-new" href="{{ link }}">{{ t('report','Detail') }}</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+  </div>
+{% else %}
+
+{% endif %}

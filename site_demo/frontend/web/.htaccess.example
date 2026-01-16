@@ -1,0 +1,27 @@
+AddDefaultCharset utf-8
+
+# Mod_Autoindex
+<IfModule mod_autoindex.c>
+# Disable indexes
+Options -Indexes
+</IfModule>
+
+# Mod_Rewrite
+<IfModule mod_rewrite.c>
+# Enable symlinks
+Options +SymLinksIfOwnerMatch
+# Enable mod_rewrite
+RewriteEngine On
+
+#enable HTTPS only
+RewriteCond %{HTTPS} !=on
+RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+RewriteCond %{HTTP_HOST} ^www.(.*) [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+# If a directory or a file exists, use the request directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Otherwise forward the request to index.php
+RewriteRule . index.php
+</IfModule>

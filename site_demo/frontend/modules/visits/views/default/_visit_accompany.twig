@@ -1,0 +1,95 @@
+{% if (visit.limit_guest_m > 0) or (visit.limit_guest_chi > 0) %}
+{% set collapse_in = (visit.guest_m > 0) or (visit.guest_chi > 0) ? true : false %}
+	<div class="panel-group" id="visit_accompany_group">
+		<div class="panel-group" id="visit_accompany_accordion" role="tablist" aria-multiselectable="true">
+			<div class="panel panel-default">
+				<div class="panel-heading" data-toggle="collapse" href="#visit_accompany_accordion_collapseOne"
+					 style="cursor:pointer;" data-parent="#visit_accompany_accordion">
+					{% if visit.isUngrouping %}
+						<span class="dop_panel"><i class="fa fa-unlink"></i></span> 
+						{{ t('main', 'Separate still people except this person (new group)') }}
+					{% else %}
+						<span class="dop_panel"><i class="fa fa-plus"></i> <i class="fa fa-user"></i></span> 
+						{{ t('main', 'Adding accompanying to create group') }}
+					{% endif %}
+				</div>
+
+				<div id="visit_accompany_accordion_collapseOne"
+					 class="panel-collapse collapse {% if collapse_in %}in{% endif %}" role="tabpanel"
+					 aria-labelledby="false">
+					<div class="panel-body">
+						<div class="row">
+							{% if (visit.limit_guest_m > 0) %}
+							<div class="col-sm-6">
+							<div class="row">
+								<div class="col-xs-10 col-xs-offset-2 text_accomp">
+									{{ t('main', 'add adult') }}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-2">
+									<h4 class="icon_trans">
+										<i class="fa fa-male"></i>
+									</h4>
+								</div>
+									<div class="col-xs-10 ">
+									{{ form.field(visit, 'guest_m').widget('kartik\\touchspin\\TouchSpin',{'pluginOptions':{
+									    initval:0,
+										min:0,
+										max: visit.limit_guest_m,
+										step: 1,
+										decimals: 0,
+										boostat: 5,
+										maxboostedstep: 10,
+										buttondown_class: "btn btn-default",
+										buttonup_class: "btn btn-default",
+										buttonup_txt:  "<i class = 'fa fa-plus'></i>" ,   
+                                        buttondown_txt: "<i class = 'fa fa-minus'></i>"		
+									}}).label(false)|raw }}
+								</div>
+							</div>	
+							</div>	
+							{% endif %}
+							{% if (visit.limit_guest_chi > 0) %}
+							<div class="col-sm-6">
+							<div class="row">
+								<div class="col-xs-10 col-xs-offset-2 text_accomp">
+									{{ t('main', 'add child') }}
+								</div>
+							</div>
+                            
+                             <div class="row">
+							 <div class="col-xs-2">
+									<h4 class="icon_trans">
+										<i class="fa fa-child"></i>
+									</h4>
+							</div>
+							<div class="col-xs-10">
+
+									{{ form.field(visit, 'guest_chi').widget('kartik\\touchspin\\TouchSpin',{'pluginOptions':{
+										initval:0,
+										min:0,
+										max: visit.limit_guest_chi,
+										step: 1,
+										decimals: 0,
+										boostat: 5,
+										maxboostedstep: 10,
+										buttondown_class: "btn btn-default",
+										buttonup_class: "btn btn-default",
+                                        buttonup_txt:  "<i class = 'fa fa-plus'></i>" ,   
+                                        buttondown_txt: "<i class = 'fa fa-minus'></i>"										
+									}}).label(false)|raw }}
+
+								</div>
+                             </div>
+							 </div>
+							 
+							{% endif %}
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+{% endif %}

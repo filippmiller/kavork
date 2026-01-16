@@ -1,0 +1,155 @@
+{\% if {{ sub_type }} %\}
+<td align="{{ align }}" style="background: {{ background }};text-align: {{ align }};padding:{{ padding_v }}px {{ padding_h }}px {{ padding_v }}px {{ padding_h }}px;font-family: {{ font }};">
+  <table class="table" cellspacing="0" cellpadding="3" border="0" width="100%" style="border-collapse:collapse;border:1px solid transparent; border-top:1px solid #eeeeee;width:100%;font-size: 13px;color: rgb(0,0,0);line-height: 14px;letter-spacing: -0.3px;white-space:nowrap;">
+    {% if direction == 'horizontal' %}
+
+    {% if label=="display" %}
+      <tr>
+        {% for item in items %}
+          {% if not (item in hidden) %}
+            {% if item=="vat" %}
+              {% for vat in vat_list %}
+                <th align="{{ align }}" style="border-top:1px solid #eeeeee;">{{ t('editor_render',vat.name) }}</th>
+              {% endfor %}
+            {% else %}
+              <th align="{{ align }}">{{ t('editor_render',item) }}</th>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </tr>
+    {% endif %}
+    {% if render!='total' %}
+      {\% for counter,item in {{ sub_type }} %\}
+      <tr>
+        {% for item in items %}
+          {% if not (item in hidden) %}
+            {% if item=="counter" %}
+              <td align="{{ align }}" style="border-top:1px solid #eeeeee;">{ {{ item }} + 1 }</td>
+            {% elseif item=="vat" %}
+              {% for vat in vat_list %}
+                <td align="{{ align }}" style="border-top:1px solid #eeeeee;">
+                  {\% if item.vat.{{ vat.name }} %\}
+                  { item.vat.{{ vat.name }}.vat | raw}
+                  {\% endif %\}
+                </td>
+              {% endfor %}
+            {% else %}
+              <td align="{{ align }}" style="border-top:1px solid #eeeeee;">{ item.{{ item }} | raw}</td>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </tr>
+      {\% endfor %\}
+    {% endif %}
+
+    {% if render!='table' %}
+      {\% if total_{{ sub_type }} %\}
+      <tr>
+        {% for item in items %}
+          {% if not (item in hidden) %}
+            {% if item=="counter" %}
+              <td align="{{ align }}" style="border-top:1px solid #cccccc;"><font style="font-size:12px;"><b>{{ t('editor_render',"total") }}</b></font></td>
+            {% elseif item=="vat" %}
+              {% for vat in vat_list %}
+                <td align="{{ align }}" style="border-top:1px solid #cccccc;">
+                  {\% if item.vat.{{ vat.name }} %\}
+                  { total_vat.{{ vat.name }}.vat | raw}
+                  {\% endif %\}
+                </td>
+              {% endfor %}
+            {% else %}
+              <td align="{{ align }}" style="border-top:1px solid #cccccc;">{ total_{{ sub_type }}.{{ item }} | raw}</td>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </tr>
+      {\% endif %\}
+    {% endif %}
+
+    {% else %}
+
+    {% if render!='total' %}
+    {\% for counter,item in {{ sub_type }} %\}
+    {% for item in items %}
+    {% if not (item in hidden) %}
+    {% if item!="counter" %}
+      {\% if item.{{ item }} %\}
+    {% endif %}
+    {% if item=="vat" %}
+    {% for vat in vat_list %}
+      <tr>
+        {% if label=="display" %}
+          <th align="left">
+            {{ t('editor_render', vat.name) }}
+            {\% if item.vat.{{ vat.name }}.value %\}
+            ({item.vat.{{ vat.name }}.value | raw} %)
+            {\% endif %\}
+          </th>
+        {% endif %}
+        <td align="{{ align }}">{ item.vat.{{ vat.name }}.vat | raw}</td>
+      </tr>
+    {% endfor %}
+  {% else %}
+    <tr>
+      {% if label=="display" %}
+        <th align="left" >{{ t('editor_render',item) }}</th>
+      {% endif %}
+      {% if item=="counter" %}
+        <td align="{{ align }}">{ {{ item }} +1 }</td>
+      {% else %}
+        <td align="{{ align }}">{ item.{{ item }} | raw}</td>
+      {% endif %}
+    </tr>
+      {% endif %}
+      {% if item!="counter" %}
+        {\% endif %\}
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+	  	  <tr>
+<td style="height:20px;"></td>
+<tr>
+      {\% endfor %\}
+      {% endif %}
+
+      {% if render!='table' %}
+	  
+    <tr>
+      <td align="{{ align }}" style="border-top:20px solid transparent;text-transform: uppercase;" ><font style="font-size:15px;"><b>{{ t('editor_render',_if(total_label,total_label,"total")) }}</b></font></td>
+	</tr>
+    {% for item in items %}
+    {% if not (item in hidden) and (item!="counter") %}
+    {\% if total_{{ sub_type }}.{{ item }} %\}
+    {% if item=="vat" %}
+    {% for vat in vat_list %}
+      <tr>
+        {% if label=="display" %}
+          <th align="{{ align }}">
+            {{ t('editor_render', vat.name) }}
+            {\% if total_{{ sub_type }}.vat.{{ vat.name }}.value %\}
+            ({total_{{ sub_type }}.vat.{{ vat.name }}.value}%)
+            {\% endif %\}
+          </th>
+        {% endif %}
+        <td align="{{ align }}">{ total_{{ sub_type }}.vat.{{ vat.name }}.vat | raw}</td>
+      </tr>
+    {% endfor %}
+    {% else %}
+    <tr>
+      {% if label=="display" %}
+        <th align="{{ align }}">{{ t('editor_render',item) }}</th>
+      {% endif %}
+      <td align="{{ align }}">{ total_{{ sub_type }}.{{ item }} | raw}</td>
+    </tr>
+      {% endif %}
+      {\% endif %\}
+      {% endif %}
+      {% endfor %}
+      {% endif %}
+
+
+      {% endif %}
+
+  </table>
+</td>
+{\% endif %\}

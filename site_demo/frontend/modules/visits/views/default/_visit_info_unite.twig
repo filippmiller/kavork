@@ -1,0 +1,61 @@
+{{ use('\frontend\modules\certificate\models\Certificate') }}
+
+{% if(model.finish_time) %}
+	{% if(model.visitor_id) %}
+		{% set visitor = model.visitor %}
+<h6 class="vid_check font-weight-700">{{ t('main','Name expense paid') }}: <span class="pull-right">{{ visitor.f_name }} {{ visitor.l_name }} ({{ visitor.code }})</span></h6>
+	{% else %}
+<h6 class="vid_check font-weight-700">{{ t('main','Name expense paid') }}: <span class="pull-right">{{ t('app','Anonymous') }}</span></h6>
+	{% endif %}
+{% endif %}
+<div class="row output_sum">
+<div class="col-md-12">
+<h6 class="vid_check font-weight-700">{{ t('main','Persons payers') }}: <span class="pull-right">{{ model.unite_people|length }}</span></h6>
+
+{% if model.unite_cost is same as( false ) %}
+	<h4>{{ model.sum }}</h4>
+{% else %}
+	<h5 class="vid_check font-weight-700">{{ t('main','Amount') }}:
+			<span class="pull-right">
+				{{ _nf(model.unite_sum)|raw }} {{ cafe.currency }}
+			</span></h5>
+
+	{% for vat in model.unite_vat %}
+		<h5 class="vid_check text-capitalize font-weight-700">
+				<div>{{ vat.name }}: <small class="vat">( {{ vat.value }}%)</small></div>
+				<span class="pull-right">
+					{{ _nf(vat.vat) | raw }} {{ cafe.currency }}
+				</span>
+			</h5>
+	{% endfor %}
+
+	<h4 class="vid_check text-capitalize font-weight-700">{{ t('main','During visit') }}:
+			<span class="cost_pers pull-right">{{ _nf(model.unite_cost) | raw }} {{ cafe.currency }}</span>
+	</h4>
+
+
+  {% if model.unite_prepay %}
+		<h4 class="vid_check font-weight-700">{{ t('main','Prepay visit') }}:
+        <span class="cost_pers pull-right">{{ _nf(model.unite_prepay) | raw }} {{ cafe.currency }}</span>
+		</h4>
+		<h4 class="vid_check font-weight-700">{{ t('main','Total by visit') }}:
+        <span class="cost_pers pull-right">{{ _nf(model.unite_cost-model.unite_prepay) | raw}} {{ cafe.currency }}
+      </span>
+		</h4>
+  {% endif %}
+
+  {% if model.unite_shop %}
+		<h4 class="vid_check font-weight-700">{{ t('main','Shopping') }}:
+			<span class="pull-right">{{ _nf(model.unite_shop)|raw }} {{ cafe.currency }}</span>
+
+		</h4>
+
+		<hr class="vid_check_hr">
+		<h4 class="font-weight-700" >{{ t('main','Total sum') }}:
+			<span class="pull-right">{{ _nf(model.unite_cost-model.unite_prepay + model.unite_shop)|raw }} {{ cafe.currency }}
+		</span>
+		</h4>
+  {% endif %}
+{% endif %}
+</div>
+</div>

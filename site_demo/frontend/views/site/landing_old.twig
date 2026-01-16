@@ -1,0 +1,583 @@
+{{ register_asset_bundle('frontend/views/site/assets/LandingAsset') }}
+<div class="scrollup">
+  <i class="fa fa-angle-up"></i>
+</div>
+<div id="home" class="container">
+  <nav class="navbar navbar-default" id="mNavbar">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">
+          <!--<img src="navbar-brand.svg" height="36" alt="logo">-->
+          <div>kavork</div>
+        </a>
+
+        <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <div class="navbar_mob">
+          <div class="dropdown language">
+            <button class="btn btn-neutral-border dropdown-toggle" type="button" id="dropdownLang"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img src="/img/flag/{{ language() }}.svg" alt="">
+              {{ params('lg_list')[language()] }}
+              <i class="fa fa-angle-down"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownLang">
+
+              {% for code,name in lg_list() %}
+                <li><a {{ make_lang_url(code) | raw }}><img src="/img/flag/{{ code }}.svg" alt=""> {{ name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="navbar-collapse collapse navbar-right">
+        <ul class="nav navbar-nav">
+          <li class="active"><a class="link" href="#home">{{ t('landing','Home') }}</a></li>
+          <li>
+            <a class="link" href="#about_system">{{ t('landing','About system') }}</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Functional <i class="fa fa-angle-down"></i></a>
+            <ul class="dropdown-menu mod" data-toggle="mod">
+              <li><a href="#global">Global</a></li>
+              <li><a href="#staff">Staff</a></li>
+              <li><a class="link" href="#shop" id="shop-link" data-toggle="tab">Shop</a></li>
+              <li><a href="#" data-toggle="dropdown">
+                  <div class="text-center text-danger">Close <i class="fa fa-angle-up"></i></div>
+                </a></li>
+            </ul>
+          </li>
+          <li><a class="link" href="#pricing">{{ t('landing','Pricing') }}</a></li>
+          <li><a href="/login" class="btn_nav">
+              <button class="btn btn-success"><i class="icon-metro-enter"></i> {{ t('landing','Log In') }}</button>
+            </a></li>
+          <li>
+            <div class="navbar_desc">
+              <div class="dropdown language">
+                <button class="btn btn-neutral-border dropdown-toggle" type="button" id="dropdownLang"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img src="/img/flag/{{ language() }}.svg" alt="">
+                  {{ params('lg_list')[language()] }}
+                  <i class="fa fa-angle-down"></i>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownLang">
+
+                  {% for code,name in lg_list() %}
+                    <li><a {{ make_lang_url(code) | raw }}><img src="/img/flag/{{ code }}.svg" alt=""> {{ name }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+<section>
+  <div id="intro" class="intro">
+    <div class="container intro_flex">
+      <div class="row flex_center">
+        <div class="col-lg-6">
+          <h1 class="font-weight-600 margin-off-bottom">kavork</h1>
+          <h6 class="margin-off-top">{{ t('landing','franchise management system') }}</h5>
+        </div>
+        <div class="col-lg-6">
+
+          <!-- Image Gallery Swiper -->
+          <div class="my-swiper-container swiper-container-horizontal">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide"><a><img class="img-responsive" src="/img/product-details-1.jpg"
+                                                alt="software image"></a></div>
+              <div class="swiper-slide"><img class="img-responsive" src="/img/product-details-2.jpg"
+                                             alt="software image"></div>
+              <div class="swiper-slide"><img class="img-responsive" src="/img/product-details-3.jpg"
+                                             alt="software image"></div>
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+          </div> <!-- end of image gallery swiper -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section>
+  <div id="about_system" class="about_system">
+    <div class="container">
+      <h5>{{ t('landing','about_system_1') }}</h5>
+      <hr class="hrmin">
+      <h5>{{ t('landing','about_system_2') }}</h5>
+      <h6 class="block_info">{{ t('landing','about_system_description') }}</h6>
+      <h5 class="font-weight-400">
+        <div class="row">
+          <div class="col-md-3 col-sm-12">{{ t('landing','Ideal for:') }}</div>
+          <div class="col-md-4 col-sm-6">
+            <ul class="list-unstyled list-success iconized-alt">
+              <li>{{ t('landing','Coworking centers') }}</li>
+            </ul>
+          </div>
+          <div class="col-md-4 col-sm-6">
+            <ul class="list-unstyled list-success iconized-alt">
+              <li>{{ t('landing','Anticafe') }}</li>
+            </ul>
+          </div>
+        </div>
+      </h5>
+      <hr class="hrmin">
+      <h5>
+        <div class="row">
+          <div class="col-md-3 col-sm-12">{{ t('landing','Suitable for:') }}</div>
+          <div class="col-md-4 col-sm-6">
+            <ul class="list-unstyled list-neutral iconized-alt">
+              <li>{{ t('landing','Rental of premises') }}</li>
+              <li>{{ t('landing','Childrens entertainment centers') }}</li>
+              <li>{{ t('landing','Museums') }}</li>
+            </ul>
+          </div>
+          <div class="col-md-4 col-sm-6">
+            <ul class="list-unstyled list-neutral iconized-alt">
+              <li>{{ t('landing','Exhibitions') }}</li>
+              <li>{{ t('landing','Hourly parking') }}</li>
+              <li>{{ t('landing','Disco') }}</li>
+            </ul>
+          </div>
+        </div>
+      </h5>
+      <hr class="hrmin">
+      <h5>{{ t('landing','about_system_3') }}</h5>
+    </div>
+  </div>
+
+  <section>
+    <div id="base" class="base">
+      <div class="container">
+        <h2>Introduction</h2>
+        <hr>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+									<i class="icon-metro-stop fa-stack-2x"></i>
+									<i class="icon icon-responsive fa-stack-1x fa-inverse"></i>
+								</span>
+              <h4>{{ t('landing','Responsive design') }}</h4>
+              <p>{{ t('landing','responsive_design_descriptons') }}</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+									<i class="icon-metro-stop fa-stack-2x"></i>
+									<i class="fa fa-language fa-stack-1x fa-inverse"></i>
+								</span>
+              <h4>{{ t('landing','Multilingual') }}</h4>
+              <p>{{ t('landing','multilingual_descriptons') }}</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+									<i class="icon-metro-stop fa-stack-2x"></i>
+									<i class="fa fa-globe fa-stack-1x fa-inverse"></i>
+								</span>
+              <h4>{{ t('landing','Countries & Regions') }}</h4>
+              <p>{{ t('landing','regions_descriptons') }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+									<i class="icon-metro-stop fa-stack-2x"></i>
+									<i class="fa fa-user fa-stack-1x fa-inverse"></i>
+								</span>
+              <h4>{{ t('landing','Modularity') }}</h4>
+              <p>{{ t('landing','modularity_descriptions') }}</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+									<i class="icon-metro-stop fa-stack-2x"></i>
+									<i class="fa fa-user fa-stack-1x fa-inverse"></i>
+								</span>
+              <h4>{{ t('landing','Role management') }}</h4>
+              <p>{{ t('landing','role_descriptions') }}</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="services-box last text-center">
+								<span class="fa-stack fa-3x">
+									<i class="icon-metro-stop fa-stack-2x"></i>
+									<i class="fa fa-security fa-stack-1x fa-inverse"></i>
+								</span>
+              <h4>{{ t('landing','Security') }}</h4>
+              <p>{{ t('landing','security_descriptions') }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section>
+    <!--SOLUTIONS-->
+    <div id="solutions" class="solutions">
+      <div class="container">
+        <!--<h2>SOLUTIONS</h2>-->
+        <hr class="under-heading">
+
+        <!-- Tabs -->
+        <div class="solutions-tabs">
+          <ul class="nav nav-pills nav-justified" id="tabius">
+            <li class="active">
+              <a href="#global" data-toggle="tab" class="tile" data-click="transform">
+           <span class="tile-content icon">
+           <span class="icon-metro-earth"></span>
+           </span>
+                <span class="brand">
+           <span class="tile-label">Global</span>
+           </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="#staff" data-toggle="tab" class="tile" data-click="transform">
+           <span class="tile-content icon">
+           <span class="fa fa-users"></span>
+           </span>
+                <span class="brand">
+           <span class="tile-label">Staff</span>
+           </span>
+              </a>
+            </li>
+            <li class="">
+              <a href="#shop" data-toggle="tab" class="tile" data-click="transform">
+           <span class="tile-content icon">
+           <span class="fa fa-users"></span>
+           </span>
+                <span class="brand">
+           <span class="tile-label">Shop</span>
+           </span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+          <!-- Tab_a -->
+          <div class="tab-pane tab-a fade in active" id="global">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="software-box clearfix">
+                  <i class="fa fa-rocket"></i>
+                  <h4>Better Performance</h4>
+                  <p>Accomplish more, faster with Vera's software application suite for agile startups and established
+                    corporate environments.</p>
+                </div>
+                <div class="software-box clearfix">
+                  <i class="fa fa-cog"></i>
+                  <h4>Complete Control</h4>
+                  <p>Guide your company through rough and prosperous times with customizable digital dashboards,
+                    designed to offer you total control.</p>
+                </div>
+                <div class="software-box clearfix">
+                  <i class="fa fa-hdd-o"></i>
+                  <h4>Unlimited Storage</h4>
+                  <p>Each software solution is accompanied by a healthy online storage package of 1TB for each
+                    administrator license you acquire.</p>
+                </div>
+                <div class="software-box clearfix">
+                  <i class="fa fa-pie-chart"></i>
+                  <h4>Reports Manager</h4>
+                  <p>Enjoy detailed reports about your business based on real-time information provided by Vera's data
+                    gathering algorithms.</p>
+                </div>
+              </div>
+              <div class="col-lg-6">
+
+                <div class="software-box clearfix">
+                  <i class="fa fa-rocket"></i>
+                  <h4>Better Performance</h4>
+                  <p>Accomplish more, faster with Vera's software application suite for agile startups and established
+                    corporate environments.</p>
+                </div>
+                <div class="software-box clearfix">
+                  <i class="fa fa-cog"></i>
+                  <h4>Complete Control</h4>
+                  <p>Guide your company through rough and prosperous times with customizable digital dashboards,
+                    designed to offer you total control.</p>
+                </div>
+                <div class="software-box clearfix">
+                  <i class="fa fa-hdd-o"></i>
+                  <h4>Unlimited Storage</h4>
+                  <p>Each software solution is accompanied by a healthy online storage package of 1TB for each
+                    administrator license you acquire.</p>
+                </div>
+                <div class="software-box clearfix">
+                  <i class="fa fa-pie-chart"></i>
+                  <h4>Reports Manager</h4>
+                  <p>Enjoy detailed reports about your business based on real-time information provided by Vera's data
+                    gathering algorithms.</p>
+                </div>
+
+              </div>
+            </div>
+          </div> <!-- end of tab_a -->
+
+          <!-- Tab_b -->
+          <div class="tab-pane tab-b fade" id="staff">
+            <div class="row">
+              <div class="col-md-8">
+                <img class="img-responsive" src="/img/solutions-hardware.png" alt="solutions image">
+              </div>
+              <div class="col-md-4">
+                <div class="right-pane">
+                  <h3>Reliable Hardware Infrastructure</h3>
+                  <p>Vera's software solutions run on state of the art hardware platforms built for total performance
+                    and protected by fail-safe backup systems.</p>
+                  <p>Our efforts are focused on creating reliable business solutions for mission critical scenarios.</p>
+                  <a class="read-more" href="#your-link-here">Find out more</a>
+                </div>
+              </div>
+            </div>
+          </div> <!-- end of tab_b -->
+
+          <!-- Tab_c -->
+          <div class="tab-pane tab-c fade" id="shop">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+									<i class="fa fa-circle fa-stack-2x"></i>
+									<i class="fa fa-flag fa-stack-1x fa-inverse"></i>
+								</span>
+                  <h4>Business Analysis</h4>
+                  <p>Before any software solution proposal we analyze your operational processes and go through all of
+                    your business departments</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+									<i class="fa fa-circle fa-stack-2x"></i>
+									<i class="fa fa-desktop fa-stack-1x fa-inverse"></i>
+								</span>
+                  <h4>Solution Design</h4>
+                  <p>After we've gathered as much information as possible about your company we design your personalized
+                    software solution</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+									<i class="fa fa-circle fa-stack-2x"></i>
+									<i class="fa fa-code fa-stack-1x fa-inverse"></i>
+								</span>
+                  <h4>Software Development</h4>
+                  <p>We're counting on our highly experienced team of developers and team leaders to deliver highly
+                    optimized solutions</p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+									<i class="fa fa-circle fa-stack-2x"></i>
+									<i class="fa fa-user fa-stack-1x fa-inverse"></i>
+								</span>
+                  <h4>Continuous Support</h4>
+                  <p>After delivering the software solution we're making sure it's working at 100% all the time by
+                    providing quality support</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="services-box text-center">
+								<span class="fa-stack fa-3x">
+									<i class="fa fa-circle fa-stack-2x"></i>
+									<i class="fa fa-globe fa-stack-1x fa-inverse"></i>
+								</span>
+                  <h4>IT Outsourcing</h4>
+                  <p>We offer high quality software development and IT outsourcing services for a selected range of
+                    customers and partners</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="services-box last text-center">
+								<span class="fa-stack fa-3x">
+									<i class="fa fa-circle fa-stack-2x"></i>
+									<i class="fa fa-handshake-o fa-stack-1x fa-inverse"></i>
+								</span>
+                  <h4>Professional Services</h4>
+                  <p>Vera's highly skilled professionals in design, development and marketing provide some of the best
+                    professional services</p>
+                </div>
+              </div>
+            </div>
+          </div> <!-- end of tab_c -->
+        </div> <!-- end of tab content -->
+      </div> <!-- end of container -->
+    </div>
+  </section>
+
+
+  <!--<div class="about_system">
+  <div class="container">
+  <p><span>We present you a unique web system built on
+  a structure franchise, your franchise, with the
+  ability to fully manage the departments of your franchise (staff, rates,
+  discounts, shop, mail and much more) from anywhere in the world.</span></p>
+  <p><span>Set the location of the country / region in
+  which the department is located</span></p>
+  <ul>
+  <li>- country time zone</li>
+  <li>- currency</li>
+  <li>- languages</li>
+  <li>- taxes</li>
+  </ul>
+  <p><span>You can simply select a country from the
+  list. Moreover, we can customize, upon request, all this according to your
+  desire.</span></p>
+  <p><span>We are happy both for ready-made business
+  projects and just for beginners, begin with a single department with further
+  expansion plans around the world, country, city. Our system will help you with
+  this. You yourself can install any number of departments in your business
+  system with your own logos and data.</span></p>
+  <p><span>Our system is built</span></p>
+  <p><span>- on the account of the client's stay on
+  time, billing by the hour, in the premises of your business. Taking into
+  account the calculation in billing and minutes.</span></p>
+  <p><span>You can set up each pricing department
+  yourself - how much a client will pay only for what he entered, for the first
+  hour, for the second and so on. It is possible to establish the amount that he
+  can not exceed. From what visit to the customer on the account is billing and
+  what. There is also a system of discounts on the number of visits and not only.</span></p>
+  <p><span>In this regard, the system is ideal for:</span></p>
+  <p><span>- Coworking centers</span></p>
+  <p><span>- Anticafe</span></p>
+  <p><span>- Hourly Parking</span></p>
+  <p><span>We also work with a fixed amount of visits
+  to your business premises.</span></p>
+  <p><span>Ideal for:</span></p>
+  <p><span>- Children's entertainment centers</span></p>
+  <p><span>- Museums</span></p>
+  <p><span>- Exhibitions</span></p>
+  <p><span>- Disco</span></p>
+  <p><span>In our system you can</span></p>
+  <p><span>- keep records of the database of its
+  customers for the entire franchise, departments, number of visits to customers.</span></p>
+  <p><span>- inform customers about your new
+  promotions and discounts in letters in their native language, conduct surveys.</span></p>
+  <p><span>- sell products from department stores to
+  customers, keep inventory records of goods.</span></p>
+  <p><span>- allow customers to register themselves
+  and log in to the system on a separate screen.</span></p>
+  <p><span>- to pay by the clients themselves services
+  on a separate screen.</span></p>
+  <p><span>- see all your statistics on sales and
+  visits on charts and tables for any period of time.</span></p>
+  <p><span>- automatically receive daily / weekly /
+  monthly report from each department to any specified mailboxes.</span></p>
+  <p><span>- keep statistics on the accounting of
+  staff hours spent, remind them by mail about going to work, set tasks for them
+  for a certain time and monitor their implementation.</span></p>
+  <p><span>And this is only a small part of the
+  capabilities of our system, we are constantly improving and releasing updates.
+  Our system brings us closer to the client, sees the statistics of their visits,
+  helps us remind ourselves.</span></p>
+  <p><span>Security and privacy.</span></p>
+  <p><span>This is followed by our experienced
+  programmers. Your franchise's operation is code-like as the client data is
+  stored in encrypted form, only one support person has access to your franchise,
+  only to help you with the system.</span></p>
+  <p><span>What is needed for work.</span></p>
+  <p><span>To work with our system, you just need to
+  contact us via any of the available means of communication - by phone or via
+  the communication form, to receive data to enter the system, when you first
+  start, the system will ask you to fill in the required data - billing and
+  create at least one of the staff members. Then we created an intuitive
+  interface that will help you figure it out, or our support team will help you.
+  Since our system works as a web application, there must be a permanent
+  connection to the Internet at the location of your business.</span></p>
+  <p><span>Love the collaboration, as we did, because
+  we have made this system for ourselves and our establishments have been working
+  on it for a long time, now we open it for you. We will be glad to any kind of
+  cooperation and proposals.</span></p>
+  </div>
+  </div>
+  </div>	-->
+
+
+  <!--PRICING-->
+  <div id="pricing" class="pricing">
+    <div class="container text-center">
+      <h2>PRICING</h2>
+      <p class="under-heading">Choose the pricing plan that suits your requirements and contact our business development
+        team for further details and purchasing steps.</p>
+      <div class="row">
+        <div class="col-sm-6 col-md-3">
+          <div class="pricing-pane">
+            <h3>Economy</h3>
+            <hr>
+            <p class="price">$99</p>
+            <hr>
+            <p>User Accounts: 5</p>
+            <p>Email Addresses: 5</p>
+            <p>Storage Space: 500 MB</p>
+            <p>Traffic Quantity: 5000 MB</p>
+            <a class="button-solid" href="#your-link-here">REGISTER</a>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="pricing-pane">
+            <h3>Standard</h3>
+            <hr>
+            <p class="price">$129</p>
+            <hr>
+            <p>User Accounts: 5</p>
+            <p>Email Addresses: 5</p>
+            <p>Storage Space: 500 MB</p>
+            <p>Traffic Quantity: 5000 MB</p>
+            <a class="button-solid" href="#your-link-here">REGISTER</a>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="pricing-pane">
+            <div class="label">
+              <p class="best-value">Best Value</p>
+            </div>
+            <h3>Complete</h3>
+            <hr>
+            <p class="price">$149</p>
+            <hr>
+            <p>User Accounts: 5</p>
+            <p>Email Addresses: 5</p>
+            <p>Storage Space: 500 MB</p>
+            <p>Traffic Quantity: 5000 MB</p>
+            <a class="button-solid" href="#your-link-here">REGISTER</a>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+          <div class="pricing-pane">
+            <h3>Ultra</h3>
+            <hr>
+            <p class="price">$199</p>
+            <hr>
+            <p>User Accounts: 5</p>
+            <p>Email Addresses: 5</p>
+            <p>Storage Space: 500 MB</p>
+            <p>Traffic Quantity: 5000 MB</p>
+            <a class="button-solid" href="#your-link-here">REGISTER</a>
+          </div>
+        </div>
+      </div> <!-- end of row -->
+    </div> <!-- end of container -->
+  </div>
+

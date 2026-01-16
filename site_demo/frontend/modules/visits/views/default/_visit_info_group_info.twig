@@ -1,0 +1,71 @@
+<div class="row visit_info_group">
+<div class="col-md-12">
+<h5 class="title">{{ t('main','Additionally attached accompanying') }}</h5>
+{% if(model.guest_m > 0) %}
+    <div class="row">
+	<div class="col-md-12">
+	<div class="group_flex">
+		<div class="col-xs-4 padding-off">
+			<h6> {{ t('main','Adult') }}: </h6>
+		</div>
+		<div class="col-xs-2  padding-off group_flex">
+		<h6 class="font-weight-600">{{ model.guest_m }}</h6> &nbsp;&nbsp; <h5><i class="fa fa-male blackna2"></i></h5>
+		</div>
+		<div class="col-xs-6 padding-off text-right">
+			{% if not (model.isFinished) and not selfservice %}
+				{% if model.prePay %}
+          {% set not_ungroup_msg = 1 %}
+				{% else %}
+					<a href="/visits/start?ungroup_id={{ model.id }}&ungroup_type=1" role="modal-remote" class="btn btn-xs btn_ungr">
+						<i class="fa fa-unlink"></i><span class="hide_text"> {{ t('main','Ungroup') }}</span>
+					</a>
+				{% endif %}
+			{% else %}
+				&nbsp;
+			{% endif %}
+		</div>
+		</div>
+	<div class="clearfix"></div>
+	   <div class="row"><div class="col-md-12"><hr class="rider"></div></div>
+	</div>
+	</div>
+{% endif %}
+
+{% if(model.guest_chi > 0) %}
+    <div class="row">
+	<div class="col-md-12">
+		<div class="group_flex">
+		<div class="col-xs-4 padding-off">
+			<h6> {{ t('main','Child') }}: </h6>
+		</div>
+		<div class="col-xs-2 padding-off group_flex">
+		<h6 class="font-weight-600">{{ model.guest_chi }}</h6> &nbsp;&nbsp; <h5><i class="fa fa-child blackna2"></i></h5>
+		</div>
+		<!--<div class="col-xs-2 padding-off-left">
+		
+		</div>-->
+		<div class="col-xs-6 padding-off text-right">
+			{% if not (model.isFinished) and not selfservice %}
+				{% if model.prePay %}
+					{% set not_ungroup_msg = 1 %}
+				{% else %}
+					<a href="/visits/start?ungroup_id={{ model.id }}&ungroup_type=2" role="modal-remote" class="btn btn-xs btn_ungr">
+						<i class="fa fa-unlink"></i><span class="hide_text"> {{ t('main','Ungroup') }}</span>
+					</a>
+        {% endif %}
+			{% else %}
+				&nbsp;
+			{% endif %}
+		</div>
+		</div>
+		<div class="clearfix"></div>
+	   <div class="row"><div class="col-md-12"><hr class="rider"></div></div>
+	</div>
+	</div>
+{% endif %}
+</div>
+</div>
+
+{% if not_ungroup_msg %}
+	{{ t('app','Resumed visit cannot be Ungroup') }}
+{% endif %}

@@ -1,0 +1,19 @@
+{% if (_canCafe('task')) %}
+  {% if (_can('TaskMain')) %}
+    <!--<a class="task_list" role="modal-remote" href="/tasks/default/views">
+      <span class="icon icon-checklist"></span><div class="txt_task">{{ t('main', 'Task List') }}</div>
+    </a>-->
+    <div class="fixed-tiles">
+      <div class="visible_control_tile"></div>
+
+      <a href="/tasks/default/views" role="modal-remote" class="mintile bg-info" data-click="transform">
+          <span class="tile-content icon">
+        <span class="icon icon-checklist"></span>
+      </span>
+        <span class="brand">
+      <span class="tile-label">{{ t('main', 'Task List') }}</span>
+    </span>
+      </a>
+    </div>
+  {% endif %}
+{% endif %}

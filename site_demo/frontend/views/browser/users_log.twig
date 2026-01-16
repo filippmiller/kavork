@@ -1,0 +1,23 @@
+<div class="tile bg-steel" code="{{ id }}">
+  <a class="ajax admin fg-white" role="modal-remote" href="/users/log/view?id={{ id }}">
+    <div class="tile-content">
+      <div class="text-right padding-10 padding-off-top">
+        <h6 class="margin-off prob">{{ name }}</h6>
+        <h4 class="margin-off time"style="padding-top:7px;">
+          <i class="fa fa-clock-o" style="float:left;padding-top:2px;"></i>
+          {{ duration }}
+          <span class="date">{{ start_date }} {{ start_time }}</span>
+        </h4>
+        <p class=""> </p>
+        <p class="margin-off">{{ i18n.employee }}</p>
+      </div>
+    </div>
+    <div class="brand">
+      <div class="tile-label">
+        <h4 class="margin-off">
+          <span class="fa fa-user-secret"></span>
+        </h4>
+      </div>
+    </div>
+  </a>
+</div>

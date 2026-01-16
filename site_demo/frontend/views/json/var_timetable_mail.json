@@ -1,0 +1,41 @@
+{
+  "vars": [
+    {
+      "name": "Cafe",
+      "prefix": "cafe.",
+      "raw":["vat_code_column"],
+      "items": {
+        "name": "cafe name",
+        "address": "address",
+        "currency": "currency",
+        "logo": "logo url",
+        "max_person": "max person",
+        "vat_code_line": "Vat codes in line",
+        "vat_code_column": "Vat codes in column"
+      }
+    },
+    {
+      "name": "User",
+      "prefix": "user.",
+      "items": {
+        "name": "User name",
+        "email": "User email"
+      }
+    },
+    {
+      "name": "Event",
+      "prefix": "event.",
+      "wrap": {
+        "local_datetime": [
+          "start",
+          "end"
+        ]
+      },
+      "items": {
+        "start": "Start event",
+        "end": "End event"
+      }
+    }
+  ],
+  "is_print": false
+}

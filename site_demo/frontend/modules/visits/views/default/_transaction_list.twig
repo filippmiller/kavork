@@ -1,0 +1,37 @@
+{% set transactions = model.transactions %}
+
+{% if transactions|length > 1 %}
+<br>
+<h4>{{ t('main','Transactions list') }}</h4>
+
+  <table class="table">
+    <tr>
+      <th>{{ t('main','id') }}</th>
+      <th>{{ t('main','Payman') }}</th>
+      <th>{{ t('main','Amount') }}</th>
+      <th>{{ t('main','Tax') }}</th>
+      <th>{{ t('main','Total') }}</th>
+      <th></th>
+    </tr>
+    {% for item in transactions %}
+      <tr>
+        <td>{{ item.id }}</td>
+        <td>
+          {% if(item.visitor_id) %}
+            {% set visitor = item.payman %}
+            {{ visitor.f_name }} {{ visitor.l_name }} ({{ visitor.id }})
+          {% else %}
+            {{ t('app','Anonymous') }}
+          {% endif %}
+        </td>
+        <td>{{ _nf(item.sum) | raw }} {{ cafe.currency }}</td>
+        <td>{{ _nf(item.cost-item.sum) | raw }} {{ cafe.currency }}</td>
+        <td>{{ _nf(item.cost) | raw }} {{ cafe.currency }}</td>
+        <td>
+          {% set link = "/report/admin/view?id="~item.id %}
+          <a class="btn btn-xs center-color bg-info" role="modal-new" href="{{ link }}">{{ t('report','Detail') }}</a>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endif %}

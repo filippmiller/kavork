@@ -1,0 +1,37 @@
+<div class="tile double-width double-height bg-blue">
+  <div class="tile-content flex_tile">
+    <div class="padding-10">
+      <div id='clock'>
+        <h3 class="margin-off font-weight-200">{{ t("main",'Loading') }}</h3>
+        <h5 class="margin-off font-weight-200">{{ t("main",'data') }}...</h5>
+      </div>
+      {% if (_canCafe('personsLimit')) %}
+        <div class="">
+          <h6 class="margin-off-bottom">{{ t("main",'Now') }} <span
+                class="tot_visitor __stats_current_visitors_count__">{{ this.cafe.currentPersonsCount }}</span> {{ t("main",'person(s)') }}</h5>
+            <h6 class="margin-off-top">{{ t("main",'Acceptable') }} <span
+                  class="accept">{{ this.cafe.maxPersonsCount }}</span> {{ t("main",'person(s)') }}</h6>
+        </div>
+      {% endif %}
+      <div>
+        <h6 class="padding-top-10 push-up-margin-thin">{{ t("main",'Administrator') }}: {{ this.user.name }}</h6>
+      </div>
+    </div>
+  </div>
+  <div class="brand">
+    <div class="tile-label">
+      {{ t("main",'Info') }}
+    </div>
+  </div>
+</div>
+
+{{ macro.tile('','bg-science-blue open_admin_panel','Administrators',{icon:'fa fa-user-secret',width:2}) }}
+{{ macro.tile('logout','bg-scarlet','LOGOUT',{icon:'icon-metro-exit'}) }}
+{{ macro.tile('shop/storefront/index', 'bg-amber', 'Shop', {icon:'fa fa-shopping-cart fa-5x',width:1,modal:true}) }}
+<!--{% if(_canCafe('buttonShop')) %}-->
+  
+<!--{% endif %}-->
+
+{% if(_canCafe('startVisit')) %}
+  {{ macro.tile('visits/start','bg-lima','Start new visit',{icon:'fa fa-user-plus',width:2,modal:true}) }}
+{% endif %}

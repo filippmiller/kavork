@@ -1,0 +1,80 @@
+{{ use('yii\bootstrap\ActiveForm') }}
+
+{% if not sale %}
+  {% if _canCafe('shopInSession') %}
+  <div class="fixed-tiles-shop">
+    {% include 'main/widgets/shop_storefront/block.twig' %}
+  </div>	
+  {% endif %}
+{% endif %}
+
+{% set form = active_form_begin({'id': '__visit-form__'}) %}
+
+{% if products %}
+  <input type="hidden" name="products" value="{{ products }}">
+{% endif %}
+
+{{ form.field(model, 'id').hiddenInput().label(false, {'style':'display:none'})|raw }}
+<div class="radio_wraper">
+{{ form.field(model, 'type').radioList(type_list)|raw }}
+</div>
+{{ form.field(model, 'f_name').widget(AJ_classname,{
+  'options' : {
+    'placeholder' : t('main','Find visitor or enter first name.'),
+    'autocomplete' : "off",
+  },
+  'dataset' : [{
+    'datumTokenizer' : "Bloodhound.tokenizers.obj.whitespace(\"value\")",
+    'display' : 'f_name',
+    'minLength' : 3,
+    'limit':10,
+    'remote' : {
+      'url' : '/visitor/ajax?term=%QUERY',
+      'wildcard' : '%QUERY',
+    },
+    'templates' : {
+      'notFound' : '<div class="text-danger" style="padding:0 8px">'~t('main','Unable to find repositories for selected.')~'</div>',
+      'suggestion' :  JsExpression ("Handlebars.compile('"~in_line(t("main","ajax_find_line"))~"')"),
+    },
+  }],
+})|raw }}
+
+
+{{ form.field(model, 'l_name').textInput({'maxlength':true})|raw }}
+<div class="row">
+<div class="col-md-6">
+{{ form.field(model, 'lg').dropDownList(lg_list())|raw }}
+</div>
+<div class="col-md-6">
+{{ form.field(model, 'email').textInput({'maxlength':true})|raw }}
+</div>
+</div>
+<div class="row">
+<div class="col-md-6">
+{{ form.field(model, 'phone').textInput({'maxlength':true})|raw }}
+</div>
+<div class="col-md-6">
+{{ form.field(model, 'code').textInput({'maxlength':true})|raw }}
+</div>
+</div>
+</div>
+{% if visit %}
+  {% if visit.isNewRecord %}
+    {% include '_visit_accompany.twig' %}
+  {% endif %}
+
+
+  {% if visit.isNewRecord and _canCafe('certificate') and (visit.isUngrouping == false) %}
+    <div class="panel-group" id="visit_certificate_group">
+        {% include from_module('certificate','control') %}
+    </div>
+  {% endif %}
+{% endif %}
+
+{{ active_form_end() }}
+
+<script>
+  $("#startvisit-f_name").bind('typeahead:select', userAA)
+    .bind('typeahead:change', userAA);
+  $('.modal-body').find('input,select').not("[type=radio]").on('change',userAA);
+</script>

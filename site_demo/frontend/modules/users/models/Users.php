@@ -1,0 +1,538 @@
+<?php
+
+namespace frontend\modules\users\models;
+
+use common\components\ActiveRecord;
+use developeruz\db_rbac\interfaces\UserRbacInterface;
+use frontend\modules\cafe\models\Cafe;
+use frontend\modules\franchisee\models\Franchisee;
+use frontend\modules\polls\models\Polls;
+use frontend\modules\timetable\models\UserTimetable;
+use Yii;
+use yii\db\Query;
+use yii\web\IdentityInterface;
+
+/**
+ * This is the model class for table "user".
+ *
+ * @property int $id
+ * @property string $user
+ * @property string $pass
+ * @property string $last_sess
+ * @property int $role
+ * @property int $state
+ * @property string $email
+ * @property string $color
+ * @property int $franchisee_id
+ *
+ * @property Polls[] $polls
+ * @property UserTimetable[] $userTimetables
+ */
+class Users extends ActiveRecord implements IdentityInterface, UserRbacInterface
+{
+
+  public $new_password;
+  private $auth_key;
+  public $role;
+  private $_roles;
+
+
+  public function getUserName()
+  {
+    return $this->name;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function tableName()
+  {
+    return 'user';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function rules()
+  {
+    return [
+        [['name', 'pass', 'last_sess', 'email', 'color', 'lg'], 'string'],
+        ['name', 'required'],
+        ['name', 'unique'],
+        [['email', 'name'], 'trim'],
+        [['email'], 'email'],
+        [['email'], 'unique'],
+        [['role', 'state', 'franchisee_id'], 'integer'],
+        ['new_password', 'trim'],
+        [['new_password'], 'string', 'max' => 60],
+        [['new_password'], 'required', 'when' => function ($model) {
+          return $model->isNewRecord;
+        }],
+        [['phone'], 'string', 'max' => 20],
+        [['new_password'], 'string', 'min' => 6],
+        ['name', 'unique', 'message' => Yii::t('app', 'This login is already used, choose another.'),],
+    ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function attributeLabels()
+  {
+    return [
+        'id' => Yii::t('app', 'ID'),
+        'name' => Yii::t('app', 'User login'),
+        'user' => Yii::t('app', 'User'),
+        'pass' => Yii::t('app', 'Password'),
+        'last_sess' => Yii::t('app', 'Last Sess'),
+        'role' => Yii::t('app', 'Role'),
+        'roles' => Yii::t('app', 'Role'),
+        'state' => Yii::t('app', 'State'),
+        'email' => Yii::t('app', 'Email'),
+        'color' => Yii::t('app', 'Color'),
+        'new_password' => Yii::t('app', 'New Password'),
+        'lg' => Yii::t('app', 'lg'),
+        'franchisee_id' => Yii::t('app', 'Franchisee ID'),
+        'phone' => Yii::t('app', 'phone'),
+    ];
+  }
+
+  public function beforeValidate()
+  {
+    if (!parent::beforeValidate()) {
+      return false;
+    }
+
+    if ($this->isNewRecord) {
+      if (empty($this->franchisee_id) && !empty(Yii::$app->user)) {
+        if (Yii::$app->user->isGuest) {
+          $this->franchisee_id = 1;
+        } else if (!Yii::$app->user->can('AllFranchisee')) {
+          $this->franchisee_id = Yii::$app->user->identity->franchisee_id;
+        }
+      }
+
+      if (empty($this->name)) {
+        $this->name = explode('@', $this->email);
+        $this->name = $this->name[0];
+      }
+      /*$this->reg_ip = $_SERVER["REMOTE_ADDR"];
+      $this->referrer_id = (int)Yii::$app->session->get('referrer_id');
+      $this->added = date('Y-m-d H:i:s');*/
+      if (!isset($this->auth_key)) {
+        $this->auth_key = '';
+      }
+    }
+
+    if ($this->new_password && strlen($this->new_password) > 0) {
+      $this->setPassword($this->new_password);
+    }
+
+    return true;
+  }
+
+  /**
+   * Generates password hash from password and sets it to the model
+   *
+   * @param string $password
+   */
+  public function setPassword($password)
+  {
+    $this->new_password = $password;
+    $this->pass = Yii::$app->security->generatePasswordHash($password);
+  }
+
+  public function afterSave($insert, $changedAttributes)
+  {
+    $request = Yii::$app->request;
+    if (isset($_POST) && count($_POST) > 0) {
+      $post = $request->post("Users");
+      if (is_string($this->roles)) {
+        $this->roles = [$this->roles];
+      };
+      if (
+          !empty($post) &&
+          (
+              $insert ||
+              !in_array($post['roles'], $this->roles)
+          )
+      ) {
+        Yii::$app->authManager->revokeAll($this->id);
+        if ($post['roles'] != -1) {
+          $userRole = Yii::$app->authManager->getRole($post['roles']);
+          Yii::$app->authManager->assign($userRole, $this->id);
+        }
+      }
+
+      if ($request->post("Users") && Yii::$app->user->can('CanChangeCafe')) {
+        UserCafe::deleteAll(['user_id' => $this->id]);
+        if ($request->post("cafe")) {
+          foreach ($request->post("cafe") as $cafe) {
+            $uk = new UserCafe;
+            $uk->user_id = $this->id;
+            $uk->cafe_id = (int)$cafe;
+            $uk->save();
+          }
+        }
+      }
+    }
+    parent::afterSave($insert, $changedAttributes); // TODO: Change the autogenerated stub
+  }
+
+  /**
+   * Действия, выполняющиеся после авторизации.
+   * Сохранение IP адреса и даты авторизации.
+   *
+   * Для активации текущего обновления необходимо
+   * повесить текущую функцию на событие 'on afterLogin'
+   * компонента user в конфигурационном файле.
+   * @param $id - ID пользователя
+   */
+  public static function afterLogin($id)
+  {
+    //ddd($id);
+    /*if (
+        !Yii::$app->session->get('admin_id') ||
+        Yii::$app->session->get('admin_id') != Yii::$app->user->id
+    ) {
+      self::getDb()->createCommand()->update(self::tableName(), [
+          'last_ip' => $_SERVER["REMOTE_ADDR"],
+          'last_login' => date('Y-m-d H:i:s'),
+      ], ['uid' => $id])->execute();
+    }*/
+  }
+
+  /**
+   * Действия, выполняющиеся после выхода.
+   * @param $id - ID пользователя
+   */
+  public static function afterLogout($id)
+  {
+    $cookies = Yii::$app->response->cookies;
+    $cookies->remove('cafe_id');
+    $cookies->remove(\frontend\modules\selfservice\Module::SESSION_MODE_KEY);
+  }
+
+  /**
+   * @return \yii\db\ActiveQuery
+   */
+  public function getPolls()
+  {
+    return $this->hasMany(Polls::className(), ['user_id' => 'id']);
+  }
+
+  /**
+   * @return array
+   */
+  public static function getCafesList($franchisee_id = false)
+  {
+    $allCafe = Yii::$app->user->can('AllCafeShow');
+    $allFranchisee = Yii::$app->user->can('AllFranchisee');
+
+    /* @var $user Users */
+    $user = Yii::$app->user->identity;
+
+    if (!$allFranchisee) {
+      $franchisee_id = $user->franchisee_id;
+    }
+
+    if (!$allCafe && !$allFranchisee) {
+      $cafeQuery = $user->getCafes();
+      $cafeQuery->leftJoin('cafe', 'cafe.id = user_cafe.cafe_id');
+    } else {
+      $cafeQuery = Cafe::find();
+    }
+
+    $cafeQuery->leftJoin('franchisee', 'franchisee.id = cafe.franchisee_id');
+
+    if ($franchisee_id) {
+      $cafeQuery->andwhere(['cafe.franchisee_id' => $franchisee_id]);
+    }
+
+    $cafes = $cafeQuery
+        ->addSelect([
+            'cafe.id',
+            'cafe.name',
+            'cafe.franchisee_id as franchisee_id',
+            'franchisee.name as franchisee_name',
+        ])
+        ->asArray()
+        ->all();
+
+    return $cafes;
+  }
+
+  public function setRoles($value)
+  {
+    $this->_roles = $value;
+  }
+
+  public function getRoles()
+  {
+    if (!$this->_roles) {
+      $this->_roles = $this->getRoleOfUserArray();
+    }
+    return $this->_roles;
+  }
+
+  public function getCafes()
+  {
+    return $this->hasMany(UserCafe::className(), ['user_id' => 'id']);
+  }
+
+  /**
+   * @return \yii\db\ActiveQuery
+   */
+  public function getUserTimetables()
+  {
+    return $this->hasMany(UserTimetable::className(), ['user_id' => 'id']);
+  }
+
+  /**
+   * Finds an identity by the given ID.
+   *
+   * @param string|integer $id the ID to be looked for
+   * @return IdentityInterface|null the identity object that matches the given ID.
+   */
+  public static function findIdentity($id)
+  {
+    return static::findOne($id);
+  }
+
+  /**
+   * Finds an identity by the given token.
+   *
+   * @param string $token the token to be looked for
+   * @return IdentityInterface|null the identity object that matches the given token.
+   */
+  public static function findIdentityByAccessToken($token, $type = null)
+  {
+    return static::findOne(['access_token' => $token]);
+  }
+
+  /**
+   * @return int|string current user ID
+   */
+  public function getId()
+  {
+    return $this->id;
+  }
+
+
+  /**
+   * @return string current user auth key
+   */
+  public function getAuthKey()
+  {
+    return $this->auth_key;
+  }
+
+  /**
+   * @param string $authKey
+   * @return boolean if auth key is valid for current user
+   */
+  public function validateAuthKey($authKey)
+  {
+    return $this->getAuthKey() === $authKey;
+  }
+
+  public static function findByuser($user)
+  {
+    return static::findOne(['name' => $user, 'state' => 0]);
+  }
+
+
+  /**
+   * Validates password
+   *
+   * @param string $password password to validate
+   * @return bool if password provided is valid for current user
+   */
+  public function validatePassword($password)
+  {
+    return Yii::$app->security->validatePassword($password, $this->pass);
+  }
+
+  public function getActiveColumn($table)
+  {
+    return UserTablseColumn::getActiveColumn($table);
+  }
+
+  public function setActiveColumn($table, $cols)
+  {
+    return UserTablseColumn::setActiveColumn($table, $cols);
+  }
+
+  public function getRoleOfUserArray($id = false)
+  {
+    if ($id == false) $id = $this->id;
+    if (!isset($this->role) || !is_array($this->role)) {
+      $roles = (new Query)
+          ->select('item_name')
+          ->from('auth_assignment')
+          ->where(['user_id' => $id])
+          ->all();
+      $this->role = array();
+      if ($roles) {
+        foreach ($roles as $role) {
+          $this->role[] = $role['item_name'];
+        }
+      }
+    }
+    return $this->role;
+  }
+
+  public static function getRoleList($isSearch = true, $testAllCafe = false)
+  {
+    $roles_array = [];
+    $allCafeShow_array = [];
+
+    $rolesQuery = (new Query)
+        ->select('name,child as showAllCafe')
+        ->from('auth_item')
+        ->leftJoin('auth_item_child', 'auth_item_child.parent=auth_item.name AND auth_item_child.child=\'AllCafeShow\'')
+        ->where(['type' => 1]);
+
+    if (!Yii::$app->user->can('AllFranchisee')) {
+      /* @var $franchisee Franchisee */
+      /*$franchisee = Yii::$app->user->identity->franchisee;
+      if ($franchisee) {
+        $rolesQuery->andWhere(['in', 'name', $franchisee->getRolesArray()]);
+      }*/
+      $notRole = [
+          'root'
+      ];
+      if(!Yii::$app->user->can('admin') && !$isSearch){
+        $notRole[] = 'admin';
+      }
+      $rolesQuery->andWhere([
+          'not',
+          ['name' => $notRole]
+      ]);
+    }
+
+    $roles = $rolesQuery->all();
+    if ($isSearch) {
+      $roles_array[''] = Yii::t('app', "ALL");
+    }
+
+    $roles_array['-1'] = Yii::t('app', "Cafe manager");
+    //ddd($allCafeShow_array,$roles);
+    if ($roles) {
+      foreach ($roles as $role) {
+        $roles_array[$role['name']] = Yii::t('app', "role_" . $role['name']);
+        $allCafeShow_array[$role['name']] = ['allCafe' => !is_null($role['showAllCafe'])];
+      }
+    }
+
+    if ($testAllCafe) {
+      return [
+          'role' => $roles_array,
+          'allCafe' => $allCafeShow_array
+      ];
+    } else {
+      return $roles_array;
+    }
+  }
+
+  public function getRoleOfUser($id, $roleName)
+  {
+    $this->getRoleOfUserArray($id);
+    return in_array($roleName, $this->roles);
+  }
+
+  /**
+   * @return \yii\db\ActiveQuery
+   */
+  public function getFranchisee()
+  {
+    return $this->hasOne(Franchisee::className(), ['id' => 'franchisee_id']);
+  }
+
+  public function canGetProperty($name, $checkVars = true, $checkBehaviors = true)
+  {
+    return parent::canGetProperty($name, $checkVars, $checkBehaviors); // TODO: Change the autogenerated stub
+  }
+
+  public function getDuration($delta = false)
+  {
+    $sum = UserLog::find()
+        ->where([
+            'user_id' => $this->id
+        ]);
+
+    if ($delta) {
+      $sum->andWhere([
+              'or',
+              ['>', 'finish', date('Y-m-d H:i:s', strtotime('-' . $delta, time()))],
+              ['finish' => null]
+          ]
+      );
+    }
+
+    $sum
+        ->select([
+            'duration' => 'SUM(UNIX_TIMESTAMP(if(finish is null, STR_TO_DATE(:now,"%Y-%m-%d %h:%i:%s") ,finish)) - UNIX_TIMESTAMP(`start`))'
+        ])
+        ->params(['now' => date('Y-m-d H:i:s')]);
+
+    $sum = $sum->asArray()->one();
+    if (!$sum) return;
+    return $sum['duration'];
+  }
+
+  public static function test($fullResult = true)
+  {
+    $users = Users::find()
+        ->leftJoin('auth_assignment', 'user.id= auth_assignment.user_id')
+        ->leftJoin('user_cafe', 'user.id= user_cafe.user_id')
+        ->where([
+            'or',
+            'user_cafe.cafe_id=\'' . Yii::$app->cafe->id . '\'',
+            ['user_cafe.cafe_id' => null]
+        ])
+        ->andWhere(['franchisee_id' => Yii::$app->cafe->franchiseeId])
+        ->select('auth_assignment.item_name as user_group,count(user.id) as cnt')
+        ->groupBy('auth_assignment.item_name')
+        ->asArray()
+        ->all();
+
+    $out = [];
+    $data = [
+        'title' => 'Users',
+        'description' => 'Users description',
+        'icon' => 'fa fa-user',
+        'buttons' => [
+            [
+                'name' => 'add',
+                'modal' => true,
+                'href' => '/users/admin/create'
+            ]
+        ],
+        'error' => true,
+        'infoline' => Yii::t('config', "no user manager in cafe"),
+    ];
+
+    foreach ($users as $user) {
+      if (empty($user['user_group'])) {
+        if (!$fullResult) {
+          return true;
+        }
+        $data['error'] = false;
+        $user['user_group'] = Yii::t('app', "Cafe manager");
+      }
+      $out[] = Yii::t('config', "{user_group}: {cnt}", $user);
+    }
+
+    if (!$fullResult) {
+      return false;
+    }
+
+    if (!$data['error']) {
+      $data['infoline'] = implode('<br>', $out);
+    }
+
+    return $data;
+  }
+}
+

@@ -1,0 +1,32 @@
+{{ use('yii\bootstrap\ActiveForm') }}
+<div class="view_modal">
+
+{% if _canCafe('shopAll') %}
+<div class="fixed-tiles-shop">
+  {% if model.shopSale and model.shopSale.transactions %}
+  <div>
+	<a href="shop/storefront/index?visit_id={{ model.id }}&cart=1" class="mintile bg-amber cart-open-link" data-click="transform">
+	<span class="qty_shop">{{ model.shopSale.quantitySummary }}</span>
+          <span class="tile-content icon">
+        <span class="icon-metro-basket"></span>
+      </span>
+        <span class="brand">
+      <span class="tile-label"> {{ t('app', 'Cart') }}</span>
+    </span>
+      </a>
+	</div>
+  {% endif %}
+  
+ {% include 'main/widgets/shop_storefront/block.twig' %}
+ 
+</div>  
+{% endif %}
+
+{% set form = active_form_begin() %}
+  {{ form.field(model, 'id').hiddenInput().label(false, {'style':'display:none'})|raw }}
+{{ active_form_end() }}
+
+{% include '_visit_info.twig' %}
+
+{% include '_transaction_list.twig' %}
+</div>

@@ -1,0 +1,20 @@
+<div id="waittask_{{ code }}" class="waittask" code="{{ code }}">
+  {{ text }}
+  <div class="but_task">
+    <div class="pull-left ">
+      <a class="btn but_yes" href="/tasks/default/finish?id={{ id }}&isMain=1" role="modal-remote">
+        <i class="icon-metro-checkmark text-success abba2"></i>
+        <div class="text_but_task">
+          {{ t("main",'completed') }}
+        </div>
+      </a>
+    </div>
+    <div class="pull-right ">
+      <a class="btn but_no" href="/tasks/default/finish?id={{ id }}&isMain=1&failed=1" role="modal-remote">
+        <i class="icon-metro-cancel-2 text-warning abba"></i>
+        <div class="text_but_task">
+          {{ t("main",'failed') }}
+        </div>
+      </a>
+    </div>
+  </div>

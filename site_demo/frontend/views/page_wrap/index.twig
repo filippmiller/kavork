@@ -1,0 +1,110 @@
+{{ use('yii\bootstrap\Modal') }}
+
+{{ CrudRegister(this) }}
+
+<script>
+  var is_main = true;
+</script>
+
+{% include 'main/fixed_block.twig' %}
+
+<div class="text-center fg-white">
+  <h1 class="logos"><img src="{{ this.cafe.getLogo() }}" alt="logo" class="logo"></h1>
+  <div>
+    <div class="col-md-offset-3 col-md-6">
+      <h5 class="padding-off-bottom margin-top-10 hid_text">{{ this.cafe.name }}</h4>
+    </div>
+    <div class="margin-right-15 text-right">
+      {% if not(this.all_params.forAllCafe) %}
+        {% if _can('ChooseCafe') %}
+          <div class="text-right margin-bottom-20">
+            <a role="modal-remote" class="btn btn-science-blue ch_cafe" href="/change-cafe">
+              <i class="fa fa-cube"></i> <i class="fa fa-exchange"></i> <i class="fa fa-cube"></i>
+              {{ t('app','Change cafe') }}
+            </a>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+<div class="start-screen-container manager_page" id="stop_scroll">
+  <div class="col-md-6 screen_pad">
+    <div class="row manager_min">
+      <div class="col-md-12">
+        <h4 class="tile-group-title">{{ t("main","System management") }}</h4>
+        <div class="flex_title">{% include 'main/manager.twig' %}</div>
+      </div>
+    </div>
+    {% if(_can('MainAdmin')) %}
+    <div class="row manager_min2" id="admin_panel">
+      <div class="col-md-12">
+        <h4>
+          <div class="tile-group-title">{{ t("main","Admin controls") }}<span class="pull-right"><a
+                  class="btn btn-xs btn-science-blue close_admin_panel">&#215;
+                <!--<small> {{ t("main","Close admin panel") }}</small>--></a></span></div>
+        </h4>
+        <hr class="hrmin">
+        <div class="flex_title">{% include 'main/admin.twig' %}</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 screen_pad">
+    <div class="row work_parts">
+      <div class="col-md-12">
+        <h4 class="tile-group-title">
+          {{ t("main","Visitors in Anticafe") }}
+
+          <div class="pull-right">
+            <!--{% if _canCafe('unite') %}
+              {% include 'main/widgets/unite/toggle_button.twig' %}
+            {% endif %}-->
+
+            {% if _canCafe('shopMerchantOnMain') %}
+              {% include 'main/widgets/shop_merchant/toggle_button.twig' %}
+            {% endif %}
+
+          </div>
+        </h4>
+
+        {% if _canCafe('shopAll') %}
+          {% if _canCafe('shopMerchantOnMain') %}
+            {% include 'main/widgets/shop_merchant/block.twig' %}
+          {% endif %}
+        {% endif %}
+
+
+        <div class="form-group">
+          <input type="text" class="form-control" id="search_visitor" placeholder='{{ t("main","Search visitors") }}'
+                 required="" autocomplete="off">
+        </div>
+
+
+        {% include 'main/logs.twig' %}
+
+        {% if _canCafe('adminLog') %}
+          {% include 'main/adminLog.twig' %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{{ Modal_begin({
+  "id":"ajaxCrudModal",
+  "footer":"",
+}) }}
+{{ Modal_end() }}
+
+{{ Modal_begin({
+  "id":"secondModal",
+  "footer":"",
+  'options' : {
+    'tabindex' : false,
+  },
+  'size' : 'modal-lg',
+}) }}
+{{ Modal_end() }}

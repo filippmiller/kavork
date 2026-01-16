@@ -1,0 +1,11 @@
+<div id="waitpay_{{ code }}" class="waitpay">
+  {{ l_name }} {{ f_name }}
+  <br>
+  {{ t('main','to pay') }}: {{ _nf(cost) }} {{ currency }}
+
+
+  <div>
+    <a class="btn btn-default pull-left" href="/visits/pay?id={{ id }}&isMain=1"
+       role="modal-remote">{{ t('main','View') }}</a>
+  </div>
+</div>

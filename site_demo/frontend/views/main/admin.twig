@@ -1,0 +1,130 @@
+{% if(_can('FranchiseePaymentsView')) %}
+  {{ macro.tile('/franchisee/payments','bg-prussian-blue','My account',{icon:'fa fa-user'}) }}
+{% endif %}
+
+{% if(_can('root')) %}
+  {{ macro.tile('/permit/access/role','bg-prussian-blue','Role user',{icon:'icon-metro-accessibility'}) }}
+{% endif %}
+
+{% if(_can('CafeParamsView')) %}
+  {{ macro.tile('/i18n/default','bg-prussian-blue','Translations',{icon:'fa fa-language'}) }}
+{% endif %}
+
+{% if(_can('CafeParamsView')) %}
+  {{ macro.tile('/cafe/admin-params','bg-prussian-blue','Region params',{icon:'glyphicon glyphicon-map-marker'}) }}
+{% endif %}
+
+{% if(_can('FranchiseeView')) %}
+  {{ macro.tile('/franchisee/admin/index','bg-science-blue','Franchisee list',{icon:'fa fa-cubes'}) }}
+{% endif %}
+
+{% if(_can('CafeView')) %}
+  {{ macro.tile('/cafe/admin/index','bg-science-blue','Cafes',{icon:'fa fa-cube'}) }}
+{% endif %}
+
+{% if(_can('TariffsView')) %}
+  {{ macro.tile('/tariffs/admin/index','bg-science-blue','Tariffs',{icon:'fa fa-sliders'}) }}
+{% endif %}
+
+{% if (_canCafe('ReportView')) %}
+  {% if (_can('ReportView')) %}
+    {{ macro.tile('/report/admin/index','bg-science-blue', 'Report', {icon:'fa fa-area-chart'}) }}
+  {% endif %}
+{% endif %}
+
+{% if (_canCafe('TransactionsView')) %}
+  {% if (_can('TransactionView')) %}
+    {{ macro.tile('/report/admin/transactions','bg-science-blue', 'Transactions', {icon:'fa fa-sort-amount-desc'}) }}
+  {% endif %}
+{% endif %}
+
+{% if (_can('CafeUpdate')) %}
+  {{ macro.tile('/cafe/admin/configuration','bg-science-blue', cafe('initSuccessful')?'Configuration':'Start init', {icon:'icon-metro-cog',modal:true}) }}
+
+  {% if not cafe('initSuccessful') %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function (event) {
+        modal_open('/cafe/admin/configuration');
+      });
+    </script>
+  {% endif %}
+{% endif %}
+
+{% if(_can('UsersView')) %}
+  {{ macro.tile('/users/admin/index','bg-steel','Users',{icon:'fa fa-users'}) }}
+{% endif %}  
+
+{% if (_canCafe('adminLog')) %}
+  {% if (_can('UserLogView')) %}
+    {{ macro.tile('/users/log/index','bg-steel', 'Admin sessions', {icon:'fa fa-clock-o'}) }}
+  {% endif %}
+{% endif %}
+
+
+<!--{% if (_canCafe('adminTable')) %}
+    {{ macro.tile('/users/time-card/index','bg-steel', 'Time Card', {icon:'fa fa-clock-o'}) }}
+{% endif %}-->
+
+{% if (_canCafe('Timetable')) %}
+  {% if (_can('UserTimetableView')) %}
+    {{ macro.tile('/timetable/admin','bg-steel', 'Timetable', {icon:'icon-metro-calendar'}) }}
+  {% endif %}
+{% endif %}
+
+{% if (_canCafe('task')) %}
+  {% if (_can('TaskView')) %}
+    {{ macro.tile('/tasks/admin/index','bg-steel', 'Tasks', {icon:'icon-metro-alarm'}) }}
+  {% endif %}
+{% endif %}
+
+{% if(_can('VisitorView')) %}
+  {{ macro.tile('/visitor/admin/index','bg-lima','Data visitors',{icon:'icon-metro-drawer-2'}) }}
+{% endif %}
+
+{% if(_can('VisitorLogView')) %}
+  {{ macro.tile('/visits/admin/index','bg-lima','Visits',{icon:'icon-metro-clipboard-2'}) }}
+{% endif %}
+
+{% if (_canCafe('Polls')) %}
+  {% if (_can('PollsView')) %}
+    {{ macro.tile('/polls/admin/index','bg-lima', 'Polls', {icon:'icon-metro-pie'}) }}
+  {% endif %}
+{% endif %}
+
+{% if(_can('ShopInventoryView') and _canCafe('shopAll')) %}
+  {{ macro.tile('/shop/inventory/shop','bg-amber', 'Products', {icon:'icon-metro-box'}) }}
+  {{ macro.tile('/shop/sale/index','bg-amber', 'Shop Sale', {icon:'icon-metro-basket'}) }}
+{% endif %}
+
+{% if (_can('ShopView') and _canCafe("merchandiseAll")) %}
+  {{ macro.tile('/shop/inventory/index','bg-amber', 'Shop Inventory', {icon:'icon icon-forklift-with-boxes'}) }}
+{% endif %}
+  
+{% if (_canCafe('TemplatesView')) %}
+  {% if (_can('TemplateView')) %}
+    {{ macro.tile('/templates/admin/index','bg-blue','Templates',{icon:'fa fa-envelope'}) }}
+  {% endif %}
+{% endif %}
+
+{% if (_canCafe('mails')) %}
+  {% if (_can('TemplateMailView')) %}
+    {{ macro.tile('/mails/admin/index','bg-blue', 'Mails', {icon:'fa fa-send'}) }}
+  {% endif %}
+{% endif %}
+
+
+{% if (_can('SelfServiceModeEnter')) %}
+ {% if ((_canCafe('selfServiceLoginOnlyMode')) or (_canCafe('selfServiceLogoutOnlyMode'))) %}
+  {{ macro.tile('/selfservice/default/index','bg-science-blue', 'Self Service', {icon:'icon-metro-screen',modal:true}) }}
+{% endif %}
+{% endif %}
+
+{% if (_can('Announcement')) %}
+ {% if  ((_canCafe('selfServiceLoginOnlyMode')) and (_canCafe('Announcement'))) %}
+    {{ macro.tile('/cafe/admin/selfmode-banner','bg-science-blue', 'Selfmode banner', {icon:'fa fa-bullhorn'}) }}
+ {% endif %}
+{% endif %}
+
+{% if ((_can('SelfServiceModeEnter')) and (_canCafe('Tips'))) %}
+  {{ macro.tile('/visits/admin/tips','bg-science-blue', 'Tips', {icon:'icon icon-tips'}) }}
+{% endif %}

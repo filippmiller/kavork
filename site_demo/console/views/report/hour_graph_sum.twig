@@ -1,0 +1,49 @@
+{% if data %}
+  <table width="{{ width }}" style="margin:0 auto 0 auto">
+    <tr>
+      <td style="background: #ffffff;
+    padding: 0 16px 0 16px;
+    font-family: Open Sans,Helvetica,sans-serif;
+    font-size: 21px;
+    line-height: 21px;
+    height: 40px;
+    color: #3d454c;
+    text-align: center;
+    border-collapse: collapse;">{{ title }}</td>
+    </tr>
+    {% set max_sum =0 %}
+    {% for block in data %}
+      {% if max_sum<block.sum %}
+        {% set max_sum=block.sum %}
+      {% endif %}
+    {% endfor %}
+    <tr>
+	<td>
+      <table bgcolor="#2597CE" border="0" cellpadding="0" cellspacing="0" width="{{ width }}" style="border-spacing:0;border-collapse:collapse;table-layout:auto;margin:0 auto"><tbody>
+        {% for block in data %}
+          {% set w = round(100*(block.sum/max_sum)) %}
+        <tr>
+          <td width="80" style="border-collapse:collapse">
+            <table bgcolor="#2597CE" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-spacing:0;border-collapse:collapse;table-layout:auto;margin:0 auto"><tr>
+                <td align="left" height="42" width="100%" style="font-family:Open Sans,Helvetica,sans-serif;font-size:14px;line-height:18px;font-weight:600;color:#ffffff!important;white-space:nowrap;padding:0 15px 0;border-collapse:collapse">
+                  {{ time_char(block.gr) }}
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td align="left" bgcolor="#ffffff" width="400" style="border-collapse:collapse">
+            <table width="{{ width - 80 }}" align="left" border="0" cellpadding="0" cellspacing="0" style="border-spacing:0;border-collapse:collapse;table-layout:auto;margin:0 auto"><tbody><tr>
+                <td align="right" height="42" width="{{ w }}%" bgcolor="#2597CE" style="font-family:Open Sans,Helvetica,sans-serif;font-size:14px;line-height:18px;font-weight:600;color:#ffffff!important;white-space:nowrap;padding:0 15px 0;border-collapse:collapse">
+                  {{ _nf(block.sum)|raw }}
+                </td>
+                <td width="{{ 100-w }}%" ></td>
+              </tr></table>
+          </td>
+        </tr>
+		<tr><td bgcolor="#ffffff" colspan="2" height="1" style="font-size:0;line-height:0;border-collapse:collapse">&nbsp;</td></tr>
+        {% endfor %}
+      </table>
+	  </td>
+    </tr>
+  </table>
+{% endif %}

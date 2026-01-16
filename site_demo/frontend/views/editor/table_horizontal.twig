@@ -1,0 +1,11 @@
+{% if label=="display" %}
+<table class="table" cellspacing="0" cellpadding="3" border="0" width="100%" style="border-collapse:collapse;border:1px solid transparent; border-bottom:1px solid #cccccc;width:100%;font-size: 12px;color: rgb(0,0,0);line-height: 14px;letter-spacing: -0.3px;">
+  <tr>
+    {% for item in items %}
+      {% if not (item in hidden) %}
+        <th align="{{ align }}" style="border-bottom:1px solid #cccccc;">{{ t('editor_render',item) }}</th>
+      {% endif %}
+    {% endfor %}
+  </tr>
+ </table> 
+{% endif %}

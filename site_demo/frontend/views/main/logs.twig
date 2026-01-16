@@ -1,0 +1,13 @@
+<div id="visitors_log" class="tile-group">
+  <div class="tile-group-title2">
+    {{ t('main','Visitors') }}
+    <span class="text-right">
+    {% if _canCafe('unite') %}
+      {% include 'main/widgets/unite/toggle_button.twig' %}
+      {% include 'main/widgets/unite/calculation_marked_button.twig' %}
+    {% endif %}
+	</span>
+  </div>
+  <hr class="hrmin">
+
+</div>

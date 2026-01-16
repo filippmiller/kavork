@@ -1,0 +1,25 @@
+<?php
+  return array (
+  'counter' => '#',
+  'name' => 'имя',
+  'sum' => 'сумма',
+  'vat' => 'налог',
+  'count' => 'кол-во',
+  'total' => 'Итого',
+  'time' => 'время',
+  'certificate' => 'сертификат',
+  'guest_chi' => 'дети',
+  'guest_m' => 'взрослые',
+  'vat_total' => 'налог',
+  'cost' => 'стоимость',
+  'pause' => 'пауза',
+  'duration' => 'время',
+  'finish_time' => 'выход',
+  'add_time' => 'вход',
+  'tvq' => 'tvq',
+  'tps' => 'tps',
+  'global_total' => 'Итогo',
+  'prepay' => 'предоплата',
+  'to_pay' => 'к оплате',
+);
+?>

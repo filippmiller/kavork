@@ -1,0 +1,23 @@
+{% if model.finish_time %}
+  {% include '_visit_is_stoped.twig' %}
+{% endif %}
+
+{% if model.isUniteMaster %}
+  {% include '_visit_info_unite.twig' %}
+{% else %}
+  {% include '_visit_info.twig' %}
+{% endif %}
+
+{{ use('yii\bootstrap\ActiveForm') }}
+
+{% set form = active_form_begin() %}
+  {{ form.field(model, 'id').hiddenInput().label(false, {'style':'display:none'})|raw }}
+{{ active_form_end() }}
+
+{% if model.send_mail_status == 1 %}
+<h6 class="mail_to sending">{{t('app', 'Mail sended')}} {{ visitor.email?visitor.email:model.notice.visitor_email }}</h6>
+{% endif  %}
+
+{% if model.send_mail_status == 2 %}
+  <h6 class="mail_to no_sending">{{t('app', 'Mail NO sended')}}</h6>
+{% endif  %}

@@ -1,0 +1,55 @@
+{{  use ("yii\bootstrap\Modal") }}
+
+{% if not this.all_params.searchModel %}
+  {{ CrudRegister(this) }}
+{% endif %}
+
+<div class="container-fluid navbar-docs-push-down page_list">
+  <div class="panel panel-default-bg">
+   
+    <div class="panel-body rock">
+	<div class="panel-heading">
+	<div class="row flex_head">
+	<div class="col-md-4">
+      <h3 class="panel-title hid_text">
+        <a href="{{ _if (this.all_params.back_url,this.all_params.back_url,"/") }}" class="hover-underline-none "><i class="icon-metro-arrow-left-3"></i></a> 
+        {{ this.all_params.title }}
+		</h3>
+	</div>	
+        
+	<div class="col-md-4 text-center">
+
+	{% if not(this.all_params.forAllCafe) %}
+          {% if _can('ChooseCafe') %}
+            <div class="title hid_text">{{ this.cafe.name }}</div>
+		  {% endif %}
+    {% endif %}
+	</div>
+	<div class="cafe_select">	
+	{% if not(this.all_params.forAllCafe) %}
+          {% if _can('ChooseCafe') %}
+            <a role="modal-remote" class="btn btn-science-blue ch_cafe" href="/change-cafe">
+            <i class="fa fa-cube"></i> <i class="fa fa-exchange"></i> <i class="fa fa-cube"></i>
+			 {{ t('app','Change cafe') }}
+			</a>
+		  {% endif %}
+    {% endif %}
+			 <div class="language_main">{% include "lang_change.twig" %}</div>
+	</div>
+    </div>
+	<div class="clearfix"></div>
+	</div>
+	
+      {{ content|raw }}
+    </div>
+  </div>
+</div>
+
+
+{% if not this.all_params.searchModel %}
+  {{ Modal_begin({
+  "id":"ajaxCrudModal",
+  "footer":""})
+  }}
+  {{ Modal_end()}}
+{% endif %}

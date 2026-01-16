@@ -1,0 +1,68 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+/.idea/
+/.vscode/
+/dist/
+/build/
+/htmlcov/
+/coverage/
+.env
+.python-version
+/.mypy_cache/
+/.pytest_cache/
+/alembic.sqlite
+# yii console commands
+/yii_test
+/yii_test.bat
+
+# phpstorm project files
+.idea
+
+# netbeans project files
+nbproject
+
+# zend studio for eclipse project files
+.buildpath
+.project
+.settings
+
+# windows thumbnail cache
+Thumbs.db
+
+# composer vendor dir
+/vendor
+
+# composer itself is not needed
+composer.phar
+
+# Mac DS_Store Files
+.DS_Store
+
+# phpunit itself is not needed
+phpunit.phar
+# local phpunit config
+/phpunit.xml
+
+# vagrant runtime
+/.vagrant
+
+
+start_param.php
+*-local.php
+
+.composer
+composer.lock
+
+public_html
+frontend/web/img/logos
+
+*.log.*
+
+.htaccess
+*.zip
+.cache/
+.bash_history
+.composer/
+cgi-bin/

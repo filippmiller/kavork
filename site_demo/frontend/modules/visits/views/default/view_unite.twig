@@ -1,0 +1,14 @@
+{{ use('yii\bootstrap\ActiveForm') }}
+
+{% if false and _canCafe('shopAll') %}
+  {% include 'main/widgets/shop_storefront/block.twig' %}
+{% endif %}
+
+{% set form = active_form_begin({action: 'visits/stop-unite'}) %}
+  {{ html.hiddenInput('visit_ids', visit_ids|join(','))|raw }}
+
+  {{ form.field(model, 'pay_man').dropDownList(model.unite_people)|raw }}
+
+{{ active_form_end() }}
+
+{% include '_visit_info_unite.twig' %}

@@ -1,0 +1,28 @@
+<?php
+  return array (
+  'counter' => '#',
+  'name' => 'name',
+  'sum' => 'sum',
+  'vat' => 'vat',
+  'count' => 'count',
+  'total' => 'Total',
+  'time' => 'time',
+  'certificate' => 'certificate',
+  'guest_chi' => 'child',
+  'guest_m' => 'adults',
+  'vat_total' => 'vat',
+  'cost' => 'cost',
+  'pause' => 'pause',
+  'duration' => 'time',
+  'finish_time' => 'output',
+  'add_time' => 'input',
+  'tvq' => 'tvq',
+  'tps' => 'tps',
+  'global_total' => 'Total',
+  'Tps' => 'Tps',
+  'Tvq' => 'Tvq',
+  'to_pay' => 'to pay',
+  'prepay' => 'prepay',
+  'price' => 'price',
+);
+?>

@@ -1,0 +1,26 @@
+{{ use('yii/bootstrap') }}
+{{ use('yii\bootstrap\ActiveForm') }}
+{{ register_asset_bundle('frontend/assets/AppAsset') }}
+{{   void(this.beginPage()) }}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:fb="http://ogp.me/ns/fb#"
+	  xmlns:og="http://ogp.me/ns#"
+	  lang="{{ app.language }}">
+
+{% import "macro.twig" as macro %}
+{% include 'base/head.twig' %}
+
+<body class="{{ this.all_params.screen_class }} modernui-dark-bg">
+
+{% if not this.all_params.hide_lang_change_def %}
+	{% include "lang_change.twig" %}
+{% endif %}
+
+{{ content|raw }}
+
+{{ void(this.endBody()) }}
+{% include 'base/footer.twig' %}
+</body>
+</html>
+{{   void(this.endPage()) }}

@@ -1,0 +1,40 @@
+<div id="crud-datatable-pjax" data-url="/cafe/admin/configuration">
+{% if not initSuccessful %}
+<div class="row">
+<div class="col-md-12">
+<div class="text_unit">{{ t('config','Congratulations on creating a new franchise department.') }}
+</div>
+</div>
+</div>
+{% endif %}
+  <table class="table table-responsive quick_conf list_task">
+    {% for item in data %}
+      <tr style="vertical-align:middle;" class="stay {{ _if(item.error,'error','') }}">
+        <td>
+		
+		<div class="quickstart"> <div class="icon_quickstart"><i class="{{ item.icon | raw }}"></i></div>
+          <div class="float_quickstart">
+		 
+		  <h5>{{ t('config',item.title) }}</h5>
+		  <div class="text_task">{{ t('config',item.description) |raw }}</div>
+		 </div>
+		  <div class="who_closed_task">
+              {% for button in item.buttons %}
+                <a class="btn btn-default btn-xs"
+                   href="{{ button.href | raw }}" {{ _if(button.modal,'role="modal-new"')|raw }}>
+                  {{ t('config',button.name) }}
+                </a>
+              {% endfor %}
+            </div>
+	     </div>
+         <div class="bef_time">
+            {{ item.infoline | raw }}
+
+           
+
+          </div>
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+</div>
