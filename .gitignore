@@ -48,6 +48,10 @@ Thumbs.db
 *-local.php
 start_param.php
 
+# Exception: include deploy-config folder for Railway
+!deploy-config/
+!deploy-config/*
+
 # Cache
 .cache/
 site_demo/.vagrant/
