@@ -1,18 +1,16 @@
-from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel, EmailStr
 
 
 class UserBase(BaseModel):
-    """Base user schema for cafe staff."""
+    """Base user schema for cafe staff (matches MySQL schema)."""
 
     id: int
-    name: str
+    user: str  # username/login
     email: Optional[EmailStr] = None
-    franchisee_id: int
-    is_active: bool = True
-    last_login_at: Optional[datetime] = None
+    role: Optional[int] = None
+    state: Optional[int] = None  # 0=active
 
 
 class AuthTokens(BaseModel):
@@ -38,11 +36,10 @@ class AuthMeResponse(UserBase):
     def mock() -> "AuthMeResponse":
         return AuthMeResponse(
             id=0,
-            name="demo_user",
+            user="demo_user",
             email="demo@example.com",
-            franchisee_id=1,
-            is_active=True,
-            last_login_at=None,
+            role=0,
+            state=0,
         )
 
 

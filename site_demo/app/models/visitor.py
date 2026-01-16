@@ -1,40 +1,31 @@
-from datetime import datetime
-from typing import TYPE_CHECKING
-
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Integer, Text
+from sqlalchemy.orm import Mapped, mapped_column
 
 from ..db import Base
 
-if TYPE_CHECKING:
-    from .franchisee import Franchisee
-
 
 class Visitor(Base):
-    """Customer/visitor of the cafe."""
+    """Customer/visitor of the cafe (matches existing MySQL schema)."""
 
     __tablename__ = "visitor"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    franchisee_id: Mapped[int] = mapped_column(Integer, ForeignKey("franchisee.id"), nullable=False)
-    code: Mapped[str] = mapped_column(String(50), nullable=False, unique=True)
-    first_name: Mapped[str] = mapped_column(String(255), nullable=False)
-    last_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
-    email: Mapped[str | None] = mapped_column(String(255), nullable=True)
-    phone: Mapped[str | None] = mapped_column(String(20), nullable=True, unique=True)
+    f_name: Mapped[str | None] = mapped_column(Text, nullable=True)
+    l_name: Mapped[str | None] = mapped_column(Text, nullable=True)
+    code: Mapped[str | None] = mapped_column(Text, nullable=True)
+    email: Mapped[str | None] = mapped_column(Text, nullable=True)
+    phone: Mapped[str | None] = mapped_column(Text, nullable=True)
+    creat: Mapped[int | None] = mapped_column(Integer, nullable=True)  # timestamp
     notice: Mapped[str | None] = mapped_column(Text, nullable=True)
-    language: Mapped[str] = mapped_column(String(5), default="en")
-    visit_count: Mapped[int] = mapped_column(Integer, default=0)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-
-    # Relationships
-    franchisee: Mapped["Franchisee"] = relationship("Franchisee", back_populates="visitors")
+    lang: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
     @property
     def full_name(self) -> str:
-        parts = [self.first_name]
-        if self.last_name:
-            parts.append(self.last_name)
+        parts = []
+        if self.f_name:
+            parts.append(self.f_name)
+        if self.l_name:
+            parts.append(self.l_name)
         return " ".join(parts)
 
     def __repr__(self) -> str:

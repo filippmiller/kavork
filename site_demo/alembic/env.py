@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
+# Add parent directory to path for 'app' module imports
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
 from logging.config import fileConfig
 
 from alembic import context
@@ -18,7 +24,7 @@ if config.config_file_name is not None:
 target_metadata = db.Base.metadata
 
 settings = get_settings()
-config.set_main_option("sqlalchemy.url", settings.database_url.unicode_string())  # type: ignore[attr-defined]
+config.set_main_option("sqlalchemy.url", settings.database_url)
 
 
 def run_migrations_offline() -> None:
