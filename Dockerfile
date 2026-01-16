@@ -23,7 +23,7 @@ RUN a2enmod rewrite
 WORKDIR /var/www/html
 
 # Copy composer files first for caching
-COPY site_demo/composer.json site_demo/composer.lock* ./
+COPY site_demo/composer.json site_demo/composer.lock ./
 
 # Install PHP dependencies (--no-audit bypasses security blocking for legacy packages)
 RUN composer install --no-dev --no-audit --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
