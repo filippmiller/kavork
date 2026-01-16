@@ -19,6 +19,9 @@ SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, futu
 
 Base = declarative_base()
 
+# Import models to register them with Base.metadata
+from . import models  # noqa: E402, F401
+
 
 def get_db() -> Generator[Session, None, None]:
     db = SessionLocal()

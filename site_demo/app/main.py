@@ -15,6 +15,11 @@ app = FastAPI(
 app.include_router(auth_routes.router)
 
 
+@app.get("/", tags=["root"])
+def root() -> dict[str, str]:
+    return {"message": "Kavork Cafe Management API", "docs": "/docs"}
+
+
 @app.get("/healthz", tags=["health"])
 def health_check() -> dict[str, str]:
     return {"status": "ok"}
