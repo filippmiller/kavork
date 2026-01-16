@@ -31,56 +31,15 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction --no-script
 # Copy application code
 COPY site_demo/ /var/www/html/
 
-# Create Docker-specific config files using heredocs
-RUN cat > /var/www/html/common/config/start_param.php << 'EOFPHP'
-<?php
-defined('YII_DEBUG') or define('YII_DEBUG', false);
-defined('YII_LOG_LEVEL') or define('YII_LOG_LEVEL', 0);
-defined('YII_ENV') or define('YII_ENV', 'prod');
-defined('ROOT') or define('ROOT', realpath(__DIR__ . '/../../'));
-EOFPHP
+# Copy Docker-specific config files from deploy-config folder
+COPY deploy-config/start_param.php /var/www/html/common/config/start_param.php
+COPY deploy-config/main-local.php /var/www/html/common/config/main-local.php
+COPY deploy-config/frontend-main-local.php /var/www/html/frontend/config/main-local.php
+COPY deploy-config/params-local.php /var/www/html/frontend/config/params-local.php
+COPY deploy-config/params-local.php /var/www/html/common/config/params-local.php
+COPY deploy-config/entrypoint.sh /entrypoint.sh
 
-RUN cat > /var/www/html/common/config/main-local.php << 'EOFPHP'
-<?php
-$dbHost = getenv('MYSQLHOST') ?: 'localhost';
-$dbPort = getenv('MYSQLPORT') ?: '3306';
-$dbName = getenv('MYSQLDATABASE') ?: 'railway';
-$dbUser = getenv('MYSQLUSER') ?: 'root';
-$dbPass = getenv('MYSQLPASSWORD') ?: '';
-return [
-    'components' => [
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => "mysql:host={$dbHost};port={$dbPort};dbname={$dbName}",
-            'username' => $dbUser,
-            'password' => $dbPass,
-            'charset' => 'utf8',
-        ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            'viewPath' => '@common/mail',
-            'useFileTransport' => true,
-        ],
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
-        ],
-    ],
-];
-EOFPHP
-
-RUN cat > /var/www/html/frontend/config/main-local.php << 'EOFPHP'
-<?php
-return [
-    'components' => [
-        'request' => [
-            'cookieValidationKey' => 'kavork-railway-prod-2026-key',
-        ],
-    ],
-];
-EOFPHP
-
-RUN echo '<?php return [];' > /var/www/html/frontend/config/params-local.php
-RUN echo '<?php return [];' > /var/www/html/common/config/params-local.php
+RUN chmod +x /entrypoint.sh
 
 # Configure Apache to serve from frontend/web
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/frontend/web
@@ -99,16 +58,6 @@ RUN mkdir -p /var/www/html/frontend/runtime \
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
-
-# Create entrypoint script to handle dynamic PORT
-RUN cat > /entrypoint.sh << 'EOFSH'
-#!/bin/bash
-# Update Apache port configuration at runtime
-sed -i "s/Listen 80/Listen ${PORT:-80}/" /etc/apache2/ports.conf
-sed -i "s/<VirtualHost \*:80>/<VirtualHost *:${PORT:-80}>/" /etc/apache2/sites-available/000-default.conf
-exec apache2-foreground
-EOFSH
-RUN chmod +x /entrypoint.sh
 
 EXPOSE 8080
 
