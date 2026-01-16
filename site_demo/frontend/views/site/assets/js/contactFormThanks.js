@@ -1,5 +1,5 @@
 $(document).ready(function() {
             $('button.close').click(function() {
-              location.reload(true);    //JavaScript функция перегрузки страницы
+              location.reload(true);    //JavaScript ГґГіГ­ГЄГ¶ГЁГї ГЇГҐГ°ГҐГЈГ°ГіГ§ГЄГЁ Г±ГІГ°Г Г­ГЁГ¶Г»
             });
 });	
