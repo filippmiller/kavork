@@ -1,0 +1,8 @@
+[phases.setup]
+nixPkgs = ["python311", "postgresql"]
+
+[phases.install]
+cmds = ["cd site_demo && pip install -r requirements.txt"]
+
+[start]
+cmd = "cd site_demo && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}"
