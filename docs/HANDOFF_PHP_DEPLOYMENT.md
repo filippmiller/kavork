@@ -153,7 +153,6 @@ ERROR: failed to build: composer install failed: exit code 2
 
 ## DO NOT
 
-- Touch ebay-connector-app project
 - Use Supabase (that's for different project)
 - Deploy Python - we want the PHP site!
 

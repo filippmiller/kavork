@@ -3,9 +3,9 @@ requires = ["setuptools>=68.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "new-bidnapper"
+name = "kavork-cafe-management"
 version = "0.1.0"
-description = "Secure backend foundation for the NEW BIDNAPPER eBay sniper SaaS."
+description = "Kavork Cafe/Anticafe Management System - FastAPI backend"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.110.0",
@@ -25,12 +25,5 @@ dependencies = [
     "orjson>=3.9.15"
 ]
 
-[project.optional-dependencies]
-worker = [
-    "apscheduler>=3.10.4"
-]
-
 [tool.setuptools.packages.find]
 where = ["app"]
-
-
