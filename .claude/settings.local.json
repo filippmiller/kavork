@@ -12,7 +12,22 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
-      "Bash(railway logs:*)"
+      "Bash(railway logs:*)",
+      "Bash(railway variables:*)",
+      "Bash(python:*)",
+      "Bash(railway domain:*)",
+      "Bash(curl:*)",
+      "Bash(railway up:*)",
+      "Bash(railway run:*)",
+      "Bash(set PYTHONPATH=.)",
+      "Bash($env:PYTHONPATH=\".\")",
+      "Bash(set DATABASE_URL=postgresql://postgres:kLMAWyWcjUlFdLKOFqKxxOPToFqlGxwC@centerbeam.proxy.rlwy.net:58280/railway)",
+      "Bash(set JWT_SECRET=VJoO8vsVp67eJhSzQRe6EyMjKyur_gJHTe8AecKPO4E:*)",
+      "Bash(set ENCRYPTION_KEY=dcfe4c60e35fdfda546d1f33a7741e789cd220f24c22650e7356a41f5211accb:*)",
+      "Bash(alembic upgrade:*)",
+      "Bash(railway deployment list:*)",
+      "Bash(docker build:*)",
+      "WebFetch(domain:railway.com)"
     ]
   }
 }

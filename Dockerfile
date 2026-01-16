@@ -13,22 +13,13 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql mysqli zip intl opcache \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files first for caching
-COPY site_demo/composer.json site_demo/composer.lock ./
-
-# Install PHP dependencies (--no-audit bypasses security blocking for legacy packages)
-RUN composer install --no-dev --no-audit --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
-
-# Copy application code
+# Copy application code (vendor directory is included in site_demo)
 COPY site_demo/ /var/www/html/
 
 # Copy Docker-specific config files from deploy-config folder
