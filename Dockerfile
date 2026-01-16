@@ -27,7 +27,7 @@ COPY site_demo/composer.json site_demo/composer.lock* ./
 
 # Install PHP dependencies (disable security audit blocking for legacy packages)
 ENV COMPOSER_AUDIT_ABANDONED=ignore
-RUN composer config --global audit.ignore "*" && \
+RUN composer config --global audit.block-insecure false && \
     composer install --no-dev --optimize-autoloader --no-interaction --no-scripts --ignore-platform-reqs
 
 # Copy application code
