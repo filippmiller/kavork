@@ -22,7 +22,7 @@ cat > /etc/apache2/ports.conf << EOF
 Listen ${PORT}
 EOF
 
-# Create clean VirtualHost config
+# Create clean VirtualHost config with mod_rewrite rules
 cat > /etc/apache2/sites-available/000-default.conf << EOF
 <VirtualHost *:${PORT}>
     ServerAdmin webmaster@localhost
@@ -32,6 +32,15 @@ cat > /etc/apache2/sites-available/000-default.conf << EOF
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted
+
+        # URL rewriting for Yii2 pretty URLs
+        <IfModule mod_rewrite.c>
+            RewriteEngine On
+            RewriteBase /
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule . index.php [L]
+        </IfModule>
     </Directory>
 
     ErrorLog \${APACHE_LOG_DIR}/error.log
