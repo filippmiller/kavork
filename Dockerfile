@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.0-apache
 
 # Install PHP extensions required by Yii2 and Composer
 RUN apt-get update && apt-get install -y \
