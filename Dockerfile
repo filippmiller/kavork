@@ -27,7 +27,7 @@ COPY site_demo/ /var/www/html/
 
 # Install PHP dependencies with Composer (skip security checks for legacy packages)
 ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN cd /var/www/html && composer install --no-dev --optimize-autoloader --no-interaction --no-security-blocking
+RUN cd /var/www/html && composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
 # Copy Docker-specific config files from deploy-config folder
 COPY deploy-config/start_param.php /var/www/html/common/config/start_param.php
