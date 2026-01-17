@@ -1,6 +1,6 @@
 FROM php:8.1-apache
 
-# Install PHP extensions required by Yii2
+# Install PHP extensions required by Yii2 and Composer
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -9,8 +9,10 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     unzip \
     git \
+    curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql mysqli zip intl opcache \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache mod_rewrite and fix MPM conflict - forcefully remove conflicting MPMs
@@ -20,8 +22,12 @@ RUN rm -f /etc/apache2/mods-enabled/mpm_event.* /etc/apache2/mods-enabled/mpm_wo
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy application code (vendor directory is included in site_demo)
+# Copy application code
 COPY site_demo/ /var/www/html/
+
+# Install PHP dependencies with Composer (skip security audit for legacy packages)
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN cd /var/www/html && composer install --no-dev --optimize-autoloader --no-interaction --no-audit
 
 # Copy Docker-specific config files from deploy-config folder
 COPY deploy-config/start_param.php /var/www/html/common/config/start_param.php
