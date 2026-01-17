@@ -118,6 +118,12 @@ $config = [
         'session' => [
           // this is the name of the session cookie used for login on the frontend
             'name' => 'advanced-frontend',
+            'cookieParams' => [
+                'httpOnly' => true,
+                'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
+                'sameSite' => PHP_VERSION_ID >= 70300 ? \yii\web\Cookie::SAME_SITE_LAX : null,
+            ],
+            'timeout' => 1800, // 30 minutes inactivity timeout
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

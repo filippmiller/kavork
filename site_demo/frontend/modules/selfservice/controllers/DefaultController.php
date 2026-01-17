@@ -569,6 +569,9 @@ class DefaultController extends Controller
 	  Yii::$app->response->cookies->add(new \yii\web\Cookie([
 		  'name' => $this->_session_mode_key,
 		  'value' => $mode,
+		  'httpOnly' => true,
+		  'secure' => Yii::$app->request->isSecureConnection,
+		  'sameSite' => \yii\web\Cookie::SAME_SITE_LAX,
 	  ]));
 
     return Yii::$app->session->set($this->_session_mode_key, $mode);

@@ -46,7 +46,7 @@ class SiteController extends Controller
         'verbs' => [
             'class' => VerbFilter::className(),
             'actions' => [
-                'logout' => ['get'],
+                'logout' => ['post', 'get'], // Allow both for backwards compatibility, prefer POST
             ],
         ],
     ];
@@ -169,6 +169,9 @@ class SiteController extends Controller
       $cookies->add(new \yii\web\Cookie([
           'name' => 'cafe_id',
           'value' => $cafe_id,
+          'httpOnly' => true,
+          'secure' => Yii::$app->request->isSecureConnection,
+          'sameSite' => \yii\web\Cookie::SAME_SITE_LAX,
       ]));
       Yii::$app->cafe->init();
       if (!Yii::$app->user->can('AllCafeShow') &&
@@ -193,6 +196,9 @@ class SiteController extends Controller
           $cookies->add(new \yii\web\Cookie([
               'name' => 'cafe_id',
               'value' => $cafe_id,
+              'httpOnly' => true,
+              'secure' => Yii::$app->request->isSecureConnection,
+              'sameSite' => \yii\web\Cookie::SAME_SITE_LAX,
           ]));
 
           if ($enterSelfService) {
