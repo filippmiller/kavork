@@ -172,6 +172,35 @@ try {
     }
     echo "\n";
 
+    // Check for missing cafe columns
+    $requiredCols = ['params_id', 'currency', 'address', 'vat_code', 'child_discount', 'logo', 'width', 'initSuccessful', 'tips_var'];
+    $missingCols = array_diff($requiredCols, $cafeCols);
+    if ($missingCols && isset($_GET['fix'])) {
+        echo "   Missing columns: " . implode(', ', $missingCols) . "\n";
+        echo "   Fixing: Adding missing columns...\n";
+        $colDefs = [
+            'params_id' => 'INT DEFAULT 1',
+            'currency' => "VARCHAR(10) DEFAULT 'USD'",
+            'address' => 'TEXT',
+            'vat_code' => 'TEXT',
+            'child_discount' => 'INT DEFAULT 0',
+            'logo' => 'VARCHAR(255)',
+            'width' => 'INT DEFAULT 80',
+            'initSuccessful' => 'INT DEFAULT 0',
+            'tips_var' => 'VARCHAR(100)',
+        ];
+        foreach ($missingCols as $col) {
+            if (isset($colDefs[$col])) {
+                try {
+                    $pdo->exec("ALTER TABLE cafe ADD COLUMN $col {$colDefs[$col]}");
+                    echo "   Added: $col\n";
+                } catch (PDOException $e) {
+                    echo "   Error adding $col: " . $e->getMessage() . "\n";
+                }
+            }
+        }
+    }
+
     // Check if params_id column exists
     if (!in_array('params_id', $cafeCols)) {
         echo "   WARNING: Missing 'params_id' column!\n";
