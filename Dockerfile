@@ -33,6 +33,12 @@ RUN cd /var/www/html && composer install --no-dev --optimize-autoloader --no-int
 
 # Completely disable OPcache to prevent segfaults
 RUN rm -f /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+
+# Increase PHP upload limits
+RUN echo "upload_max_filesize = 100M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "post_max_size = 100M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "max_execution_time = 600" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "memory_limit = 512M" >> /usr/local/etc/php/conf.d/uploads.ini
 # Copy Docker-specific config files from deploy-config folder
 COPY deploy-config/start_param.php /var/www/html/common/config/start_param.php
 COPY deploy-config/main-local.php /var/www/html/common/config/main-local.php
