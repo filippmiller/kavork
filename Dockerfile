@@ -30,7 +30,8 @@ COPY deploy-config/params-local.php /var/www/html/frontend/config/params-local.p
 COPY deploy-config/params-local.php /var/www/html/common/config/params-local.php
 COPY deploy-config/entrypoint.sh /entrypoint.sh
 
-RUN chmod +x /entrypoint.sh
+# Fix Windows line endings and make executable
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
 
 # Configure Apache to serve from frontend/web
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/frontend/web
