@@ -29,7 +29,10 @@ COPY site_demo/ /var/www/html/
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN cd /var/www/html && composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
-# Cache bust: 2026-01-17-v1
+# Cache bust: 2026-01-17-v2
+
+# Disable OPcache JIT to prevent segfaults
+RUN echo "opcache.jit=off" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
 # Copy Docker-specific config files from deploy-config folder
 COPY deploy-config/start_param.php /var/www/html/common/config/start_param.php
 COPY deploy-config/main-local.php /var/www/html/common/config/main-local.php
@@ -37,13 +40,6 @@ COPY deploy-config/frontend-main-local.php /var/www/html/frontend/config/main-lo
 COPY deploy-config/params-local.php /var/www/html/frontend/config/params-local.php
 COPY deploy-config/params-local.php /var/www/html/common/config/params-local.php
 
-# Debug: verify config files exist and permissions
-RUN echo "=== Checking config files ===" && \
-    ls -la /var/www/html/frontend/config/params-local.php && \
-    ls -la /var/www/html/common/config/params-local.php && \
-    cat /var/www/html/frontend/config/params-local.php && \
-    cat /var/www/html/common/config/params-local.php && \
-    php -r "var_dump(require '/var/www/html/common/config/params-local.php');"
 
 COPY deploy-config/entrypoint.sh /entrypoint.sh
 
