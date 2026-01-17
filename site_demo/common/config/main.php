@@ -12,7 +12,24 @@ $config = [
         '@npm' => '@vendor/npm-asset',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'bootstrap' => [
+        'securityHeaders',
+    ],
     'components' => [
+        // Security components
+        'securityHeaders' => [
+            'class' => 'common\components\SecurityHeaders',
+            'enableCSP' => false, // Enable after testing
+        ],
+        'loginRateLimiter' => [
+            'class' => 'common\components\LoginRateLimiter',
+            'maxAttempts' => 10,
+            'lockoutDuration' => 1800, // 30 minutes
+            'attemptWindow' => 900,    // 15 minutes
+        ],
+        'apiRateLimiter' => [
+            'class' => 'common\components\ApiRateLimiter',
+        ],
         'queue' => [
             'class' => \yii\queue\db\Queue::class,
             'as log' => \yii\queue\LogBehavior::class,
