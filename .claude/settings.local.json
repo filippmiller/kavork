@@ -28,7 +28,10 @@
       "Bash(railway deployment list:*)",
       "Bash(docker build:*)",
       "WebFetch(domain:railway.com)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "WebFetch(domain:kavork-app-production.up.railway.app)",
+      "Bash(pip install:*)",
+      "Bash(grep:*)"
     ]
   }
 }

@@ -29,7 +29,7 @@ COPY site_demo/ /var/www/html/
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN cd /var/www/html && composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
-# Cache bust: 2026-01-17-v3
+# Cache bust: 2026-01-17-v4
 
 # Completely disable OPcache to prevent segfaults
 RUN rm -f /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
