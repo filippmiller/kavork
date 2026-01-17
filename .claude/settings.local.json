@@ -27,7 +27,8 @@
       "Bash(alembic upgrade:*)",
       "Bash(railway deployment list:*)",
       "Bash(docker build:*)",
-      "WebFetch(domain:railway.com)"
+      "WebFetch(domain:railway.com)",
+      "Bash(ls:*)"
     ]
   }
 }
