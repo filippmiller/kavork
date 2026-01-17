@@ -179,9 +179,22 @@ try {
             echo "   Fixing: Adding params_id column...\n";
             try {
                 $pdo->exec("ALTER TABLE cafe ADD COLUMN params_id INT DEFAULT 1");
+                $pdo->exec("UPDATE cafe SET params_id = 1 WHERE params_id IS NULL");
                 echo "   Done.\n";
             } catch (PDOException $e) {
                 echo "   Error: " . $e->getMessage() . "\n";
+            }
+        }
+    } else {
+        // Ensure all cafes have params_id set
+        $stmt = $pdo->query("SELECT COUNT(*) FROM cafe WHERE params_id IS NULL OR params_id = 0");
+        $nullCount = $stmt->fetchColumn();
+        if ($nullCount > 0) {
+            echo "   WARNING: $nullCount cafes have no params_id!\n";
+            if (isset($_GET['fix'])) {
+                echo "   Fixing: Setting params_id = 1 for all cafes...\n";
+                $pdo->exec("UPDATE cafe SET params_id = 1 WHERE params_id IS NULL OR params_id = 0");
+                echo "   Done.\n";
             }
         }
     }
