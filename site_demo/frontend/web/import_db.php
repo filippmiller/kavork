@@ -4,6 +4,28 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ini_set('max_execution_time', 600);
 ini_set('memory_limit', '512M');
+ini_set('post_max_size', '100M');
+ini_set('upload_max_filesize', '100M');
+
+// Debug upload
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    echo "<pre>DEBUG:\n";
+    echo "POST size: " . $_SERVER['CONTENT_LENGTH'] . "\n";
+    echo "FILES: " . print_r($_FILES, true) . "\n";
+    if (isset($_FILES['sql']['error']) && $_FILES['sql']['error'] !== UPLOAD_ERR_OK) {
+        $errors = [
+            UPLOAD_ERR_INI_SIZE => 'File exceeds upload_max_filesize',
+            UPLOAD_ERR_FORM_SIZE => 'File exceeds MAX_FILE_SIZE',
+            UPLOAD_ERR_PARTIAL => 'File partially uploaded',
+            UPLOAD_ERR_NO_FILE => 'No file uploaded',
+            UPLOAD_ERR_NO_TMP_DIR => 'Missing temp folder',
+            UPLOAD_ERR_CANT_WRITE => 'Failed to write',
+            UPLOAD_ERR_EXTENSION => 'Extension stopped upload',
+        ];
+        echo "Upload error: " . ($errors[$_FILES['sql']['error']] ?? 'Unknown') . "\n";
+    }
+    echo "</pre>\n";
+}
 
 $host = getenv('MYSQLHOST') ?: 'localhost';
 $port = getenv('MYSQLPORT') ?: '3306';
