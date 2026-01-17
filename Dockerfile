@@ -29,12 +29,19 @@ COPY site_demo/ /var/www/html/
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN cd /var/www/html && composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
+# Cache bust: 2026-01-17-v1
 # Copy Docker-specific config files from deploy-config folder
 COPY deploy-config/start_param.php /var/www/html/common/config/start_param.php
 COPY deploy-config/main-local.php /var/www/html/common/config/main-local.php
 COPY deploy-config/frontend-main-local.php /var/www/html/frontend/config/main-local.php
 COPY deploy-config/params-local.php /var/www/html/frontend/config/params-local.php
 COPY deploy-config/params-local.php /var/www/html/common/config/params-local.php
+
+# Debug: verify config files exist
+RUN echo "=== Checking config files ===" && \
+    cat /var/www/html/frontend/config/params-local.php && \
+    cat /var/www/html/common/config/params-local.php
+
 COPY deploy-config/entrypoint.sh /entrypoint.sh
 
 # Fix Windows line endings and make executable
