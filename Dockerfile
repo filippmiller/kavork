@@ -37,10 +37,13 @@ COPY deploy-config/frontend-main-local.php /var/www/html/frontend/config/main-lo
 COPY deploy-config/params-local.php /var/www/html/frontend/config/params-local.php
 COPY deploy-config/params-local.php /var/www/html/common/config/params-local.php
 
-# Debug: verify config files exist
+# Debug: verify config files exist and permissions
 RUN echo "=== Checking config files ===" && \
+    ls -la /var/www/html/frontend/config/params-local.php && \
+    ls -la /var/www/html/common/config/params-local.php && \
     cat /var/www/html/frontend/config/params-local.php && \
-    cat /var/www/html/common/config/params-local.php
+    cat /var/www/html/common/config/params-local.php && \
+    php -r "var_dump(require '/var/www/html/common/config/params-local.php');"
 
 COPY deploy-config/entrypoint.sh /entrypoint.sh
 
