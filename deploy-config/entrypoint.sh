@@ -10,6 +10,10 @@ rm -f /etc/apache2/mods-enabled/mpm_event.* /etc/apache2/mods-enabled/mpm_worker
 ln -sf /etc/apache2/mods-available/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf 2>/dev/null || true
 ln -sf /etc/apache2/mods-available/mpm_prefork.load /etc/apache2/mods-enabled/mpm_prefork.load 2>/dev/null || true
 
+# Ensure mod_rewrite is enabled
+echo "Enabling mod_rewrite..."
+a2enmod rewrite 2>/dev/null || true
+
 # Completely rewrite Apache port configuration for reliability
 echo "Configuring Apache to listen on port ${PORT}..."
 
