@@ -69,3 +69,4 @@ phpunit.xml
 .bash_history
 cgi-bin/
 public_html/
+nul

@@ -31,7 +31,17 @@
       "Bash(ls:*)",
       "WebFetch(domain:kavork-app-production.up.railway.app)",
       "Bash(pip install:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(copy C:devkavorkcreate_user.php C:devkavorksite_demofrontendwebcreate_user.php)",
+      "Bash(cmd /c copy C:devkavorkcreate_user.php C:devkavorksite_demofrontendwebcreate_user.php)",
+      "Bash(railway connect:*)",
+      "Bash(railway shell)",
+      "Bash(railway login:*)",
+      "Bash(railway open:*)",
+      "Bash(timeout /t 30 /nobreak)",
+      "Bash(ping:*)",
+      "Bash(findstr:*)",
+      "Bash(Remove-Item \"C:\\\\dev\\\\kavork\\\\create_user.php\" -Force)"
     ]
   }
 }

@@ -1,0 +1,540 @@
+
+
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://ogp.me/ns/fb#"
+      xmlns:og="http://ogp.me/ns#"
+      lang="en-EN">
+
+<head>
+  <meta charset="utf-8">
+  <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>kavork  </title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  <script type="text/javascript">
+    app = {
+      "language": "en-EN",
+      "time24Hour":false,
+      "unite_disable_button_html": "<i class='fa fa-chain-broken'></i> Divide",
+      "i18n": {
+        "close": "Close",
+        "no_selection": "No selection",
+        "you_must_select_items": "You must select item(s) to use this action",
+        "insert_img": "Insert image",
+        "file_manager": "Server File Manager",
+        "loading": "Loading",
+        "employee": "Employee",
+        "cancel": "Cancel",
+        "ok": "OK",
+		"row": "row",
+		"content": "content",
+		"confirm": "Confirm",
+		"your_data": "You are sure that it is your data ?",
+		"yes": "Yes",
+		"no": "No",
+		
+      }
+    };
+    var MonthArray = new Array(
+      "January", "February", "March",
+      "April", "May", "June",
+      "July", "August", "September",
+      "October", "November", "December");
+    //сразу вычисляем разницу между серверным временем и временем на клиенте
+    var difference = new Date(2026,0,17,14,07) - new Date(); //по часовому поясу кафе
+    //var difference = new Date("Sat, 17 Jan 2026 14:07:19 -0500") - new Date(); //по часовому поясу ПК
+  </script>
+
+  <meta name="csrf-param" content="_csrf-frontend">
+<meta name="csrf-token" content="mJmSr5KtfgfgtO3QjmSeyo0V863nmC-FyaXaJn-gZD793ubXqvU_QIf_rp_rNPKCy22b_az_XrG-xugUCfUgWQ==">
+
+  <link href="/assets/318a19eb/themes/smoothness/jquery-ui.css?v=1768676735" rel="stylesheet">
+<link href="/assets/a5593/css/elfinder.min.css?v=1768676735" rel="stylesheet">
+<link href="/themes/windows-10/css/theme.css?v=1768626318" rel="stylesheet">
+<link href="/assets/aeec634c/css/kv-bootstrap-notify.min.css?v=1768676735" rel="stylesheet">
+<link href="/assets/c67090d/css/animate.min.css?v=1768676735" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,300,400,600,700,800" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Roboto+Mono:400,700&amp;subset=cyrillic,greek,latin-ext" rel="stylesheet">
+<link href="/css/bootstrap.min.css?v=1768626317" rel="stylesheet">
+<link href="/css/bootkit.css?v=1768626317" rel="stylesheet">
+<link href="/css/bootkit.essentials.min.css?v=1768626317" rel="stylesheet">
+<link href="/css/index-tiles.css?v=1768626317" rel="stylesheet">
+<link href="/css/login.css?v=1768626317" rel="stylesheet">
+<link href="/css/docs.css?v=1768626317" rel="stylesheet">
+<link href="/css/table.css?v=1768626317" rel="stylesheet">
+<link href="/css/site.css?v=1768626317" rel="stylesheet">
+<link href="/css/editor.css?v=1768626317" rel="stylesheet">
+<link href="/css/shop.css?v=1768626317" rel="stylesheet">
+<link href="/assets/5e90c83e/css/kv-grid.min.css?v=1768676737" rel="stylesheet">
+<link href="/assets/3ecfa16b/ajaxcrud.css?v=1768676737" rel="stylesheet">
+<!--[if lte IE9]>
+<script src="/js/html5shiv.js?v=1768626318"></script>
+<![endif]-->
+<!--[if lte IE9]>
+<script src="/js/respond.min.js?v=1768626318"></script>
+<![endif]-->
+<script src="/assets/ff308fee/js/dialog.min.js?v=1768676737"></script>
+</head>
+<body class="start-screen modernui-dark-bg">
+<div class="custom-background-overlay"></div>
+       <div class="dropdown language">
+    <button class="btn btn-science-blue dropdown-toggle" type="button" id="dropdownLang" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+      <img src="/img/flag/en-EN.svg" alt="">
+      English
+      <i class="fa fa-angle-down"></i>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownLang">
+
+              <li><a ><img src="/img/flag/en-EN.svg" alt=""> English</a></li>
+              <li><a href=/fr-FR/><img src="/img/flag/fr-FR.svg" alt=""> Français</a></li>
+              <li><a href=/ru-RU/><img src="/img/flag/ru-RU.svg" alt=""> Русский</a></li>
+          </ul>
+  </div>
+    
+
+
+
+<script>
+  var is_main = true;
+</script>
+
+      <!--<a class="task_list" role="modal-remote" href="/tasks/default/views">
+      <span class="icon icon-checklist"></span><div class="txt_task">Task List</div>
+    </a>-->
+    <div class="fixed-tiles">
+      <div class="visible_control_tile"></div>
+
+      <a href="/tasks/default/views" role="modal-remote" class="mintile bg-info" data-click="transform">
+          <span class="tile-content icon">
+        <span class="icon icon-checklist"></span>
+      </span>
+        <span class="brand">
+      <span class="tile-label">Task List</span>
+    </span>
+      </a>
+    </div>
+  
+<div class="text-center fg-white">
+  <h1 class="logos"><img src="/img/logos/1570439749.png" alt="logo" class="logo"></h1>
+  <div>
+    <div class="col-md-offset-3 col-md-6">
+      <h5 class="padding-off-bottom margin-top-10 hid_text">294 RUE SAINTE-CATHERINE O,H2X 2A1</h4>
+    </div>
+    <div class="margin-right-15 text-right">
+                        <div class="text-right margin-bottom-20">
+            <a role="modal-remote" class="btn btn-science-blue ch_cafe" href="/change-cafe">
+              <i class="fa fa-cube"></i> <i class="fa fa-exchange"></i> <i class="fa fa-cube"></i>
+              Change department
+            </a>
+          </div>
+                  </div>
+  </div>
+</div>
+<div class="start-screen-container manager_page" id="stop_scroll">
+  <div class="col-md-6 screen_pad">
+    <div class="row manager_min">
+      <div class="col-md-12">
+        <h4 class="tile-group-title">System management</h4>
+        <div class="flex_title"><div class="tile double-width double-height bg-blue">
+  <div class="tile-content flex_tile">
+    <div class="padding-10">
+      <div id='clock'>
+        <h3 class="margin-off font-weight-200">Loading</h3>
+        <h5 class="margin-off font-weight-200">data...</h5>
+      </div>
+              <div class="">
+          <h6 class="margin-off-bottom">Now <span
+                class="tot_visitor __stats_current_visitors_count__">9</span> person(s)</h5>
+            <h6 class="margin-off-top">Acceptable <span
+                  class="accept">100</span> person(s)</h6>
+        </div>
+            <div>
+        <h6 class="padding-top-10 push-up-margin-thin">Administrator: filipp1</h6>
+      </div>
+    </div>
+  </div>
+  <div class="brand">
+    <div class="tile-label">
+      Info
+    </div>
+  </div>
+</div>
+
+    <div class="tile bg-science-blue open_admin_panel double-width " data-click="transform" >
+      <span class="tile-content icon">
+        <span class="fa fa-user-secret"></span>
+      </span>
+    <span class="brand">
+      <span class="tile-label">Control</span>
+    </span>
+  </div>
+
+    <a href=logout class="tile bg-scarlet  " data-click="transform" >
+      <span class="tile-content icon">
+        <span class="icon-metro-exit"></span>
+      </span>
+    <span class="brand">
+      <span class="tile-label">LOGOUT</span>
+    </span>
+  </a href=logout>
+
+    <a href=shop/storefront/index class="tile bg-amber  " data-click="transform" role=modal-remote>
+      <span class="tile-content icon">
+        <span class="fa fa-shopping-cart fa-5x"></span>
+      </span>
+    <span class="brand">
+      <span class="tile-label">Shop</span>
+    </span>
+  </a href=shop/storefront/index>
+
+<!---->
+  
+<!---->
+
+      <a href=visits/start class="tile bg-lima double-width " data-click="transform" role=modal-remote>
+      <span class="tile-content icon">
+        <span class="fa fa-user-plus"></span>
+      </span>
+    <span class="brand">
+      <span class="tile-label">Start visit</span>
+    </span>
+  </a href=visits/start>
+
+</div>
+      </div>
+    </div>
+        <div class="row manager_min2" id="admin_panel">
+      <div class="col-md-12">
+        <h4>
+          <div class="tile-group-title">Admin controls<span class="pull-right"><a
+                  class="btn btn-xs btn-science-blue close_admin_panel">&#215;
+                <!--<small> hide</small>--></a></span></div>
+        </h4>
+        <hr class="hrmin">
+        <div class="flex_title">
+
+
+
+
+
+
+  
+          <a href=/report/admin/transactions class="tile bg-science-blue  " data-click="transform" >
+      <span class="tile-content icon">
+        <span class="fa fa-sort-amount-desc"></span>
+      </span>
+    <span class="brand">
+      <span class="tile-label">Transactions</span>
+    </span>
+  </a href=/report/admin/transactions>
+
+  
+
+  
+
+  
+
+<!--        <a href=/users/time-card/index class="tile bg-steel  " data-click="transform" >
+      <span class="tile-content icon">
+        <span class="fa fa-clock-o"></span>
+      </span>
+    <span class="brand">
+      <span class="tile-label">Staff time</span>
+    </span>
+  </a href=/users/time-card/index>
+
+-->
+
+  
+  
+      <a href=/visitor/admin/index class="tile bg-lima  " data-click="transform" >
+      <span class="tile-content icon">
+        <span class="icon-metro-drawer-2"></span>
+      </span>
+    <span class="brand">
+      <span class="tile-label">Visitor Database</span>
+    </span>
+  </a href=/visitor/admin/index>
+
+
+      <a href=/visits/admin/index class="tile bg-lima  " data-click="transform" >
+      <span class="tile-content icon">
+        <span class="icon-metro-clipboard-2"></span>
+      </span>
+    <span class="brand">
+      <span class="tile-label">Visits</span>
+    </span>
+  </a href=/visits/admin/index>
+
+
+  
+      <a href=/shop/inventory/shop class="tile bg-amber  " data-click="transform" >
+      <span class="tile-content icon">
+        <span class="icon-metro-box"></span>
+      </span>
+    <span class="brand">
+      <span class="tile-label">Products</span>
+    </span>
+  </a href=/shop/inventory/shop>
+
+      <a href=/shop/sale/index class="tile bg-amber  " data-click="transform" >
+      <span class="tile-content icon">
+        <span class="icon-metro-basket"></span>
+      </span>
+    <span class="brand">
+      <span class="tile-label">Sold products</span>
+    </span>
+  </a href=/shop/sale/index>
+
+
+  
+  
+  
+
+       <a href=/selfservice/default/index class="tile bg-science-blue  " data-click="transform" role=modal-remote>
+      <span class="tile-content icon">
+        <span class="icon-metro-screen"></span>
+      </span>
+    <span class="brand">
+      <span class="tile-label">Self Service</span>
+    </span>
+  </a href=/selfservice/default/index>
+
+
+
+</div>
+              </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 screen_pad">
+    <div class="row work_parts">
+      <div class="col-md-12">
+        <h4 class="tile-group-title">
+          Visitor management
+
+          <div class="pull-right">
+            <!--              <div class="pull-right">
+<button type="button" class="btn btn-info btn-sm margin-left-10 __unite_toggle__">
+		<i class="fa fa-chain"></i> Unite
+</button>
+</div>            -->
+
+                          <button type="button" class="btn btn-info btn-sm __shop_merchant_toggle__">
+	<span class="__state-disabled">
+		<i class="glyphicon glyphicon-barcode"></i> Open merchandising unit
+	</span>
+	<span class="__state-enabled hidden">
+		<i class="fa fa-close"></i> Close merchandising unit
+	</span>
+</button>            
+          </div>
+        </h4>
+
+                              
+
+
+<div class="col-sm-12 __shop_merchant hidden">
+
+	<div class="col-sm-12 __shop_merchant-income-block">
+		<form id="shop-merchant-income-form" action="/shop/merchant/income" method="post">
+<input type="hidden" name="_csrf-frontend" value="mJmSr5KtfgfgtO3QjmSeyo0V863nmC-FyaXaJn-gZD793ubXqvU_QIf_rp_rNPKCy22b_az_XrG-xugUCfUgWQ==">		<div class="col-sm-7">
+			<div class="form-group field-merchantincomeform-barcode required">
+<label class="control-label" for="merchantincomeform-barcode">Coming in</label>
+<input type="text" id="merchantincomeform-barcode" class="form-control" name="MerchantIncomeForm[barcode]" placeholder="Barcode" aria-required="true">
+
+<p class="help-block help-block-error"></p>
+</div>	
+		</div>
+		<div class="col-sm-3">
+			<div class="form-group field-merchantincomeform-quantity required">
+<label class="control-label" for="merchantincomeform-quantity">Quantity</label>
+<input type="text" id="merchantincomeform-quantity" class="form-control" name="MerchantIncomeForm[quantity]" value="1" aria-required="true">
+
+<p class="help-block help-block-error"></p>
+</div>		</div>
+		<div class="col-sm-2 text-center">
+		<span class="text-success" style="font-size: 46px;"><i class="icon-metro-download"></i></span>
+		</div>
+		</form>	</div>
+
+	<div class="col-sm-12 __shop_merchant-sale-block">
+		<form id="shop-merchant-sale-form" action="/shop/merchant/sale" method="post">
+<input type="hidden" name="_csrf-frontend" value="mJmSr5KtfgfgtO3QjmSeyo0V863nmC-FyaXaJn-gZD793ubXqvU_QIf_rp_rNPKCy22b_az_XrG-xugUCfUgWQ==">		<div class="col-sm-7">
+			<div class="form-group field-merchantsaleform-barcode required">
+<label class="control-label" for="merchantsaleform-barcode">Leaving</label>
+<input type="text" id="merchantsaleform-barcode" class="form-control" name="MerchantSaleForm[barcode]" placeholder="Barcode" aria-required="true">
+
+<p class="help-block help-block-error"></p>
+</div>		</div>
+		<div class="col-sm-3">
+			<div class="form-group field-merchantsaleform-quantity required">
+<label class="control-label" for="merchantsaleform-quantity">Quantity</label>
+<input type="text" id="merchantsaleform-quantity" class="form-control" name="MerchantSaleForm[quantity]" value="1" aria-required="true">
+
+<p class="help-block help-block-error"></p>
+</div>		</div>
+		<div class="col-sm-2 text-center">
+		<span class="text-warning" style="font-size: 46px;"><i class="icon-metro-upload"></i></span>
+		</div>
+		</form>	</div>
+
+		<div class="text-right" style="margin-bottom:10px;">
+		<a href="/shop/inventory/index" class="btn btn-info">
+			Commodity research		</a>
+	</div>
+	
+</div>
+                  
+
+        <div class="form-group">
+          <input type="text" class="form-control" id="search_visitor" placeholder='Search visitors'
+                 required="" autocomplete="off">
+        </div>
+
+
+        <div id="visitors_log" class="tile-group">
+  <div class="tile-group-title2">
+    Visitors
+    <span class="text-right">
+          <div class="pull-right">
+<button type="button" class="btn btn-info btn-sm margin-left-10 __unite_toggle__">
+		<i class="fa fa-chain"></i> Unite
+</button>
+</div>      <div class="pull-right">
+	<a href="/visits/view-unite" class="btn btn-success btn-sm log hidden __unite_calculation__">
+		<i class="fa fa-calculator"></i> Calculation marked
+	</a>
+</div>    	</span>
+  </div>
+  <hr class="hrmin">
+
+</div>
+                  <div id="users_log" class="tile-group">
+  <div class="tile-group-title2">
+    Staff sessions
+    <a href="/users/start" class="btn btn-success btn-sm pull-right" role="modal-remote">
+      <i class="fa fa-play"></i>Start of staff session
+    </a>
+  </div>
+  <hr class="hrmin">
+</div>              </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div id="ajaxCrudModal" class="fade modal" role="dialog" tabindex="-1">
+<div class="modal-dialog ">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+</div>
+<div class="modal-body">
+
+
+</div>
+<div class="modal-footer">
+
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="secondModal" class="fade modal" role="dialog">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+</div>
+<div class="modal-body">
+
+
+</div>
+<div class="modal-footer">
+
+</div>
+</div>
+</div>
+</div>  
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/assets/91937d57/yii.js?v=1768676735"></script>
+<script src="/assets/7eee5b25/js/bootstrap.js?v=1768676735"></script>
+<script src="/assets/318a19eb/jquery-ui.js?v=1768676735"></script>
+<script src="/assets/a5593/js/elfinder.min.js?v=1768676735"></script>
+<script src="/assets/5faa04fd/ckeditor.js?v=1768676735"></script>
+<script src="/assets/5faa04fd/js.js?v=1768676735"></script>
+<script src="/assets/aeec634c/js/bootstrap-notify.min.js?v=1768676735"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js" charset="utf-8"></script>
+<script src="/js/twig.min.js?v=1768626318" charset="utf-8"></script>
+<script src="/js/hashcode.js?v=1768626318" charset="utf-8"></script>
+<script src="/js/my.js?v=1768626318" charset="utf-8"></script>
+<script src="/js/editor.js?v=1768626318" charset="utf-8"></script>
+<script src="/assets/91937d57/yii.gridView.js?v=1768676735"></script>
+<script src="/assets/3ecfa16b/ModalRemote.min.js?v=1768676737"></script>
+<script src="/assets/3ecfa16b/ajaxcrud.min.js?v=1768676737"></script>
+<script src="/assets/91937d57/yii.validation.js?v=1768676735"></script>
+<script src="/assets/91937d57/yii.activeForm.js?v=1768676735"></script>
+<script>jQuery(function ($) {
+$('.__shop_merchant form').on('keypress', function(e) {
+	if (e.which == 13) {
+    	$(this).trigger('submit');
+    	return false;
+  	} 
+  	
+  	$(this).yiiActiveForm('resetForm');
+});
+
+$('.__shop_merchant form').on('beforeSubmit', function(e) {
+	e.preventDefault();
+	var yiiform = $(this);
+    $.ajax({
+	    type: yiiform.attr('method'),
+	    url: yiiform.attr('action'),
+	    data: yiiform.serializeArray(),
+    })
+    .done(function(data) {
+        if(data.success) {            
+            console.log('data is saved');
+            yiiform.trigger('reset');
+        } else if (data.validation) {
+            console.log('server validation failed');            
+            yiiform.yiiActiveForm('updateMessages', data.validation, true); // renders validation messages at appropriate places
+        } else {
+            console.log('incorrect server response');           
+        }
+        
+        if (data.message) {
+        	app.notify(data.message.message, data.message.type);
+        }
+    })
+    .fail(function () {
+        // request failed
+    });
+
+    return false; // prevent default form submission
+});
+jQuery('#shop-merchant-income-form').yiiActiveForm([{"id":"merchantincomeform-barcode","name":"barcode","container":".field-merchantincomeform-barcode","input":"#merchantincomeform-barcode","error":".help-block.help-block-error","validateOnBlur":false,"validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"Barcode cannot be blank."});}},{"id":"merchantincomeform-quantity","name":"quantity","container":".field-merchantincomeform-quantity","input":"#merchantincomeform-quantity","error":".help-block.help-block-error","validateOnBlur":false,"validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"Quantity cannot be blank."});yii.validation.number(value, messages, {"pattern":/^[+-]?\d+$/,"message":"Quantity must be an integer.","min":1,"tooSmall":"Quantity must be no less than 1.","skipOnEmpty":1});}}], []);
+jQuery('#shop-merchant-sale-form').yiiActiveForm([{"id":"merchantsaleform-barcode","name":"barcode","container":".field-merchantsaleform-barcode","input":"#merchantsaleform-barcode","error":".help-block.help-block-error","validateOnBlur":false,"validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"Barcode cannot be blank."});}},{"id":"merchantsaleform-quantity","name":"quantity","container":".field-merchantsaleform-quantity","input":"#merchantsaleform-quantity","error":".help-block.help-block-error","validateOnBlur":false,"validate":function (attribute, value, messages, deferred, $form) {yii.validation.required(value, messages, {"message":"Quantity cannot be blank."});yii.validation.number(value, messages, {"pattern":/^[+-]?\d+$/,"message":"Quantity must be an integer.","min":1,"tooSmall":"Quantity must be no less than 1.","skipOnEmpty":1});}}], []);
+jQuery('#ajaxCrudModal').modal({"show":false});
+jQuery('#secondModal').modal({"show":false});
+});</script>
+  </body>
+</html>
+

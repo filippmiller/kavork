@@ -4,6 +4,15 @@ set -e
 PORT=${PORT:-80}
 echo "Starting entrypoint, PORT=${PORT}"
 
+# Enable PHP error logging to stdout for Railway visibility
+echo "Configuring PHP error logging..."
+cat > /usr/local/etc/php/conf.d/error_logging.ini << 'PHPEOF'
+log_errors = On
+error_log = /dev/stderr
+display_errors = Off
+error_reporting = E_ALL
+PHPEOF
+
 # Fix MPM conflict - only use prefork
 echo "Fixing MPM configuration..."
 rm -f /etc/apache2/mods-enabled/mpm_event.* /etc/apache2/mods-enabled/mpm_worker.*
@@ -43,8 +52,8 @@ cat > /etc/apache2/sites-available/000-default.conf << EOF
         </IfModule>
     </Directory>
 
-    ErrorLog \${APACHE_LOG_DIR}/error.log
-    CustomLog \${APACHE_LOG_DIR}/access.log combined
+    ErrorLog /dev/stderr
+    CustomLog /dev/stdout combined
 </VirtualHost>
 EOF
 

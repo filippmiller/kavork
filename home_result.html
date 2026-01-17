@@ -1,0 +1,197 @@
+
+
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:fb="http://ogp.me/ns/fb#"
+      xmlns:og="http://ogp.me/ns#"
+      lang="en-EN">
+
+<head>
+  <meta charset="utf-8">
+  <!--<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">-->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <title>kavork  Unknown Property</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  <script type="text/javascript">
+    app = {
+      "language": "en-EN",
+      "time24Hour":false,
+      "unite_disable_button_html": "<i class='fa fa-chain-broken'></i> Divide",
+      "i18n": {
+        "close": "Close",
+        "no_selection": "No selection",
+        "you_must_select_items": "You must select item(s) to use this action",
+        "insert_img": "Insert image",
+        "file_manager": "Server File Manager",
+        "loading": "Loading",
+        "employee": "Employee",
+        "cancel": "Cancel",
+        "ok": "OK",
+		"row": "row",
+		"content": "content",
+		"confirm": "Confirm",
+		"your_data": "You are sure that it is your data ?",
+		"yes": "Yes",
+		"no": "No",
+		
+      }
+    };
+    var MonthArray = new Array(
+      "January", "February", "March",
+      "April", "May", "June",
+      "July", "August", "September",
+      "October", "November", "December");
+    //сразу вычисляем разницу между серверным временем и временем на клиенте
+    var difference = new Date(2026,0,17,17,39) - new Date(); //по часовому поясу кафе
+    //var difference = new Date("Sat, 17 Jan 2026 17:39:10 +0000") - new Date(); //по часовому поясу ПК
+  </script>
+
+  <meta name="csrf-param" content="_csrf-frontend">
+<meta name="csrf-token" content="T-p06hAl6XgHQDK70hgungfUqSH-0S0dJJoAUHKE0IYtjD2tRWekHGM5cI6VSHrEQ5mbQ6GVXnRq_ngdKuWe7A==">
+
+  <link href="/assets/318a19eb/themes/smoothness/jquery-ui.css?v=1768671537" rel="stylesheet">
+<link href="/assets/a5593/css/elfinder.min.css?v=1768671537" rel="stylesheet">
+<link href="/themes/windows-10/css/theme.css?v=1768626318" rel="stylesheet">
+<link href="/assets/aeec634c/css/kv-bootstrap-notify.min.css?v=1768671538" rel="stylesheet">
+<link href="/assets/c67090d/css/animate.min.css?v=1768671538" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,300,400,600,700,800" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Roboto+Mono:400,700&amp;subset=cyrillic,greek,latin-ext" rel="stylesheet">
+<link href="/css/bootstrap.min.css?v=1768626317" rel="stylesheet">
+<link href="/css/bootkit.css?v=1768626317" rel="stylesheet">
+<link href="/css/bootkit.essentials.min.css?v=1768626317" rel="stylesheet">
+<link href="/css/index-tiles.css?v=1768626317" rel="stylesheet">
+<link href="/css/login.css?v=1768626317" rel="stylesheet">
+<link href="/css/docs.css?v=1768626317" rel="stylesheet">
+<link href="/css/table.css?v=1768626317" rel="stylesheet">
+<link href="/css/site.css?v=1768626317" rel="stylesheet">
+<link href="/css/editor.css?v=1768626317" rel="stylesheet">
+<link href="/css/shop.css?v=1768626317" rel="stylesheet">
+<link href="/assets/5e90c83e/css/kv-grid.min.css?v=1768671550" rel="stylesheet">
+<link href="/assets/3ecfa16b/ajaxcrud.css?v=1768671550" rel="stylesheet">
+<link href="/assets/a98c4e0f/css/error.css?v=1768671550" rel="stylesheet">
+<!--[if lte IE9]>
+<script src="/js/html5shiv.js?v=1768626318"></script>
+<![endif]-->
+<!--[if lte IE9]>
+<script src="/js/respond.min.js?v=1768626318"></script>
+<![endif]-->
+<script src="/assets/ff308fee/js/dialog.min.js?v=1768671550"></script>
+</head>
+<body class=" modernui-dark-bg">
+<div class="custom-background-overlay"></div>
+      
+
+  
+
+<div class="container-fluid navbar-docs-push-down page_list">
+  <div class="panel panel-default-bg">
+   
+    <div class="panel-body rock">
+	<div class="panel-heading">
+	<div class="row flex_head">
+	<div class="col-md-4">
+      <h3 class="panel-title hid_text">
+        <a href="/" class="hover-underline-none "><i class="icon-metro-arrow-left-3"></i></a> 
+        
+		</h3>
+	</div>	
+        
+	<div class="col-md-4 text-center">
+
+	                      <div class="title hid_text"></div>
+		      	</div>
+	<div class="cafe_select">	
+	                      <a role="modal-remote" class="btn btn-science-blue ch_cafe" href="/change-cafe">
+            <i class="fa fa-cube"></i> <i class="fa fa-exchange"></i> <i class="fa fa-cube"></i>
+			 Change department
+			</a>
+		      			 <div class="language_main">  <div class="dropdown language">
+    <button class="btn btn-science-blue dropdown-toggle" type="button" id="dropdownLang" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+      <img src="/img/flag/en-EN.svg" alt="">
+      English
+      <i class="fa fa-angle-down"></i>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownLang">
+
+              <li><a ><img src="/img/flag/en-EN.svg" alt=""> English</a></li>
+              <li><a href=/fr-FR/><img src="/img/flag/fr-FR.svg" alt=""> Français</a></li>
+              <li><a href=/ru-RU/><img src="/img/flag/ru-RU.svg" alt=""> Русский</a></li>
+          </ul>
+  </div>
+</div>
+	</div>
+    </div>
+	<div class="clearfix"></div>
+	</div>
+	
+      <div class="row text-center site-error">
+  <div class="col-sm-6 text-right">
+    <h1 class="font-weight-800 letter-spacing-min-2">Oops!</h1>
+    <h4 class="letter-spacing-min-1">
+      An internal server error occurred.    </h4>
+    <hr class="hrmin">
+    <a href="/" class="btn btn-science-blue"><i class="fa fa-angle-double-left"></i> Нome</a>
+  </div>
+  <div class="col-sm-6 robot_align">
+    <img src="/img/robot_error.jpg" alt="error" class="error"></h1>
+  </div>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+
+  
+<div id="ajaxCrudModal" class="fade modal" role="dialog" tabindex="-1">
+<div class="modal-dialog ">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+</div>
+<div class="modal-body">
+
+  
+</div>
+<div class="modal-footer">
+
+</div>
+</div>
+</div>
+</div>
+  
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/assets/91937d57/yii.js?v=1768671537"></script>
+<script src="/assets/7eee5b25/js/bootstrap.js?v=1768671537"></script>
+<script src="/assets/318a19eb/jquery-ui.js?v=1768671537"></script>
+<script src="/assets/a5593/js/elfinder.min.js?v=1768671537"></script>
+<script src="/assets/5faa04fd/ckeditor.js?v=1768671538"></script>
+<script src="/assets/5faa04fd/js.js?v=1768671537"></script>
+<script src="/assets/aeec634c/js/bootstrap-notify.min.js?v=1768671538"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js" charset="utf-8"></script>
+<script src="/js/twig.min.js?v=1768626318" charset="utf-8"></script>
+<script src="/js/hashcode.js?v=1768626318" charset="utf-8"></script>
+<script src="/js/my.js?v=1768626318" charset="utf-8"></script>
+<script src="/js/editor.js?v=1768626318" charset="utf-8"></script>
+<script src="/assets/91937d57/yii.gridView.js?v=1768671537"></script>
+<script src="/assets/3ecfa16b/ModalRemote.min.js?v=1768671550"></script>
+<script src="/assets/3ecfa16b/ajaxcrud.min.js?v=1768671550"></script>
+<script>jQuery(function ($) {
+jQuery('#ajaxCrudModal').modal({"show":false});
+});</script>
+  </body>
+</html>
+
