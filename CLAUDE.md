@@ -130,15 +130,35 @@ RUN rm -f /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
 
 ### 7. URL Rewriting (mod_rewrite)
 **Error:** `/login` returns 404, but `/index.php?r=site/login` works
-**Cause:** mod_rewrite not properly enabled
-**Fix:** Added explicit `a2enmod rewrite` in entrypoint.sh
+**Cause:** .htaccess not being processed, mod_rewrite needed in VirtualHost
+**Fix:** Added RewriteRules directly in VirtualHost config in entrypoint.sh:
+```apache
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . index.php [L]
+</IfModule>
+```
+
+### 8. LoginPage URL Rule
+**Error:** `/login` returns 404 even with rewrite working
+**Cause:** `LoginPage.php` checks `if (empty($manager->baseUrl)) return false;`
+**Fix:** Added `baseUrl` to urlManager in `frontend-main-local.php`:
+```php
+'urlManager' => [
+    'baseUrl' => '/',
+],
+```
+
+**Note:** Railway edge caching may cache old 404 responses. Use `?cachebust=xyz` to bypass or wait for cache expiry.
 
 ## URLs
 
 ### Main Pages
 - **Landing:** https://kavork-app-production.up.railway.app/
-- **Login:** https://kavork-app-production.up.railway.app/index.php?r=site/login
-  - Or `/login` after mod_rewrite fix is deployed
+- **Login:** https://kavork-app-production.up.railway.app/login
 
 ### Healthcheck
 - **URL:** https://kavork-app-production.up.railway.app/healthcheck.php
