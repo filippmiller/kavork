@@ -162,6 +162,28 @@ try {
         echo "\n";
     }
 
+    // 7. Check cafe_params table
+    echo "7. CAFE_PARAMS TABLE\n";
+    $stmt = $pdo->query("DESCRIBE cafe_params");
+    $cols = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo "   Columns:\n";
+    foreach ($cols as $col) {
+        echo "   - {$col['Field']}: {$col['Type']}\n";
+    }
+
+    $stmt = $pdo->query("SELECT COUNT(*) FROM cafe_params");
+    $count = $stmt->fetchColumn();
+    echo "\n   Total records: $count\n";
+
+    // Check if cafe ID 1 has params
+    $stmt = $pdo->query("SELECT c.id, c.name, c.params_id, cp.id as params_exists FROM cafe c LEFT JOIN cafe_params cp ON c.params_id = cp.id WHERE c.id = 1");
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($row) {
+        echo "   Cafe 1 params_id: " . ($row['params_id'] ?? 'NULL') . "\n";
+        echo "   Params record exists: " . ($row['params_exists'] ? 'YES' : 'NO') . "\n";
+    }
+    echo "\n";
+
     echo "=== ACTIONS ===\n";
     echo "Add ?fix to URL to create user_cafe assignment for filipp1\n";
 
