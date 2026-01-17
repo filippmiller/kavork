@@ -162,25 +162,49 @@ try {
         echo "\n";
     }
 
-    // 7. Check cafe_params table
-    echo "7. CAFE_PARAMS TABLE\n";
-    $stmt = $pdo->query("DESCRIBE cafe_params");
-    $cols = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo "   Columns:\n";
-    foreach ($cols as $col) {
+    // 7. Check cafe table structure
+    echo "7. CAFE TABLE STRUCTURE\n";
+    $stmt = $pdo->query("DESCRIBE cafe");
+    $cafeCols = [];
+    while ($col = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $cafeCols[] = $col['Field'];
         echo "   - {$col['Field']}: {$col['Type']}\n";
     }
+    echo "\n";
 
+    // Check if params_id column exists
+    if (!in_array('params_id', $cafeCols)) {
+        echo "   WARNING: Missing 'params_id' column!\n";
+        if (isset($_GET['fix'])) {
+            echo "   Fixing: Adding params_id column...\n";
+            try {
+                $pdo->exec("ALTER TABLE cafe ADD COLUMN params_id INT DEFAULT 1");
+                echo "   Done.\n";
+            } catch (PDOException $e) {
+                echo "   Error: " . $e->getMessage() . "\n";
+            }
+        }
+    }
+    echo "\n";
+
+    // 8. Check cafe_params table
+    echo "8. CAFE_PARAMS TABLE\n";
     $stmt = $pdo->query("SELECT COUNT(*) FROM cafe_params");
     $count = $stmt->fetchColumn();
-    echo "\n   Total records: $count\n";
+    echo "   Total records: $count\n";
 
-    // Check if cafe ID 1 has params
-    $stmt = $pdo->query("SELECT c.id, c.name, c.params_id, cp.id as params_exists FROM cafe c LEFT JOIN cafe_params cp ON c.params_id = cp.id WHERE c.id = 1");
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row) {
-        echo "   Cafe 1 params_id: " . ($row['params_id'] ?? 'NULL') . "\n";
-        echo "   Params record exists: " . ($row['params_exists'] ? 'YES' : 'NO') . "\n";
+    if ($count == 0) {
+        echo "   WARNING: No cafe_params records - cafes have no configuration!\n";
+        if (isset($_GET['fix'])) {
+            echo "   Fixing: Creating default cafe_params record...\n";
+            try {
+                $pdo->exec("INSERT INTO cafe_params (id, name, first_weekday, time_zone, time_format, date_format, show_second)
+                            VALUES (1, 'Default', 1, 'America/Montreal', 0, 0, 0)");
+                echo "   Done.\n";
+            } catch (PDOException $e) {
+                echo "   Error: " . $e->getMessage() . "\n";
+            }
+        }
     }
     echo "\n";
 
