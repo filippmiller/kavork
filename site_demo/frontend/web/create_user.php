@@ -22,11 +22,14 @@ try {
         $stmt->execute([$hash, 'filipp1']);
         echo "Password updated successfully.\n";
     } else {
-        // Create new user
+        // Create new user - get next ID first
+        $stmt = $pdo->query("SELECT COALESCE(MAX(id), 0) + 1 as next_id FROM user");
+        $nextId = $stmt->fetch(PDO::FETCH_ASSOC)['next_id'];
+
         $hash = password_hash('Airbus380+', PASSWORD_BCRYPT, ['cost' => 13]);
-        $stmt = $pdo->prepare("INSERT INTO user (user, pass, email, state, cafe) VALUES (?, ?, ?, 0, 1)");
-        $stmt->execute(['filipp1', $hash, 'filipp1@test.com']);
-        echo "User 'filipp1' created successfully with ID: " . $pdo->lastInsertId() . "\n";
+        $stmt = $pdo->prepare("INSERT INTO user (id, user, pass, email, state, cafe) VALUES (?, ?, ?, ?, 0, 1)");
+        $stmt->execute([$nextId, 'filipp1', $hash, 'filipp1@test.com']);
+        echo "User 'filipp1' created successfully with ID: $nextId\n";
     }
 
     // Verify
