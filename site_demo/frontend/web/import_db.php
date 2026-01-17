@@ -20,6 +20,49 @@ if ($secret !== 'kavork2026import') {
 echo "<pre>\n";
 echo "=== DATABASE IMPORT ===\n\n";
 
+// Handle file upload first
+$sqlFile = '/tmp/import.sql';
+$gzFile = '/tmp/import.sql.gz';
+
+if (isset($_FILES['sql']) && $_FILES['sql']['error'] === UPLOAD_ERR_OK) {
+    $tmpFile = $_FILES['sql']['tmp_name'];
+    $name = $_FILES['sql']['name'];
+
+    echo "Received file: $name (" . $_FILES['sql']['size'] . " bytes)\n";
+
+    if (substr($name, -3) === '.gz') {
+        move_uploaded_file($tmpFile, $gzFile);
+        echo "Extracting gzip...\n";
+        $gz = gzopen($gzFile, 'rb');
+        $out = fopen($sqlFile, 'wb');
+        while (!gzeof($gz)) {
+            fwrite($out, gzread($gz, 4096));
+        }
+        gzclose($gz);
+        fclose($out);
+        unlink($gzFile);
+        echo "Extracted to $sqlFile (" . filesize($sqlFile) . " bytes)\n\n";
+    } else {
+        move_uploaded_file($tmpFile, $sqlFile);
+        echo "Saved to $sqlFile\n\n";
+    }
+}
+
+// If no SQL file, show upload form
+if (!file_exists($sqlFile)) {
+    echo "No SQL file found. Upload one:\n\n";
+    echo '</pre>';
+    echo '<form method="POST" enctype="multipart/form-data">';
+    echo '<input type="hidden" name="MAX_FILE_SIZE" value="100000000">';
+    echo '<input type="file" name="sql" accept=".sql,.gz">';
+    echo '<button type="submit">Upload & Import</button>';
+    echo '</form>';
+    echo '<pre>';
+    echo "\nOr use curl:\n";
+    echo 'curl -F "sql=@file.sql.gz" "' . "https://{$_SERVER['HTTP_HOST']}/import_db.php?key=kavork2026import\"\n";
+    exit;
+}
+
 try {
     $pdo = new PDO("mysql:host=$host;port=$port", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -30,31 +73,9 @@ try {
     echo "   Done.\n\n";
 
     echo "2. Creating fresh database...\n";
-    $pdo->exec("CREATE DATABASE `$db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+    $pdo->exec("CREATE DATABASE `$db` CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci");
     $pdo->exec("USE `$db`");
     echo "   Done.\n\n";
-
-    // Check if SQL file exists
-    $sqlFile = '/tmp/import.sql';
-
-    if (!file_exists($sqlFile)) {
-        echo "3. SQL file not found at $sqlFile\n";
-        echo "   Upload SQL to: POST /import_db.php?key=kavork2026import&action=upload\n\n";
-
-        if (isset($_GET['action']) && $_GET['action'] === 'upload' && isset($_FILES['sql'])) {
-            move_uploaded_file($_FILES['sql']['tmp_name'], $sqlFile);
-            echo "   File uploaded successfully!\n";
-        } elseif (isset($_GET['action']) && $_GET['action'] === 'fetch') {
-            // Fetch from URL
-            $url = isset($_GET['url']) ? $_GET['url'] : '';
-            if ($url) {
-                echo "   Fetching from: $url\n";
-                $content = file_get_contents($url);
-                file_put_contents($sqlFile, $content);
-                echo "   Downloaded " . strlen($content) . " bytes\n";
-            }
-        }
-    }
 
     if (file_exists($sqlFile)) {
         echo "3. Importing SQL file (" . filesize($sqlFile) . " bytes)...\n";
