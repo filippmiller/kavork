@@ -114,17 +114,22 @@ try {
                 $stmt = $pdo->prepare("SELECT COUNT(*) FROM user_cafe WHERE user_id = ? AND cafe_id = ?");
                 $stmt->execute([$testUser['id'], $cafeId]);
                 if ($stmt->fetchColumn() == 0) {
+                    // Get next ID
+                    $stmt = $pdo->query("SELECT COALESCE(MAX(id), 0) + 1 FROM user_cafe");
+                    $nextId = $stmt->fetchColumn();
+
                     // Check table structure
                     $stmt = $pdo->query("DESCRIBE user_cafe");
                     $cols = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
                     if (in_array('state', $cols)) {
-                        $stmt = $pdo->prepare("INSERT INTO user_cafe (user_id, cafe_id, state) VALUES (?, ?, 0)");
+                        $stmt = $pdo->prepare("INSERT INTO user_cafe (id, user_id, cafe_id, state) VALUES (?, ?, ?, 0)");
+                        $stmt->execute([$nextId, $testUser['id'], $cafeId]);
                     } else {
-                        $stmt = $pdo->prepare("INSERT INTO user_cafe (user_id, cafe_id) VALUES (?, ?)");
+                        $stmt = $pdo->prepare("INSERT INTO user_cafe (id, user_id, cafe_id) VALUES (?, ?, ?)");
+                        $stmt->execute([$nextId, $testUser['id'], $cafeId]);
                     }
-                    $stmt->execute([$testUser['id'], $cafeId]);
-                    echo "   CREATED: User {$testUser['id']} -> Cafe $cafeId\n";
+                    echo "   CREATED: User {$testUser['id']} -> Cafe $cafeId (ID: $nextId)\n";
                 } else {
                     echo "   Assignment already exists.\n";
                 }
