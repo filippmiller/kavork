@@ -100,9 +100,29 @@ try {
     }
     echo "\n";
 
-    // 5. FIX: Create user_cafe assignment if requested
+    // 5. Check/fix user_cafe primary key
+    echo "5. USER_CAFE PRIMARY KEY\n";
+    $stmt = $pdo->query("SHOW KEYS FROM user_cafe WHERE Key_name = 'PRIMARY'");
+    if (!$stmt->fetch()) {
+        echo "   WARNING: No primary key on user_cafe table!\n";
+        if (isset($_GET['fix'])) {
+            echo "   Fixing: Adding primary key on id column...\n";
+            try {
+                $pdo->exec("ALTER TABLE user_cafe ADD PRIMARY KEY (id)");
+                $pdo->exec("ALTER TABLE user_cafe MODIFY id INT NOT NULL AUTO_INCREMENT");
+                echo "   Done.\n";
+            } catch (PDOException $e) {
+                echo "   Error: " . $e->getMessage() . "\n";
+            }
+        }
+    } else {
+        echo "   OK - Primary key exists\n";
+    }
+    echo "\n";
+
+    // 6. FIX: Create user_cafe assignment if requested
     if (isset($_GET['fix'])) {
-        echo "5. FIXING USER_CAFE ASSIGNMENT\n";
+        echo "6. FIXING USER_CAFE ASSIGNMENT\n";
 
         if ($testUser) {
             // Get first cafe
