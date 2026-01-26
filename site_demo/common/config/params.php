@@ -1,9 +1,9 @@
 <?php
 return [
   //'site_url'=>(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]",
-    'adminEmail' => 'noreply@docowork.com',
-    'supportEmail' => 'noreply@docowork.com',
-    'robotEmail' => 'noreply@docowork.com',
+    'adminEmail' => 'anticafe294@gmail.com',
+    'supportEmail' => 'anticafe294@gmail.com',
+    'robotEmail' => 'anticafe294@gmail.com',
     'adminName' => 'kavork.com',
     'mainLanding' => true,
     'checkMailSendDelay' => 0, // Время ожидания задания "Отправка чека на Email" в очереди перед выполнением, секунд
