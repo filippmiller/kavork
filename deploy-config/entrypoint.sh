@@ -62,5 +62,13 @@ cat /etc/apache2/ports.conf
 echo "=== 000-default.conf ==="
 cat /etc/apache2/sites-available/000-default.conf
 
+# Start Yii queue worker in background for email processing
+echo "Starting Yii queue worker for background email jobs..."
+cd /var/www/html
+nohup php yii queue/listen --verbose=1 > /var/log/queue-worker.log 2>&1 &
+QUEUE_PID=$!
+echo "Queue worker started with PID: ${QUEUE_PID}"
+echo "Queue worker logs: /var/log/queue-worker.log"
+
 echo "Starting Apache on port ${PORT}..."
 exec apache2-foreground
