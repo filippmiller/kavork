@@ -278,7 +278,38 @@ git push origin main
 
 ---
 
+---
+
+## ⚠️ CRITICAL FIX: Queue Worker Missing (RESOLVED)
+
+**Issue Discovered:** After SMTP configuration was deployed, verification showed that the Yii queue worker process was NOT running on Railway.
+
+**Impact:**
+- Emails were being queued in the database
+- NO worker process was consuming the queue
+- Result: Receipts would never be sent to customers
+
+**Root Cause:**
+Railway was only running the web service (Apache/PHP) but not the background queue worker (`php yii queue/listen`).
+
+**Solution Applied:**
+Modified `deploy-config/entrypoint.sh` to start the queue worker in background:
+```bash
+nohup php yii queue/listen --verbose=1 > /var/log/queue-worker.log 2>&1 &
+```
+
+**Commits:**
+1. e8f7308 - Configure Gmail SMTP
+2. 86b80f2 - Add queue worker to entrypoint ✅ CRITICAL FIX
+
+**Status:** Both commits deployed to Railway. System now has:
+- ✅ SMTP configuration active
+- ✅ Queue worker running in background
+- ✅ Apache serving web requests
+- ✅ Ready for email sending
+
+---
+
 **Session End:** 2026-01-26
-**Resume Priority:** HIGH
-**Blocker:** Need Gmail access to generate App Password
-**Estimated Completion:** 15 minutes after Gmail access obtained
+**Status:** ✅ COMPLETE - Fully configured and deployed
+**Next:** Test with real checkout to verify receipt delivery
