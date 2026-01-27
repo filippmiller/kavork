@@ -27,7 +27,8 @@ COPY site_demo/ /var/www/html/
 
 # Install PHP dependencies with Composer (skip security checks for legacy packages)
 ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN cd /var/www/html && composer install --no-dev --optimize-autoloader --no-interaction
+# Regenerate lock file for PHP 8.2 compatibility, then install
+RUN cd /var/www/html && composer update --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
 # Cache bust: 2026-01-27-php82-fix
 
