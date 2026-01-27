@@ -45,6 +45,7 @@ COPY deploy-config/main-local.php /var/www/html/common/config/main-local.php
 COPY deploy-config/frontend-main-local.php /var/www/html/frontend/config/main-local.php
 COPY deploy-config/params-local.php /var/www/html/frontend/config/params-local.php
 COPY deploy-config/params-local.php /var/www/html/common/config/params-local.php
+COPY deploy-config/params-local.php /var/www/html/console/config/params-local.php
 
 
 COPY deploy-config/entrypoint.sh /entrypoint.sh
