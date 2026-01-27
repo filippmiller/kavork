@@ -447,7 +447,7 @@ class DefaultController extends Controller
         //}
 
         //подумать куда перенести
-        //Yii::$app->session->addFlash('polls', ['visitor_id' => $visit->visitor_id, 'mode' => Polls::EVEVT_FINISH_VISIT]);
+        //Yii::$app->session->addFlash('polls', ['visitor_id' => $visit->visitor_id, 'mode' => Polls::EVENT_FINISH_VISIT]);
         return [
             'title' => Yii::t('selfservice', "Acceptance of payment."),
             'content' => $this->renderAjax('@frontend/modules/visits/views/default/stop.twig', [

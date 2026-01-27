@@ -113,17 +113,24 @@ class Task extends \common\components\ActiveRecord
     $res = parent::validate($attributeNames, $clearErrors);
 
     if (strpos($this->formName(), 'Search') === false) {
+      $start_time = $this->start_time;
+      $end_time = $this->end_time;
+
       if (!is_numeric($this->start_time)) {
         $date = \DateTime::createFromFormat(Yii::$app->params['lang']['time'], $this->start_time);
-        $start_time = $date->getTimestamp();
+        if ($date) {
+          $start_time = $date->getTimestamp();
+        }
       }
 
       if (!is_numeric($this->end_time)) {
         $date = \DateTime::createFromFormat(Yii::$app->params['lang']['time'], $this->end_time);
-        $end_time = $date->getTimestamp();
+        if ($date) {
+          $end_time = $date->getTimestamp();
+        }
       }
 
-      if ($start_time > $end_time) {
+      if (is_numeric($start_time) && is_numeric($end_time) && $start_time > $end_time) {
         $this->addError('end_time', Yii::t('app', 'The end time of the visit should be longer than the start time.'));
         return false;
       }
@@ -175,7 +182,7 @@ class Task extends \common\components\ActiveRecord
 
     if ($this->type == 4) {
       if ($this->weak_n > 0) {
-        return Yii::t('app', 'Every {n}nd (from the stаrt of the month) {weekday}', [
+        return Yii::t('app', 'Every {n}nd (from the start of the month) {weekday}', [
             'n' => $this->weak_n,
             'weekday' => Yii::t('app', $wd_list[$this->weekday]),
         ]);
@@ -267,10 +274,12 @@ class Task extends \common\components\ActiveRecord
     }
 
     if ($asArray) {
-      $query->leftJoin('do_task', 'do_task.task_id=task.id AND DATE(do_task.`datetime`)=\'' . $date . '\'');
+      $query->leftJoin('do_task', 'do_task.task_id=task.id AND DATE(do_task.`datetime`)=:task_date', [':task_date' => $date]);
       $query->leftJoin('user', 'user.id=do_task.user_id');
       $query->asArray();
-      $query->select(['task.*, do_task.closedate,do_task.status,user.name,IF(end_time<\'' . date("H:i:s") . '\',1,0) as time_up,IF(start_time<\'' . date("H:i:s") . '\',1,0) as is_start,do_task.id as do_id']);
+      $currentTime = date("H:i:s");
+      $query->select(['task.*, do_task.closedate,do_task.status,user.name,IF(end_time<:current_time1,1,0) as time_up,IF(start_time<:current_time2,1,0) as is_start,do_task.id as do_id']);
+      $query->addParams([':current_time1' => $currentTime, ':current_time2' => $currentTime]);
     }
 
     return $query;
@@ -374,7 +383,7 @@ class Task extends \common\components\ActiveRecord
     if (!$this->todayDo) {
       if (empty(Yii::$app->params['task_data'])) return false;
       $this->todayDo = DoTask::find()
-          ->where('date(`datetime`)=\'' . Yii::$app->params['task_data'] . '\'')
+          ->where('date(`datetime`)=:task_date', [':task_date' => Yii::$app->params['task_data']])
           ->andWhere(['task_id' => $this->id])
           ->one();
 
@@ -451,7 +460,7 @@ class Task extends \common\components\ActiveRecord
     }
 
     $tasks = self::findToDate()
-        ->leftJoin('do_task', 'do_task.task_id=task.id AND DATE(do_task.`datetime`)=\'' . DATE('Y-m-d') . '\'')
+        ->leftJoin('do_task', 'do_task.task_id=task.id AND DATE(do_task.`datetime`)=:current_date', [':current_date' => DATE('Y-m-d')])
         ->select('do_task.status,count(task.id) as cnt')
         ->groupBy('status')
         ->asArray()

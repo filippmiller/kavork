@@ -36,11 +36,18 @@ class DefaultController extends Controller
     \Yii::$app->view->registerJs($js);
 
     $request = Yii::$app->request;
-    $page = explode($request->headers['host'], $request->headers['referer']);
-    if (count($page) < 2) {
-      $this->from_main = true;
+    $host = $request->headers->get('host');
+    $referer = $request->headers->get('referer');
+
+    if ($host && $referer) {
+      $page = explode($host, $referer);
+      if (count($page) < 2) {
+        $this->from_main = true;
+      } else {
+        $this->from_main = (trim($page[1], '/') == "");
+      }
     } else {
-      $this->from_main = (trim($page[1], '/') == "");
+      $this->from_main = true;
     }
 
     if ($this->from_main == false) {
@@ -52,7 +59,6 @@ class DefaultController extends Controller
     if (!YII_DEBUG) {
       if (Yii::$app->user->isGuest || !Yii::$app->cafe->can("startVisit")) {
         throw new ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-        return false;
       }
 
       // List of NOT AJAX request allowed actions in this controller
@@ -63,7 +69,6 @@ class DefaultController extends Controller
       $request = Yii::$app->request;
       if (!$request->isAjax && !in_array($action->id, $not_ajax_allowed_actions)) {
         throw new ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-        return false;
       }
     }
     Yii::$app->response->format = Response::FORMAT_JSON;
@@ -442,7 +447,7 @@ class DefaultController extends Controller
     $models = VisitorLog::find()->where(['id' => $visit_ids])->all();
     $payManModel = VisitorLog::find()->where(['id' => $payManId])->one();
 
-    if (!$models && $payManModel !== null) {
+    if (!$models || $payManModel === null) {
       return [
           'title' => Yii::t('app', "View visit error"),
           'content' => Yii::t('app', "Visit not found"),
@@ -474,7 +479,7 @@ class DefaultController extends Controller
     }
 
     Yii::$app->session->addFlash('success', Yii::t('app', 'The visit was successfully completed.'));
-    Yii::$app->session->addFlash('polls', ['visitor_id' => $visit->visitor_id, 'mode' => Polls::EVEVT_FINISH_VISIT]);
+    Yii::$app->session->addFlash('polls', ['visitor_id' => $visit->visitor_id, 'mode' => Polls::EVENT_FINISH_VISIT]);
 
     return $this->actionPay($payManId);
   }
@@ -571,7 +576,7 @@ class DefaultController extends Controller
     $model->save();
 
     Yii::$app->session->addFlash('success', Yii::t('app', 'The visit was successfully completed.'));
-	Yii::$app->session->addFlash( 'polls', ['visitor_id' => $model->visitor_id, 'mode' => Polls::EVEVT_FINISH_VISIT]);
+	Yii::$app->session->addFlash( 'polls', ['visitor_id' => $model->visitor_id, 'mode' => Polls::EVENT_FINISH_VISIT]);
 
 
     return $this->actionPay($id);

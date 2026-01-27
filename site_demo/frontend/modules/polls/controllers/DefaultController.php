@@ -96,8 +96,8 @@ class DefaultController extends Controller
     return Polls::find()
         ->andWhere([
             'user_status' => [
-                Polls::USER_SATATUS_ALL,
-                $visits_count == 1 ? Polls::USER_SATATUS_NEW : Polls::USER_SATATUS_REGULAR,
+                Polls::USER_STATUS_ALL,
+                $visits_count == 1 ? Polls::USER_STATUS_NEW : Polls::USER_STATUS_REGULAR,
             ],
             'status' => Polls::STATUS_ACTIVE,
             'event' => $mode,

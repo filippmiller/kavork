@@ -35,11 +35,11 @@ class Polls extends \common\components\ActiveRecord
   const OTHER_ANS_HIDDEN = 0;
 
   const EVENT_START_VISIT = 0;
-  const EVEVT_FINISH_VISIT = 1;
+  const EVENT_FINISH_VISIT = 1;
 
-  const USER_SATATUS_NEW = 1;
-  const USER_SATATUS_REGULAR = 2;
-  const USER_SATATUS_ALL = -1;
+  const USER_STATUS_NEW = 1;
+  const USER_STATUS_REGULAR = 2;
+  const USER_STATUS_ALL = -1;
 
 
   /**
@@ -236,9 +236,9 @@ class Polls extends \common\components\ActiveRecord
   public static function getUserStatus($index = null)
   {
     $labels = [
-        self::USER_SATATUS_ALL => Yii::t('app', 'ALL visitors'),
-        self::USER_SATATUS_NEW => Yii::t('app', 'New visitors'),
-        self::USER_SATATUS_REGULAR => Yii::t('app', 'Regular visitors'),
+        self::USER_STATUS_ALL => Yii::t('app', 'ALL visitors'),
+        self::USER_STATUS_NEW => Yii::t('app', 'New visitors'),
+        self::USER_STATUS_REGULAR => Yii::t('app', 'Regular visitors'),
     ];
 
     if ($index !== null) {
