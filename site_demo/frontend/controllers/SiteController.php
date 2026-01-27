@@ -112,6 +112,11 @@ class SiteController extends Controller
       }
     };
 
+    // If user is logged in but no cafe selected, redirect to cafe selection
+    if (!Yii::$app->cafe->id) {
+      return $this->redirect(['/site/change-cafe']);
+    }
+
     return $this->render('index', [
         'page_wrap' => 'index',
         'screen_class' => 'start-screen',
@@ -154,26 +159,38 @@ class SiteController extends Controller
     $session = Yii::$app->session;
     $cookies = Yii::$app->response->cookies;
 
+    // No cafes assigned - logout and show error
     if (count($cafe_list) == 0) {
       Yii::$app->user->logout();
       $session->addFlash('error', Yii::t('app', 'You do not have a free cafe. Contact your administrator.'));
       return $this->redirect(['/login']);
     }
 
+    // User has only one cafe - auto-select it
     if (count($cafe_list) == 1) {
+      // If cafe already set, redirect to home
       if ($session->get('cafe_id', false)) {
         return $this->goBack('/');
       }
+
+      // Auto-set the only available cafe
       $cafe_id = $cafe_list[0]['id'];
       $session->set('cafe_id', $cafe_id);
+
+      // Set cookie with proper security settings
       $cookies->add(new \yii\web\Cookie([
           'name' => 'cafe_id',
           'value' => $cafe_id,
           'httpOnly' => true,
           'secure' => Yii::$app->request->isSecureConnection,
           'sameSite' => \yii\web\Cookie::SAME_SITE_LAX,
+          'expire' => time() + 30 * 24 * 60 * 60, // 30 days
       ]));
+
+      // Re-initialize cafe component with selected cafe
       Yii::$app->cafe->init();
+
+      // Auto-start session if needed
       if (!Yii::$app->user->can('AllCafeShow') &&
           Yii::$app->cafe->can('sessionAutoStart') &&
           !count(Yii::$app->cafe->getActiveUsers())
@@ -181,37 +198,46 @@ class SiteController extends Controller
         UserLog::sessionStart();
       }
 
-      return $this->refresh();
+      // Redirect to home page
+      return $this->redirect(['/']);
     }
 
+    // User has multiple cafes - handle POST selection
     if (Yii::$app->request->isPost && Yii::$app->request->post('cafe')) {
 
       $cafe_id = Yii::$app->request->post('cafe');
       $enterSelfService = Yii::$app->request->post('selfservice', null);
 
+      // Validate that selected cafe is in user's cafe list
       foreach ($cafe_list as $cafe) {
         if ($cafe['id'] == $cafe_id) {
+          // Set cafe in session
           $session->set('cafe_id', $cafe_id);
 
+          // Set persistent cookie
           $cookies->add(new \yii\web\Cookie([
               'name' => 'cafe_id',
               'value' => $cafe_id,
               'httpOnly' => true,
               'secure' => Yii::$app->request->isSecureConnection,
               'sameSite' => \yii\web\Cookie::SAME_SITE_LAX,
+              'expire' => time() + 30 * 24 * 60 * 60, // 30 days
           ]));
 
+          // Handle self-service mode
           if ($enterSelfService) {
             return $this->redirect(['/selfservice/default/index']);
           }
 
-          // Re-init Cafe component
+          // Re-initialize Cafe component with selected cafe
           Yii::$app->cafe->init();
 
+          // Auto-start session if needed
           if (!Yii::$app->user->can('AllCafeShow') && Yii::$app->cafe->can('sessionAutoStart')) {
             UserLog::sessionStart();
           }
 
+          // Return appropriate response
           if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
@@ -220,7 +246,7 @@ class SiteController extends Controller
                 'footer' => "",
             ];
           } else {
-            return $this->refresh();
+            return $this->redirect(['/']);
           }
         }
       }
@@ -307,24 +333,128 @@ class SiteController extends Controller
   {
     $request = Yii::$app->request;
     Yii::$app->response->format = Response::FORMAT_JSON;
-    if (Yii::$app->user->isGuest || !Yii::$app->cafe->id && !$request->isAjax && !$request->isGet) {
+
+    // User must be logged in to access templates
+    if (Yii::$app->user->isGuest) {
+      return [];
+    }
+
+    // If no cafe selected, return empty (this is intentional for security)
+    // The frontend will detect this and prompt for cafe selection
+    if (!Yii::$app->cafe->id) {
       return [];
     }
 
     $out = [];
     $path = Yii::$app->viewPath . '/browser/';
+
+    if (!is_dir($path)) {
+      Yii::error("Browser templates directory not found: $path", __METHOD__);
+      return [];
+    }
+
     $files = scandir($path);
     foreach ($files as $key => $value) {
-      if (!in_array($value, array(".", ".."))) {
+      if (!in_array($value, array(".", "..")) && pathinfo($value, PATHINFO_EXTENSION) === 'twig') {
         $name = str_replace('.twig', '', $value);
-        $out[$name] = file_get_contents($path . $value);
+        $filePath = $path . $value;
+        if (is_readable($filePath)) {
+          $out[$name] = file_get_contents($filePath);
+        }
       }
     }
 
+    return $out;
+  }
 
+  /**
+   * Queue worker status endpoint
+   * Shows queue health: pending jobs, failed jobs, worker process status
+   * Access: /queue-status
+   */
+  public function actionQueueStatus()
+  {
     Yii::$app->response->format = Response::FORMAT_JSON;
 
-    return $out;
+    $status = [
+      'timestamp' => date('Y-m-d H:i:s'),
+      'queue' => [
+        'connected' => false,
+        'waiting' => 0,
+        'delayed' => 0,
+        'reserved' => 0,
+        'done' => 0,
+      ],
+      'worker' => [
+        'running' => false,
+        'pid' => null,
+        'log_exists' => false,
+        'recent_errors' => [],
+      ],
+    ];
+
+    try {
+      // Check queue database table
+      $queue = Yii::$app->queue;
+      if ($queue) {
+        $status['queue']['connected'] = true;
+
+        // Count jobs by status
+        $db = Yii::$app->db;
+        $status['queue']['waiting'] = (int)$db->createCommand(
+          'SELECT COUNT(*) FROM {{%queue}} WHERE reserved_at IS NULL AND done_at IS NULL'
+        )->queryScalar();
+
+        $status['queue']['reserved'] = (int)$db->createCommand(
+          'SELECT COUNT(*) FROM {{%queue}} WHERE reserved_at IS NOT NULL AND done_at IS NULL'
+        )->queryScalar();
+
+        $status['queue']['done'] = (int)$db->createCommand(
+          'SELECT COUNT(*) FROM {{%queue}} WHERE done_at IS NOT NULL AND DATE(done_at) = CURDATE()'
+        )->queryScalar();
+      }
+    } catch (\Exception $e) {
+      $status['queue']['error'] = $e->getMessage();
+    }
+
+    // Check if worker process is running
+    if (function_exists('shell_exec') && !in_array('shell_exec', explode(',', ini_get('disable_functions')))) {
+      $processes = shell_exec('ps aux | grep "yii queue/listen" | grep -v grep');
+      if ($processes && trim($processes) !== '') {
+        $status['worker']['running'] = true;
+        // Extract PID
+        if (preg_match('/^\S+\s+(\d+)/', $processes, $matches)) {
+          $status['worker']['pid'] = (int)$matches[1];
+        }
+      }
+    }
+
+    // Check if log file exists and get recent errors
+    $logFile = '/var/log/queue-worker.log';
+    if (file_exists($logFile) && is_readable($logFile)) {
+      $status['worker']['log_exists'] = true;
+
+      // Get last 50 lines and filter for errors
+      $lines = shell_exec("tail -n 50 $logFile 2>/dev/null");
+      if ($lines) {
+        $errorLines = array_filter(
+          explode("\n", $lines),
+          function($line) {
+            return stripos($line, 'error') !== false ||
+                   stripos($line, 'exception') !== false ||
+                   stripos($line, 'failed') !== false;
+          }
+        );
+        $status['worker']['recent_errors'] = array_values(array_slice($errorLines, -5));
+      }
+    }
+
+    // Overall health check
+    $status['healthy'] =
+      $status['queue']['connected'] &&
+      ($status['worker']['running'] || $status['queue']['waiting'] == 0);
+
+    return $status;
   }
 
   /**
