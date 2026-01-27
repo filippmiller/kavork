@@ -12,7 +12,6 @@ return [
     'bootstrap' => [
         'log',
         'queue',
-        'kint',
     ],
     'controllerNamespace' => 'console\controllers',
     'aliases' => [
@@ -47,11 +46,7 @@ return [
             'class' => 'frontend\modules\cafe\components\Cafe',
         ],
     ],
-    'modules' => [
-        'kint' => [
-            'class' => 'digitv\kint\Module',
-        ],
-    ],
+    'modules' => [],
     'params' => $params,
 ];
 

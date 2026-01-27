@@ -146,11 +146,16 @@ if (YII_DEBUG) {
   $config['bootstrap'][] = 'debug';
   $config['modules']['debug'] = [
       'class' => 'yii\debug\Module',
-      'allowedIPs' => ['*']
+      // SECURITY WARNING: Allowing all IPs ['*'] is a security risk in production
+      // Replace with specific IPs in production: ['127.0.0.1', '::1', '192.168.*']
+      // Or use environment-specific configs
+      'allowedIPs' => YII_ENV_DEV ? ['*'] : ['127.0.0.1', '::1'],
   ];
   $config['bootstrap'][] = 'gii';
   $config['modules']['gii'] = [
       'class' => 'yii\gii\Module',
+      // Restrict Gii access to localhost only
+      'allowedIPs' => YII_ENV_DEV ? ['*'] : ['127.0.0.1', '::1'],
   ];
 
   //Add kint

@@ -61,7 +61,6 @@ class AdminController extends Controller
   {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('CafeView')) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return false;
     }
 
     $searchModel = new CafeSearch();
@@ -121,7 +120,6 @@ class AdminController extends Controller
   {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('CafeView')) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return false;
     }
     $model = new Cafe();
     $searchModel = new CafeSearch();
@@ -130,7 +128,6 @@ class AdminController extends Controller
 
     if (!$request->isAjax) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return false;
     }
 
     Yii::$app->response->format = Response::FORMAT_JSON;
@@ -201,16 +198,15 @@ class AdminController extends Controller
   {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('CafeCreate')) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return false;
     }
     $request = Yii::$app->request;
     $model = new Cafe();
 
-    // If we got predefined frinchisee - set it
+    // If we got predefined franchisee - set it
     if ($franchisee_id !== null) {
       $model->franchisee_id = $franchisee_id;
     } else if (Yii::$app->user->can('AllFranchisee')) {
-
+      // User can manage all franchisees
     } else {
       $franchisee_id = Yii::$app->cafe->franchiseeId;
       $count_cafe = Cafe::find()
@@ -235,7 +231,6 @@ class AdminController extends Controller
 
     if (!$request->isAjax) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return false;
     }
 
     if ($request->isAjax) {
@@ -317,7 +312,6 @@ class AdminController extends Controller
   {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('CafeUpdate')) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return false;
     }
 
     $request = Yii::$app->request;
@@ -325,7 +319,6 @@ class AdminController extends Controller
 
     if (!$request->isAjax) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return false;
     }
     if ($request->isAjax) {
       /*
@@ -398,7 +391,6 @@ class AdminController extends Controller
         )
     ) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return false;
     }
 
     $id = Yii::$app->cafe->id;
@@ -407,7 +399,6 @@ class AdminController extends Controller
 
     if ($request->isAjax) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return false;
     }
 
     /*
@@ -436,13 +427,11 @@ class AdminController extends Controller
   {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('CafeSetParam')) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return true;
     }
 
     $request = Yii::$app->request;
     if (!$request->isAjax && !YII_DEBUG) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return true;
     }
 
     if (!empty($id)) {
@@ -467,7 +456,6 @@ class AdminController extends Controller
   {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('CafeRulesSet')) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return true;
     }
 
     $request = Yii::$app->request;
@@ -475,7 +463,6 @@ class AdminController extends Controller
 
     if (!$request->isAjax) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return true;
     }
 
     $model->role_ids = ArrayHelper::getColumn($model->authItems, 'name');
@@ -535,7 +522,6 @@ class AdminController extends Controller
     //if (Yii::$app->user->isGuest || !Yii::$app->user->can('FranchiseeDiscountUpdate')) {
 	if (Yii::$app->user->isGuest || !Yii::$app->user->can('CafeDiscountUpdate')) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return true;
     }
 
     $request = Yii::$app->request;
@@ -543,7 +529,6 @@ class AdminController extends Controller
 
     if (!$request->isAjax) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return true;
     }
 
     $model = new DiscountUpdateForm($cafe);
@@ -595,7 +580,6 @@ class AdminController extends Controller
   {
     if (Yii::$app->user->isGuest || !Yii::$app->user->can('CafeUpdate')) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return true;
     }
 
     $request = Yii::$app->request;

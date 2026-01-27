@@ -19,10 +19,10 @@ class Controller extends \yii\web\Controller
    * @param $data
    * @return mixed
    */
-  public function returnBlank($data, $secsesfulMessage = null)
+  public function returnBlank($data, $successfulMessage = null)
   {
-    if (!empty($secsesfulMessage)) {
-      \Yii::$app->session->addFlash('success', $secsesfulMessage);
+    if (!empty($successfulMessage)) {
+      \Yii::$app->session->addFlash('success', $successfulMessage);
     }
 
     $data['forceClose'] = true;

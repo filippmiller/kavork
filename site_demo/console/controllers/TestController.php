@@ -17,7 +17,9 @@ class TestController extends Controller
   public function beforeAction($action)
   {
     if (Console::isRunningOnWindows()) {
-      shell_exec('chcp 65001');
+      // Set console code page to UTF-8 on Windows
+      // Suppress errors as this is a best-effort operation
+      @shell_exec('chcp 65001 2>nul');
     }
     return parent::beforeAction($action);
   }

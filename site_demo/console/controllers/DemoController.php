@@ -115,7 +115,25 @@ class DemoController extends Controller
         exit;
       }
       foreach ($files as $path) {
-        exec('mysql --host=' . $this->getDsnAttribute('host', $db->dsn) . ' --user=' . $db->username . ' --password=' . $db->password . ' ' . $this->getDsnAttribute('dbname', $db->dsn) . ' < ' . $path);
+        // Securely escape all shell arguments to prevent command injection
+        $host = escapeshellarg($this->getDsnAttribute('host', $db->dsn));
+        $user = escapeshellarg($db->username);
+        $password = escapeshellarg($db->password);
+        $dbname = escapeshellarg($this->getDsnAttribute('dbname', $db->dsn));
+        $filePath = escapeshellarg($path);
+
+        // Build the command with escaped arguments
+        $command = "mysql --host={$host} --user={$user} --password={$password} {$dbname} < {$filePath}";
+
+        exec($command, $output, $returnCode);
+
+        if ($returnCode !== 0) {
+          $this->operation('Failed to import dump file: ' . basename($path));
+          $this->operationStatus(false);
+          Yii::error('MySQL dump import failed with return code: ' . $returnCode);
+          continue;
+        }
+
         $name = explode('/', $path);
         $name = array_pop($name);
         $name = Console::ansiFormat($name, [Console::FG_GREEN]);

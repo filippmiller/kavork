@@ -127,14 +127,12 @@ class SiteController extends Controller
   {
     if (!Yii::$app->user->isGuest) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return false;
     }
 
     $request = Yii::$app->request;
 
     if (!$request->isAjax) {
       throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      return false;
     }
 
     Yii::$app->response->format = Response::FORMAT_JSON;
@@ -273,22 +271,20 @@ class SiteController extends Controller
     ]);
   }
 
-  public function actionNeadpay()
+  public function actionNeedpay()
   {
     $request = Yii::$app->request;
     if (Yii::$app->user->isGuest || !$request->isAjax) {
-      //throw new ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
-      //return false;
+      return $this->goHome();
     }
 
     Yii::$app->response->format = Response::FORMAT_JSON;
 
     return [
-        'title' => Yii::t('app', 'Nead pay'),
-        'content' => $this->renderAjax('neadpay'),
+        'title' => Yii::t('app', 'Need pay'),
+        'content' => $this->renderAjax('needpay'),
         'size' => 'normal',
-        'footer' => Html::button(Yii::t('app', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
-            ''//Html::a(Yii::t('app', 'Go to demo'),'/', ['class' => 'btn btn-primary', 'type' => "submit"])
+        'footer' => Html::button(Yii::t('app', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
     ];
   }
 
@@ -322,7 +318,7 @@ class SiteController extends Controller
         !Yii::$app->cafe->testActiveUntil()
     ) {
       Yii::$app->session->set('showActiveUntil', time() + Yii::$app->params['modalNotificatorPeriod'] * 60);
-      $out['modal'] = '/neadpay';
+      $out['modal'] = '/needpay';
     }
 
     Yii::$app->response->format = Response::FORMAT_JSON;
@@ -419,10 +415,11 @@ class SiteController extends Controller
 
     // Check if worker process is running
     if (function_exists('shell_exec') && !in_array('shell_exec', explode(',', ini_get('disable_functions')))) {
-      $processes = shell_exec('ps aux | grep "yii queue/listen" | grep -v grep');
+      // Safe command - no user input, only literal strings
+      $processes = shell_exec('ps aux | grep "yii queue/listen" | grep -v grep 2>/dev/null');
       if ($processes && trim($processes) !== '') {
         $status['worker']['running'] = true;
-        // Extract PID
+        // Extract PID (validate it's actually numeric)
         if (preg_match('/^\S+\s+(\d+)/', $processes, $matches)) {
           $status['worker']['pid'] = (int)$matches[1];
         }
@@ -434,8 +431,9 @@ class SiteController extends Controller
     if (file_exists($logFile) && is_readable($logFile)) {
       $status['worker']['log_exists'] = true;
 
-      // Get last 50 lines and filter for errors
-      $lines = shell_exec("tail -n 50 $logFile 2>/dev/null");
+      // Get last 50 lines and filter for errors - escape the file path
+      $escapedLogFile = escapeshellarg($logFile);
+      $lines = shell_exec("tail -n 50 {$escapedLogFile} 2>/dev/null");
       if ($lines) {
         $errorLines = array_filter(
           explode("\n", $lines),

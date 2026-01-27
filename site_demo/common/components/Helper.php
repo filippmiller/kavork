@@ -11,22 +11,21 @@ class Helper extends Component
   public function cafe_where($table = false)
   {
     $cafe = \Yii::$app->cafe;
-    if ($table) {
-      $table .= '.';
-    };
-    return
+    $prefix = $table ? $table . '.' : '';
+
+    return [
+        'or',
         [
-            'or',
-            [
-                'and',
-                $table . 'cafe_id =' . $cafe->id,
-                $table . 'franchisee_id=' . $cafe->franchiseeId,
-            ], [
             'and',
-            $table . 'cafe_id is null',
-            $table . 'franchisee_id = ' . $cafe->franchiseeId,
+            [$prefix . 'cafe_id' => $cafe->id],
+            [$prefix . 'franchisee_id' => $cafe->franchiseeId],
+        ],
+        [
+            'and',
+            [$prefix . 'cafe_id' => null],
+            [$prefix . 'franchisee_id' => $cafe->franchiseeId],
         ]
-        ];
+    ];
   }
 
   public function echo_time($time, $is_run = false)
@@ -69,19 +68,13 @@ class Helper extends Component
 
   public function addPdfToMail($sended, $content)
   {
-    //$format = \Yii::$app->response->format;
-
-    //file_put_contents(\Yii::getAlias('@common/../last_pdf_content.txt'), $content);
-
     $pattern = '#<style[^<]+</style>#i';
     preg_match_all($pattern, $content, $css_inline);
     $css_inline = implode("\n", $css_inline[0]);
     $css_inline = strip_tags($css_inline);
 
-    $content_pdf = $text = preg_replace("#<style[^<]+</style>#is", "", $content);
-    $content_pdf = $text = preg_replace("#<title[^<]+</title>#is", "", $content_pdf);
-    //var_dump($css_inline);
-    //var_dump($content_pdf);
+    $content_pdf = preg_replace("#<style[^<]+</style>#is", "", $content);
+    $content_pdf = preg_replace("#<title[^<]+</title>#is", "", $content_pdf);
 
     $mpdf = new Pdf([
         'content' => $content_pdf,
@@ -91,7 +84,6 @@ class Helper extends Component
     $mpdf->destination = Pdf::DEST_STRING;
     $mpdf = $mpdf->render();
 
-    //\Yii::$app->response->format=$format;
     if ($sended && $mpdf) {
       $sended->attachContent($mpdf, ['fileName' => 'mail_copy.pdf', 'contentType' => 'application/pdf']);
     } else {
