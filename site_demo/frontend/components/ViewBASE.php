@@ -183,7 +183,14 @@ class ViewBASE extends View
       $this->init_param();
     }
 
-    if (substr(Yii::$app->request->pathInfo, 0, 3) == "gii") return;
+    // PHP 8.2: Check if pathInfo is available (web request only)
+    if (Yii::$app->request instanceof \yii\web\Request) {
+      try {
+        if (substr(Yii::$app->request->pathInfo, 0, 3) == "gii") return;
+      } catch (\Exception $e) {
+        // pathInfo not available in error/CLI context
+      }
+    }
     $this->all_params = array_merge($this->all_params, $params);
     Yii::$app->params['all_params'] = $this->all_params;
     unset($this->all_params['all_params']);
