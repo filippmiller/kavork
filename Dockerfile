@@ -42,6 +42,7 @@ RUN echo "upload_max_filesize = 100M" >> /usr/local/etc/php/conf.d/uploads.ini \
 # Copy Docker-specific config files from deploy-config folder
 COPY deploy-config/start_param.php /var/www/html/common/config/start_param.php
 COPY deploy-config/main-local.php /var/www/html/common/config/main-local.php
+COPY deploy-config/main-local.php /var/www/html/console/config/main-local.php
 COPY deploy-config/frontend-main-local.php /var/www/html/frontend/config/main-local.php
 COPY deploy-config/params-local.php /var/www/html/frontend/config/params-local.php
 COPY deploy-config/params-local.php /var/www/html/common/config/params-local.php
