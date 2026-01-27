@@ -16,8 +16,7 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => [
         'log',
-        'queue',
-        // 'kint' removed for production
+        'queue'
     ],
     'controllerNamespace' => 'console\controllers',
     'aliases' => [
@@ -52,8 +51,6 @@ return [
             'class' => 'frontend\modules\cafe\components\Cafe',
         ],
     ],
-    'modules' => [
-        // kint module removed for production
-    ],
+    'modules' => [],
     'params' => $params,
 ];
