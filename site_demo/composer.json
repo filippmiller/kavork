@@ -43,7 +43,6 @@
     "paypal/rest-api-sdk-php": "^1.11",
     "edofre/yii2-fullcalendar": "V1.0.11",
     "yiisoft/yii2-faker": "~2.0.0",
-    "fzaninotto/faker": "^1.8",
     "2amigos/qrcode-library": "~1.1"
   },
   "require-dev": {
