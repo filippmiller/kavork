@@ -482,10 +482,11 @@ if (typeof(is_main) != "undefined") {
     $('#admin_panel').hide('slide', {direction: 'left'}, 1000);
     setCookie('showAdminPanel', 0);
   });
-  if (getCookie('showAdminPanel') == 1) {
-    $('#admin_panel').show(0);
-  } else {
+  // Show admin panel by default, hide only if explicitly closed (cookie=0)
+  if (getCookie('showAdminPanel') == 0) {
     $('#admin_panel').hide(0);
+  } else {
+    $('#admin_panel').show(0);
   }
 
   $('.visible_control_tile').on('click', function () {
