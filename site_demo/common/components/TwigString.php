@@ -2,7 +2,8 @@
 
 namespace common\components;
 
-use Twig_Loader_String;
+use Twig\Loader\ArrayLoader;
+use Twig\Environment;
 use Yii;
 use yii\base\Component;
 
@@ -21,14 +22,14 @@ class TwigString extends Component
   {
     parent::init();
 
-    $loader = new Twig_Loader_String();
+    $loader = new ArrayLoader([]);
 
     $params['charset'] = Yii::$app->charset;
     if (isset($this->params['cachePath'])) {
       $params['cashe'] = $this->params['cachePath'];
     }
 
-    $this->twig = new \Twig_Environment($loader, $params);
+    $this->twig = new Environment($loader, $params);
 
     // Adding custom functions
     if (!empty($this->params['functions'])) {
@@ -54,7 +55,7 @@ class TwigString extends Component
    */
   private function _addCustom($classType, $elements)
   {
-    $classFunction = 'Twig_Simple' . $classType;
+    $classFunction = '\Twig\Twig' . $classType;
 
     foreach ($elements as $name => $func) {
       $twigElement = null;
@@ -68,7 +69,7 @@ class TwigString extends Component
         case is_array($func) && is_callable($func[0]):
           $twigElement = new $classFunction($name, $func[0], (!empty($func[1]) && is_array($func[1])) ? $func[1] : []);
           break;
-        case $func instanceof \Twig_SimpleFunction || $func instanceof \Twig_SimpleFilter:
+        case $func instanceof \Twig\TwigFunction || $func instanceof \Twig\TwigFilter:
           $twigElement = $func;
       }
 
@@ -82,9 +83,12 @@ class TwigString extends Component
 
   public function render($string, $data)
   {
-    return $this->twig->render(
-        $string,
-        $data
-    );
+    // For Twig v3, we need to add the template to the loader first
+    $loader = $this->twig->getLoader();
+    if ($loader instanceof ArrayLoader) {
+      $loader->setTemplate('__string_template__', $string);
+      return $this->twig->render('__string_template__', $data);
+    }
+    return $this->twig->render($string, $data);
   }
 }

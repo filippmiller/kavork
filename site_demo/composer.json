@@ -24,7 +24,7 @@
     "yiisoft/yii2-bootstrap": "~2.0.0",
     "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
     "johnitvn/yii2-ajaxcrud": "*",
-    "yiisoft/yii2-twig": "~2.0.0",
+    "yiisoft/yii2-twig": "~2.1.0",
     "twig/twig": "^3.0",
     "developeruz/yii2-db-rbac": "*",
     "kartik-v/yii2-widgets": "^3.4",
