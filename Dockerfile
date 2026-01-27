@@ -1,4 +1,4 @@
-FROM php:8.0-apache
+FROM php:8.2-apache
 
 # Install PHP extensions required by Yii2 and Composer
 RUN apt-get update && apt-get install -y \
@@ -27,7 +27,7 @@ COPY site_demo/ /var/www/html/
 
 # Install PHP dependencies with Composer (skip security checks for legacy packages)
 ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN cd /var/www/html && composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
+RUN cd /var/www/html && composer install --no-dev --optimize-autoloader --no-interaction
 
 # Cache bust: 2026-01-17-v4
 
