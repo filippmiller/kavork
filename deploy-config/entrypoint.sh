@@ -63,6 +63,7 @@ echo "=== 000-default.conf ==="
 cat /etc/apache2/sites-available/000-default.conf
 
 # Start Yii queue worker in background for email processing
+# This worker processes queued email jobs (checkout receipts, notifications)
 echo "Starting Yii queue worker for background email jobs..."
 cd /var/www/html
 nohup php yii queue/listen --verbose=1 > /var/log/queue-worker.log 2>&1 &
