@@ -48,11 +48,14 @@ COPY deploy-config/params-local.php /var/www/html/frontend/config/params-local.p
 COPY deploy-config/params-local.php /var/www/html/common/config/params-local.php
 COPY deploy-config/params-local.php /var/www/html/console/config/params-local.php
 
+# Copy production yii console script (YII_DEBUG=false)
+COPY deploy-config/yii /var/www/html/yii
 
 COPY deploy-config/entrypoint.sh /entrypoint.sh
 
 # Fix Windows line endings and make executable
-RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh
+RUN sed -i 's/\r$//' /entrypoint.sh && chmod +x /entrypoint.sh \
+    && sed -i 's/\r$//' /var/www/html/yii && chmod +x /var/www/html/yii
 
 # Configure Apache to serve from frontend/web
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/frontend/web
