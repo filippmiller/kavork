@@ -53,7 +53,7 @@ start_param.php
 *-local.php
 
 .composer
-composer.lock
+# composer.lock - KEEP COMMITTED for production builds
 
 public_html
 frontend/web/img/logos

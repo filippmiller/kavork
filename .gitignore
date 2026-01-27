@@ -58,7 +58,7 @@ site_demo/.vagrant/
 
 # Composer
 composer.phar
-composer.lock
+# composer.lock - KEEP COMMITTED for deterministic builds
 
 # PHPUnit
 phpunit.phar
@@ -70,3 +70,11 @@ phpunit.xml
 cgi-bin/
 public_html/
 nul
+*.pem
+*.p12
+*.key
+*.crt
+credentials*.json
+service-account*.json
+sessions/
+logs/
