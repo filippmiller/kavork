@@ -640,7 +640,8 @@ if (typeof(is_main) != "undefined") {
 
   }
 
-  setInterval(updateMain, 2000);
+  // Increased interval from 2000ms to 10000ms (10 seconds) to reduce server load
+  setInterval(updateMain, 10000);
   updateMain();
 
   function getCookie(name) {

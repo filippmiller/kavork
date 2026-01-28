@@ -767,6 +767,11 @@ class VisitorLog extends \common\components\ActiveRecord
       return;
     }
 
+    // Ensure pause is initialized to 0 if null
+    if ($this->pause === null) {
+      $this->pause = 0;
+    }
+
     $this->pause += time() - $this->pause_start;
 
     if (!$onlyCalc) {
