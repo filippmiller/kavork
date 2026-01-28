@@ -22,10 +22,6 @@
 </div>  
 {% endif %}
 
-{% set form = active_form_begin() %}
-  {{ form.field(model, 'id').hiddenInput().label(false, {'style':'display:none'})|raw }}
-{{ active_form_end() }}
-
 {% include '_visit_info.twig' %}
 
 {% include '_transaction_list.twig' %}
