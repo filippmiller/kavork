@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: kavork_mysql_dev
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: railway
+      MYSQL_USER: timecafe_kvdemo
+      MYSQL_PASSWORD: 11PhtKa4i3BY
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./timecafe_docowor.2026-01-28.sql.gz:/docker-entrypoint-initdb.d/dump.sql.gz
+    command: --default-authentication-plugin=mysql_native_password --sql_mode=""
+
+volumes:
+  mysql_data:
