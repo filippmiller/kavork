@@ -1,0 +1,16 @@
+[phases.setup]
+nixPkgs = ["php82", "php82Packages.composer"]
+
+[phases.install]
+cmds = ["composer install --no-dev --optimize-autoloader"]
+
+[phases.build]
+cmds = [
+  "echo 'Clearing Twig cache...'",
+  "rm -rf site_demo/frontend/runtime/Twig/cache/*",
+  "rm -rf site_demo/backend/runtime/Twig/cache/* 2>/dev/null || true",
+  "echo 'Twig cache cleared'"
+]
+
+[start]
+cmd = "php-fpm"
