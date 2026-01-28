@@ -263,8 +263,14 @@ class VisitorLog extends \common\components\ActiveRecord
 
   public function getDuration()
   {
+    // Handle invalid or null add_time
+    $addTime = strtotime($this->add_time);
+    if ($addTime === false || $addTime === null) {
+      return 0;
+    }
+
     $duration = ($this->finish_time ? strtotime($this->finish_time) : time());
-    $duration -= strtotime($this->add_time);
+    $duration -= $addTime;
 
     // Handle null pause value
     $duration -= ($this->pause ?? 0);
@@ -273,7 +279,9 @@ class VisitorLog extends \common\components\ActiveRecord
     if ($this->pause_start > 0) {
       $duration -= (time() - $this->pause_start);
     }
-    return $duration;
+
+    // Ensure duration is not negative
+    return max(0, $duration);
   }
 
   public function getCertificateTypeLabel()
