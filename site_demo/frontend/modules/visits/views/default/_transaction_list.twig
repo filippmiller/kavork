@@ -18,8 +18,12 @@
         <td>{{ item.id }}</td>
         <td>
           {% if(item.visitor_id) %}
-            {% set visitor = item.payman %}
-            {{ visitor.f_name }} {{ visitor.l_name }} ({{ visitor.id }})
+            {% set payman = item.payman %}
+            {% if payman %}
+              {{ payman.f_name }} {{ payman.l_name }} ({{ payman.id }})
+            {% else %}
+              {{ t('app','Unknown') }}
+            {% endif %}
           {% else %}
             {{ t('app','Anonymous') }}
           {% endif %}

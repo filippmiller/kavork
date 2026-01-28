@@ -4,13 +4,20 @@
 
 {% if(model.visitor_id) %}
   {%  set visitor = model.visitor %}
-  <h6 class="vid_check">
-    <div>{{ t('main','Visitor') }}{% include from_module('visits','_visit_info_child_flag') %}:</div> <span class="pull-right font-weight-600">{{ visitor.f_name }} {{ visitor.l_name	}}</span>
-  </h6>
-  <h6 class="vid_check">{{ t('main','Email') }}: <span class="pull-right">{{ visitor.email }}</span></h6>
-  <h6 class="vid_check">{{ t('main','Phone') }}: <span class="pull-right">{{ visitor.phone }}</span></h6>
-  <h6 class="vid_check">{{ t('main','Native Language') }}: <span class="pull-right">{{ visitor.lang }}</span></h6>
-  <h6 class="vid_check"><div class="vmest">{{ t('main','Number of visits ( week/ 30day / All )') | raw }}:</div> <span class="pull-right">{{ model.visit_cnt }}</span></h6>
+  {% if visitor %}
+    <h6 class="vid_check">
+      <div>{{ t('main','Visitor') }}{% include from_module('visits','_visit_info_child_flag') %}:</div> <span class="pull-right font-weight-600">{{ visitor.f_name }} {{ visitor.l_name }}</span>
+    </h6>
+    <h6 class="vid_check">{{ t('main','Email') }}: <span class="pull-right">{{ visitor.email }}</span></h6>
+    <h6 class="vid_check">{{ t('main','Phone') }}: <span class="pull-right">{{ visitor.phone }}</span></h6>
+    <h6 class="vid_check">{{ t('main','Native Language') }}: <span class="pull-right">{{ visitor.lang }}</span></h6>
+    <h6 class="vid_check"><div class="vmest">{{ t('main','Number of visits ( week/ 30day / All )') | raw }}:</div> <span class="pull-right">{{ model.visit_cnt }}</span></h6>
+  {% else %}
+    <h6 class="vid_check">
+      <div>{{ t('main','Visitor') }}{% include from_module('visits','_visit_info_child_flag') %}:</div>
+      <span class="pull-right font-weight-600">{{ t('app','Visitor not found') }} ({{ model.visitor_id }})</span>
+    </h6>
+  {% endif %}
 {% else %}
   <h6 class="vid_check">
     <div>{{ t('main','Visitor') }}{% include from_module('visits','_visit_info_child_flag') %}:</div> <span class="pull-right">{{ t('app','Anonymous') }}</span>
@@ -43,7 +50,8 @@
   <h6 class="vid_check font-weight-600">{{ t('main','Persons payers') }}: <span class="pull-right">{{ model.unite_people|length }}</span></h6>
 {% endif %}
 
-<h6 class="vid_check">{{ t('main','Administrator') }}: <span class="pull-right">{{ model.user.name }}</span></h6>
+{% set admin_name = model.user ? model.user.name : t('app','Unknown') %}
+<h6 class="vid_check">{{ t('main','Administrator') }}: <span class="pull-right">{{ admin_name }}</span></h6>
 <div class="row output_sum">
 <div class="col-md-12">
 {% if model.certificate_type != constant('\\frontend\\modules\\certificate\\models\\Certificate::TYPE_NONE') %}
