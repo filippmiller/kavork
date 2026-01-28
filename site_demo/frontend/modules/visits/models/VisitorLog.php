@@ -266,7 +266,8 @@ class VisitorLog extends \common\components\ActiveRecord
     $duration = ($this->finish_time ? strtotime($this->finish_time) : time());
     $duration -= strtotime($this->add_time);
 
-    $duration -= $this->pause;
+    // Handle null pause value
+    $duration -= ($this->pause ?? 0);
 
 
     if ($this->pause_start > 0) {
