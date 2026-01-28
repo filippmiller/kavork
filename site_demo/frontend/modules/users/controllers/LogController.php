@@ -10,6 +10,7 @@ use frontend\modules\users\models\UserLogSearch;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\Html;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 

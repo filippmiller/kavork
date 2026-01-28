@@ -112,7 +112,7 @@ class FranchiseePayments extends \yii\db\ActiveRecord
   private function calcPrice()
   {
     if (!$this->tariff_id) {
-      $this->addError('tarif_id', \Yii::t('app', 'Tariff package not changed'));
+      $this->addError('tariff_id', \Yii::t('app', 'Tariff package not changed'));
       return false;
     }
 
@@ -130,7 +130,7 @@ class FranchiseePayments extends \yii\db\ActiveRecord
       $franchisee = $this->franchisee;
 
       if (!$franchisee) {
-        $this->addError('tarif_id', \Yii::t('app', 'Tariff package is not available'));
+        $this->addError('tariff_id', \Yii::t('app', 'Tariff package is not available'));
         return false;
       }
 
@@ -141,7 +141,7 @@ class FranchiseePayments extends \yii\db\ActiveRecord
 
     $tariff = $tariff->one();
     if (!$tariff) {
-      $this->addError('tarif_id', \Yii::t('app', 'Tariff package is not available'));
+      $this->addError('tariff_id', \Yii::t('app', 'Tariff package is not available'));
       return false;
     }
 
@@ -154,8 +154,9 @@ class FranchiseePayments extends \yii\db\ActiveRecord
   public function makePay()
   {
     if (empty($this->sum)) {
-      $this->calcPrice();
-      exit;
+      if (!$this->calcPrice()) {
+        return false;
+      }
     }
 
     $pay = new Paypal();
@@ -185,7 +186,7 @@ class FranchiseePayments extends \yii\db\ActiveRecord
   public function applyTariff()
   {
     if (!$this->tariff_id) {
-      //$this->addError('tarif_id', \Yii::t('app', 'Tariff package not changed'));
+      //$this->addError('tariff_id', \Yii::t('app', 'Tariff package not changed'));
       return false;
     }
 
@@ -196,14 +197,14 @@ class FranchiseePayments extends \yii\db\ActiveRecord
         ]);
     $tariff = $tariff->one();
     if (!$tariff) {
-      //$this->addError('tarif_id', \Yii::t('app', 'Tariff package is not available'));
+      //$this->addError('tariff_id', \Yii::t('app', 'Tariff package is not available'));
       return false;
     }
 
     $franchisee = $this->franchisee;
     if (!$franchisee) {
       if (empty($this->data)) {
-        $this->addError('tarif_id', \Yii::t('app', 'Franchisee data is not available'));
+        $this->addError('tariff_id', \Yii::t('app', 'Franchisee data is not available'));
         return false;
       }
 
@@ -305,7 +306,7 @@ class FranchiseePayments extends \yii\db\ActiveRecord
       $this->franchisee_id = $franchisee->id;
       $this->save();
       //ddd($this->data, $franchisee, $cafe, $this, $user, $password);
-      //$this->addError('tarif_id', \Yii::t('app', 'Tariff package is not available'));
+      //$this->addError('tariff_id', \Yii::t('app', 'Tariff package is not available'));
       //return false;
     }
 

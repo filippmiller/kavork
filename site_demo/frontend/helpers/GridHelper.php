@@ -46,10 +46,12 @@ class GridHelper
     $dateRangeWidgetOption = self::getFilterDateRangeConfig([], false, $dateAndTime);
     $dateTimeFormat = $dateRangeWidgetOption['pluginOptions']['locale']['format'];
     $dateTime = \DateTime::createFromFormat($dateTimeFormat, $date);
+    if (!$dateTime) {
+      return false;
+    }
     if ($interval !== null) {
       $dateTime->add(new \DateInterval($interval));
     }
-    if (!$dateTime) return false;
     return $dateTime->format($dateAndTime ? 'Y-m-d H:i:s' : 'Y-m-d');
   }
 
