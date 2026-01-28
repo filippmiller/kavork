@@ -316,6 +316,11 @@ $functionsList = [
     'lg_list' => function () {
       return Yii::$app->cafe->languageList;
     },
+    // Dummy function for cached templates that still reference use()
+    // This prevents 500 errors from old cached Twig templates
+    'use' => function ($class = null) {
+      return ''; // No-op: returns empty string
+    },
 ];
 
 
