@@ -339,9 +339,11 @@ class VisitorLog extends \common\components\ActiveRecord
     if (empty($this->notice)) {
       $this->notice = [];
     } else {
-      /*if (!is_array($this->notice)) {
-        $this->notice = json_decode($this->notice, true);
-      }*/
+      if (!is_array($this->notice)) {
+        $decoded_notice = json_decode($this->notice, true);
+        $this->notice = is_array($decoded_notice) ? $decoded_notice : [];
+      }
+
       if (isset($this->notice[VisitorLog::NOTICE_TYPE_CHILD_DISCOUNT])) {
         $val = $this->notice[self::NOTICE_TYPE_CHILD_DISCOUNT];
         $val = preg_replace("/[^0-9]/", '', $val) * 1;
