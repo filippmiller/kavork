@@ -268,14 +268,17 @@ $functionsList = [
     },
     'local_datetime' => function ($date) {
       if (!is_numeric($date)) $date = strtotime($date);
+      if ($date === false || $date === null) return 'Invalid date';
       return date(Yii::$app->params['lang']['datetime'], $date);
     },
     'local_time' => function ($date) {
       if (!is_numeric($date)) $date = strtotime($date);
+      if ($date === false || $date === null) return 'Invalid time';
       return date(Yii::$app->params['lang']['time'], $date);
     },
     'local_date' => function ($date) {
       if (!is_numeric($date)) $date = strtotime($date);
+      if ($date === false || $date === null) return 'Invalid date';
       return date(Yii::$app->params['lang']['date'], $date);
     },
     'echo_duration' => function ($second) {
