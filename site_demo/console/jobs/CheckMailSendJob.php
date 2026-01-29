@@ -66,18 +66,28 @@ class CheckMailSendJob extends BaseJob
     $content = $template->renderTemplate($model->getCheckData(), $language, $cafe->id);
 
     try {
-      $sended = \Yii::$app->mailer->compose()
+      $message = \Yii::$app->mailer->compose()
           ->setFrom(Yii::$app->params['robotEmail'])
           ->setTo($email)
           ->setSubject($template->subject)
           ->setHtmlBody($content);
 
       if ($cafe->pdf_to_mail) {
-        Yii::$app->helper->addPdfToMail($sended, $content);
+        Yii::$app->helper->addPdfToMail($message, $content);
       }
-      $sended->send();
-    } catch (\Exception $e) {
-      var_dump($e->getMessage());
+
+      if (!$message->send()) {
+        throw new \RuntimeException('Mailer send() returned false.');
+      }
+    } catch (\Throwable $e) {
+      Yii::error([
+          'message' => 'Check mail send failed',
+          'visit_id' => $this->visit_id,
+          'sale_id' => $this->sale_id,
+          'email' => $email,
+          'error' => $e->getMessage(),
+      ]);
+      throw $e;
     }
   }
 

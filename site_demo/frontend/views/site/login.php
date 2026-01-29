@@ -12,12 +12,6 @@ $this->title = Yii::t('app', 'login');
 ?>
 <?php $form = ActiveForm::begin([
     'id' => 'login-form',
-    'layout' => 'horizontal',
-    'fieldConfig' => [
-        'horizontalCssClasses' => [
-            'wrapper' => 'input-group',
-        ]
-    ],
     'options' => [
         'class' => 'login-form has-science-blue',
         'role' => 'form'
@@ -42,19 +36,11 @@ $this->title = Yii::t('app', 'login');
 </div>
 
 <div class="form-control-addon-fill pad">
-  <?= $form->field($model, 'username', [
-      'template' => "{beginWrapper}<span class=\"input-group-addon fg-white\"><i class=\"fa fa-user\"></i></span>{input}\n{endWrapper}\n{error}"
-  ])->textInput([
-      'autofocus' => true,
-  ]) ?>
+    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 </div>
 
 <div class="form-control-addon-fill pad">
-  <?= $form->field($model, 'password', [
-      'template' => "{beginWrapper}<span class=\"input-group-addon fg-white\"><i class=\"fa fa-lock\"></i></span></i>{input}\n{endWrapper}\n{error}"
-  ])->passwordInput([
-      'autofocus' => true,
-  ]) ?>
+    <?= $form->field($model, 'password')->passwordInput() ?>
 </div>
 
 

@@ -1,7 +1,7 @@
 <?php
 return [
     'site_url' => "http://127.0.0.1:8080",
-    'robotEmail' => 'noreply@arturius.ru',
+    'robotEmail' => 'anticafe294@gmail.com',
   //https://developer.paypal.com/developer/applications/
     'mainLanding' => false,
     'paypal_client_id' => 'seller-facilitator@anticafesys.com',

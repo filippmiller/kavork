@@ -1,0 +1,9 @@
+---
+description: Store docs only in repo docs folder
+alwaysApply: true
+---
+
+# Docs Location Rule
+
+- Save new docs, notes, and session writeups only under the repo `docs/` folder.
+- Do not write docs outside this repository.

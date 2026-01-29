@@ -16,6 +16,7 @@ use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\db\Query;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -80,6 +81,11 @@ class AdminController extends Controller
     $actions .= "{send-on-email}";
     $actions .= "{print}";
     $afterTable = '';
+    $panelButtons = Html::a(
+        '<i class="fa fa-envelope"></i> ' . Yii::t('app', 'Email queue'),
+        ['email-queue'],
+        ['role' => 'modal-remote', 'class' => 'btn btn-default', 'title' => Yii::t('app', 'Email queue')]
+    );
 
     $columns = include(__DIR__ . '/../views/admin/_columns.php');
     if (Yii::$app->user->isGuest) {
@@ -107,7 +113,53 @@ class AdminController extends Controller
         'canCreate' => $canCreate,
         'afterTable' => $afterTable,
         'title' => Yii::t('app', 'Template list'),
+        'panelButtons' => $panelButtons,
     ]);
+  }
+
+  public function actionEmailQueue()
+  {
+    if (Yii::$app->user->isGuest || !Yii::$app->user->can('TemplateView')) {
+      throw new \yii\web\ForbiddenHttpException(Yii::t('app', 'Page does not exist'));
+    }
+
+    $request = Yii::$app->request;
+    if (!$request->isAjax) {
+      throw new \yii\web\ForbiddenHttpException('Page does not exist');
+    }
+
+    Yii::$app->response->format = Response::FORMAT_JSON;
+
+    try {
+      $tableName = isset(Yii::$app->queue) ? Yii::$app->queue->tableName : '{{%queue}}';
+      $stats = (new Query())
+          ->from($tableName)
+          ->select([
+              'total' => 'COUNT(*)',
+              'pending' => 'SUM(CASE WHEN reserved_at IS NULL AND done_at IS NULL THEN 1 ELSE 0 END)',
+              'processing' => 'SUM(CASE WHEN reserved_at IS NOT NULL AND done_at IS NULL THEN 1 ELSE 0 END)',
+              'done' => 'SUM(CASE WHEN done_at IS NOT NULL THEN 1 ELSE 0 END)',
+          ])
+          ->one();
+    } catch (\Throwable $e) {
+      Yii::error([
+          'message' => 'Email queue stats failed',
+          'error' => $e->getMessage(),
+      ]);
+
+      return [
+          'title' => Yii::t('app', 'Email queue'),
+          'content' => Html::tag('div', Yii::t('app', 'Unable to load queue stats.'), ['class' => 'text-danger']),
+      ];
+    }
+
+    return [
+        'title' => Yii::t('app', 'Email queue'),
+        'content' => $this->renderAjax('email-queue', [
+            'stats' => $stats,
+        ]),
+        'footer' => Html::button(Yii::t('app', 'Close'), ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]),
+    ];
   }
 
 
