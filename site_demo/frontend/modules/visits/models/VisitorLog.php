@@ -1606,7 +1606,8 @@ class VisitorLog extends \common\components\ActiveRecord
           ->asArray()
           ->one();
     }
-    return round($this->_prepay ? $this->_prepay[$col] : 0, 2);
+    $value = $this->_prepay ? ($this->_prepay[$col] ?? 0) : 0;
+    return round((float)$value, 2);
   }
 
   public function getPrePayVisit($col = 'cost')
@@ -1632,8 +1633,8 @@ class VisitorLog extends \common\components\ActiveRecord
           ->one();
     }
 
-    $out = $this->_prepayvisit ? $this->_prepayvisit[$col] : 0;
-    return round($out, 2);
+    $out = $this->_prepayvisit ? ($this->_prepayvisit[$col] ?? 0) : 0;
+    return round((float)$out, 2);
   }
 
   public function getDiscountsString()
