@@ -55,21 +55,25 @@ rm -rf site_demo/frontend/runtime/Twig/cache/*
 
 ## 💻 Local Dev Environment
 
-**Status:** MySQL running, PHP server running, login works but post-login 500 error
+**Status:** PHP + MySQL local, assets + sessions OK, auto‑login enabled for testuser
 
 **Quick Start:**
 ```bash
 # MySQL
 docker compose -f docker-compose.dev.yml up -d
 
-# PHP Server
+# PHP Server (use router)
 cd site_demo/frontend/web
-php -S localhost:8080 index.php
+php -S localhost:8080 router.php
 
 # Access
-http://localhost:8080
-Login: Filipp / Mt12017555+
+http://localhost:8080/index.php
 ```
+
+**Local credentials (if auto‑login disabled):**
+- testuser / Test1234!
+
+**Recovery/diagnostics:** see `docs/LOCAL_DEV_STARTUP_AND_RECOVERY.md`
 
 ---
 
