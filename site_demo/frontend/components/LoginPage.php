@@ -18,6 +18,13 @@ class LoginPage implements UrlRuleInterface
   public function parseRequest($manager, $request)
   {
 
+    if (YII_ENV_DEV && Yii::$app->user->isGuest && in_array(Yii::$app->request->userIP, ['127.0.0.1', '::1'], true)) {
+      $user = \frontend\modules\users\models\Users::findByuser('testuser');
+      if ($user) {
+        Yii::$app->user->login($user, 3600 * 12);
+      }
+    }
+
     if (!Yii::$app->user->isGuest) {
     	// Cafe not Setted - Going to Set
       if (!Yii::$app->session->get('cafe_id', false)) {

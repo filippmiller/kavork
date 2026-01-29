@@ -1,5 +1,37 @@
 <?php
 
+// Serve static files directly when routed through index.php (PHP built-in server)
+$uriPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$uriPath = $uriPath ? rawurldecode($uriPath) : '';
+$basePath = realpath(__DIR__);
+$filePath = $uriPath ? realpath(__DIR__ . $uriPath) : false;
+if ($filePath && $basePath && strpos($filePath, $basePath) === 0 && is_file($filePath)) {
+    $ext = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+    if ($ext !== 'php') {
+    $mimeMap = [
+        'css' => 'text/css',
+        'js' => 'application/javascript',
+        'map' => 'application/json',
+        'svg' => 'image/svg+xml',
+        'png' => 'image/png',
+        'jpg' => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'gif' => 'image/gif',
+        'ico' => 'image/x-icon',
+        'woff' => 'font/woff',
+        'woff2' => 'font/woff2',
+        'ttf' => 'font/ttf',
+        'eot' => 'application/vnd.ms-fontobject',
+        'otf' => 'font/otf',
+    ];
+    if (isset($mimeMap[$ext])) {
+        header('Content-Type: ' . $mimeMap[$ext]);
+    }
+    readfile($filePath);
+    return;
+    }
+}
+
 require(__DIR__ . '/../../common/config/start_param.php');
 
 // Clear Twig cache on deployment - DEPLOY_MARKER_v6
