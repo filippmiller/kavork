@@ -99,11 +99,11 @@ class VisitorSearch extends Visitor
     ]);
 
     $query->andFilterWhere(['like', '.code', $this->code])
-        ->andFilterWhere(['like', 'LOWER(f_name)', strtolower($this->f_name)])
-        ->andFilterWhere(['like', 'LOWER(l_name)', strtolower($this->l_name)])
-        ->andFilterWhere(['like', 'LOWER(email)', strtolower($this->email)])
+        ->andFilterWhere(['like', 'LOWER(f_name)', $this->f_name === null ? null : strtolower($this->f_name)])
+        ->andFilterWhere(['like', 'LOWER(l_name)', $this->l_name === null ? null : strtolower($this->l_name)])
+        ->andFilterWhere(['like', 'LOWER(email)', $this->email === null ? null : strtolower($this->email)])
         ->andFilterWhere(['like', 'phone', $this->phone])
-        ->andFilterWhere(['like', 'LOWER(notice)', strtolower($this->notice)])
+        ->andFilterWhere(['like', 'LOWER(notice)', $this->notice === null ? null : strtolower($this->notice)])
         ->andFilterWhere(['like', '.lg', $this->lg]);
 
     if ($this->create) {
