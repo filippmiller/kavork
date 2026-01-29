@@ -132,6 +132,12 @@ $config = [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => 'yii\log\StreamTarget',
+                    'levels' => ['error', 'warning'],
+                    'logVars' => [],
+                    'stream' => 'php://stderr',
+                ],
             ],
         ],
         'errorHandler' => [
