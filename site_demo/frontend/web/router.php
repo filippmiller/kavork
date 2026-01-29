@@ -7,10 +7,6 @@
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $file = __DIR__ . $uri;
 
-// Debug - using Windows-compatible path
-$logFile = __DIR__ . '/router.log';
-@file_put_contents($logFile, date('Y-m-d H:i:s') . " URI: $uri FILE: $file EXISTS: " . (is_file($file) ? 'YES' : 'NO') . "\n", FILE_APPEND);
-
 // If file exists and is readable, let PHP serve it directly
 if (is_file($file)) {
     return false;
