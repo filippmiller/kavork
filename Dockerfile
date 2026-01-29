@@ -22,13 +22,13 @@ RUN rm -f /etc/apache2/mods-enabled/mpm_event.* /etc/apache2/mods-enabled/mpm_wo
 # Set working directory
 WORKDIR /var/www/html
 
+# Install PHP dependencies with Composer (use lock file for caching)
+ENV COMPOSER_ALLOW_SUPERUSER=1
+COPY site_demo/composer.json site_demo/composer.lock /var/www/html/
+RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist --no-progress --ignore-platform-reqs
+
 # Copy application code
 COPY site_demo/ /var/www/html/
-
-# Install PHP dependencies with Composer (skip security checks for legacy packages)
-ENV COMPOSER_ALLOW_SUPERUSER=1
-# Regenerate lock file for PHP 8.2 compatibility, then install
-RUN cd /var/www/html && composer update --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
 # Cache bust: 2026-01-27-php82-fix
 
