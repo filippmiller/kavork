@@ -50,6 +50,10 @@ INSERT INTO user_cafe (user_id, cafe_id) VALUES (<testuser_id>, 1);
 - Ensure `frontend\components\WebUser` is used
 - Ensure only one PHP server runs on port 8080
 
+### Visitor Database 500 on PHP 8.2
+- Root cause: `yii2-grid` ColumnTrait nested ternary is invalid in PHP 8.2
+- Fix: ensure the bootstrap autoload patch in `common/config/bootstrap.php` is present
+
 ### Multiple PHP servers on 8080
 - Stop all PHP processes on port 8080
 - Start only one server with `router.php`
