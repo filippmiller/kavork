@@ -116,7 +116,7 @@ class TemplateMail extends Template
     ];
   }
 
-  public function getButtons($mode)
+  public static function getButtons($mode)
   {
     $list = self::find()
         ->select(['id', 'title'])
